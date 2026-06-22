@@ -1,30 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OBSERVING_TEXTS } from "@/lib/prompts";
 
 export function ObservingText() {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setVisible(false);
-      setTimeout(() => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         setIndex((i) => (i + 1) % OBSERVING_TEXTS.length);
         setVisible(true);
-      }, 300);
-    }, 2500);
+      }, 350);
+    }, 2800);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
   return (
-    <div className="flex min-h-[80px] items-center justify-center px-6">
+    <div className="relative mx-auto h-20 w-full max-w-xs sm:max-w-sm">
       <p
-        className={`text-center text-lg text-text transition-opacity duration-300 ${
+        className={`absolute inset-0 flex items-center justify-center px-2 text-center text-base leading-relaxed text-text transition-opacity duration-300 sm:text-lg ${
           visible ? "opacity-100" : "opacity-0"
         }`}
+        aria-live="polite"
       >
         {OBSERVING_TEXTS[index]}
       </p>

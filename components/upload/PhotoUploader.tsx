@@ -8,7 +8,8 @@ interface PhotoUploaderProps {
 }
 
 export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -31,6 +32,15 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
     [onImageReady]
   );
 
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) handleFile(file);
+      e.target.value = "";
+    },
+    [handleFile]
+  );
+
   const onDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
@@ -44,20 +54,16 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
   return (
     <div className="w-full">
       <div
-        role="button"
-        tabIndex={0}
-        onClick={() => inputRef.current?.click()}
-        onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
         onDragOver={(e) => {
           e.preventDefault();
           setDragOver(true);
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        className={`relative flex min-h-[280px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed transition-all duration-200 ${
+        className={`relative flex min-h-[240px] flex-col items-center justify-center rounded-3xl border-2 border-dashed transition-all duration-200 ${
           dragOver
             ? "border-primary bg-primary/5"
-            : "border-primary/20 bg-white/60 hover:border-primary/40"
+            : "border-primary/20 bg-white/60"
         }`}
       >
         {preview ? (
@@ -66,25 +72,19 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
             <img
               src={preview}
               alt="工位预览"
-              className="mx-auto max-h-[240px] rounded-2xl object-contain"
+              className="mx-auto max-h-[200px] rounded-2xl object-contain"
             />
             <p className="mt-4 text-center text-sm text-muted">
-              点击重新选择
+              可以重新选择照片
             </p>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-4 p-8 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-3xl">
+          <div className="flex flex-col items-center gap-3 p-6 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-2xl">
               📷
             </div>
-            <div>
-              <p className="text-lg font-medium text-text">
-                上传你的工位照片
-              </p>
-              <p className="mt-1 text-sm text-muted">
-                点击选择或拖拽到此处
-              </p>
-            </div>
+            <p className="text-lg font-medium text-text">上传你的工位照片</p>
+            <p className="text-sm text-muted">从相册选择或现场拍一张</p>
           </div>
         )}
 
@@ -95,16 +95,42 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
         )}
       </div>
 
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <button
+          type="button"
+          onClick={() => galleryInputRef.current?.click()}
+          disabled={loading}
+          className="rounded-2xl border border-primary/20 bg-white px-4 py-3.5 text-sm font-medium text-text transition-colors active:bg-primary/5 disabled:opacity-50"
+        >
+          从相册选择
+        </button>
+        <button
+          type="button"
+          onClick={() => cameraInputRef.current?.click()}
+          disabled={loading}
+          className="rounded-2xl bg-primary px-4 py-3.5 text-sm font-medium text-white transition-colors active:bg-primary/90 disabled:opacity-50"
+        >
+          拍照上传
+        </button>
+      </div>
+
+      {/* 不带 capture，手机可选相册 */}
       <input
-        ref={inputRef}
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={onInputChange}
+      />
+
+      {/* 带 capture，直接打开相机 */}
+      <input
+        ref={cameraInputRef}
         type="file"
         accept="image/*"
         capture="environment"
         className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleFile(file);
-        }}
+        onChange={onInputChange}
       />
     </div>
   );

@@ -58,7 +58,7 @@ export default function AnalyzingPage() {
 
         <h1 className="text-xl font-semibold text-text">工位正在观察你…</h1>
 
-        <div className="mt-6 w-full">
+        <div className="mt-8 w-full">
           <ObservingText />
         </div>
 
