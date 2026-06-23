@@ -1,8 +1,18 @@
-const MAX_WIDTH = 1280;
-const MAX_HEIGHT = 1280;
-const QUALITY = 0.85;
+const DESKTOP_MAX = 1024;
+const MOBILE_MAX = 768;
+const DESKTOP_QUALITY = 0.78;
+const MOBILE_QUALITY = 0.65;
+
+function isMobileDevice(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
 
 export async function compressImage(file: File): Promise<string> {
+  const mobile = isMobileDevice();
+  const maxSize = mobile ? MOBILE_MAX : DESKTOP_MAX;
+  const quality = mobile ? MOBILE_QUALITY : DESKTOP_QUALITY;
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -10,8 +20,8 @@ export async function compressImage(file: File): Promise<string> {
       img.onload = () => {
         let { width, height } = img;
 
-        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-          const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+        if (width > maxSize || height > maxSize) {
+          const ratio = Math.min(maxSize / width, maxSize / height);
           width = Math.round(width * ratio);
           height = Math.round(height * ratio);
         }
@@ -27,7 +37,7 @@ export async function compressImage(file: File): Promise<string> {
         }
 
         ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL("image/jpeg", QUALITY);
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
         resolve(dataUrl);
       };
       img.onerror = () => reject(new Error("图片加载失败"));
@@ -40,4 +50,9 @@ export async function compressImage(file: File): Promise<string> {
 
 export function dataUrlToBase64(dataUrl: string): string {
   return dataUrl.split(",")[1] ?? dataUrl;
+}
+
+export function estimateDataUrlSizeKB(dataUrl: string): number {
+  const base64 = dataUrl.split(",")[1] ?? dataUrl;
+  return Math.round((base64.length * 0.75) / 1024);
 }

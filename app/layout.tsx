@@ -1,12 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "你的工位人格",
@@ -26,9 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body className={`${inter.variable} font-sans min-h-dvh`}>
-        {children}
-      </body>
+      <body className="font-sans min-h-dvh">{children}</body>
     </html>
   );
 }

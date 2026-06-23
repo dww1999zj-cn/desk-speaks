@@ -17,10 +17,10 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "var(--font-inter)",
           "PingFang SC",
           "Microsoft YaHei",
           "system-ui",
+          "-apple-system",
           "sans-serif",
         ],
       },

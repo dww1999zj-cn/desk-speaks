@@ -3,6 +3,8 @@ import { SYSTEM_PROMPT, MOCK_REPORT } from "@/lib/prompts";
 import { dataUrlToBase64 } from "@/lib/image";
 import { saveDeskReport } from "@/lib/stats";
 import type { DeskReport } from "@/lib/types";
+
+export const maxDuration = 60;
 const QWEN_API_BASE =
   "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
 

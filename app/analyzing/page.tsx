@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { ObservingText } from "@/components/analyzing/ObservingText";
 import { STORAGE_KEYS } from "@/lib/report";
 import type { DeskReport } from "@/lib/types";
 
+const MIN_DISPLAY_MS = 1500;
+const ANALYZE_TIMEOUT_MS = 90000;
+
 export default function AnalyzingPage() {
   const router = useRouter();
   const started = useRef(false);
+  const [status, setStatus] = useState("正在上传照片…");
 
   useEffect(() => {
     if (started.current) return;
@@ -22,14 +26,26 @@ export default function AnalyzingPage() {
     }
 
     const analyze = async () => {
+      const startAt = Date.now();
+
       try {
+        setStatus("工位正在看你…");
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), ANALYZE_TIMEOUT_MS);
+
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ image }),
+          signal: controller.signal,
         });
 
+        clearTimeout(timeout);
+
         if (!res.ok) throw new Error("分析失败");
+
+        setStatus("正在整理你的人格档案…");
 
         const data = await res.json();
         const report: DeskReport = data.report ?? data;
@@ -38,10 +54,20 @@ export default function AnalyzingPage() {
           sessionStorage.setItem(STORAGE_KEYS.reportId, data.reportId);
         }
 
-        await new Promise((r) => setTimeout(r, 3000));
+        const elapsed = Date.now() - startAt;
+        if (elapsed < MIN_DISPLAY_MS) {
+          await new Promise((r) => setTimeout(r, MIN_DISPLAY_MS - elapsed));
+        }
+
         router.replace("/report");
-      } catch {
-        alert("分析出了点问题，请稍后再试");
+      } catch (err) {
+        const isTimeout =
+          err instanceof Error && err.name === "AbortError";
+        alert(
+          isTimeout
+            ? "分析超时了，请换张更小的照片或稍后再试"
+            : "分析出了点问题，请稍后再试"
+        );
         router.replace("/upload");
       }
     };
@@ -57,21 +83,15 @@ export default function AnalyzingPage() {
         </div>
 
         <h1 className="text-xl font-semibold text-text">工位正在认你…</h1>
-        <p className="mt-2 text-sm text-muted">对照工位眼中的你，和真实的你</p>
+        <p className="mt-2 text-sm text-muted">{status}</p>
 
         <div className="mt-8 w-full">
           <ObservingText />
         </div>
 
-        <div className="mt-10 flex gap-1.5">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="h-2 w-2 rounded-full bg-primary animate-pulse-soft"
-              style={{ animationDelay: `${i * 300}ms` }}
-            />
-          ))}
-        </div>
+        <p className="mt-8 text-center text-xs text-muted">
+          首次分析约需 15–30 秒，请耐心等待
+        </p>
       </main>
     </GradientBackground>
   );
