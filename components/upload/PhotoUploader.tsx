@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { compressImage } from "@/lib/image";
+import { compressImageForUpload } from "@/lib/image";
 
 interface PhotoUploaderProps {
-  onImageReady: (dataUrl: string) => void;
+  onImageReady: (images: { full: string; thumb: string }) => void;
 }
 
 export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
@@ -20,9 +20,9 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
 
       setLoading(true);
       try {
-        const dataUrl = await compressImage(file);
-        setPreview(dataUrl);
-        onImageReady(dataUrl);
+        const images = await compressImageForUpload(file);
+        setPreview(images.thumb);
+        onImageReady(images);
       } catch {
         alert("图片处理失败，请换一张试试");
       } finally {
@@ -114,7 +114,6 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
         </button>
       </div>
 
-      {/* 不带 capture，手机可选相册 */}
       <input
         ref={galleryInputRef}
         type="file"
@@ -123,7 +122,6 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
         onChange={onInputChange}
       />
 
-      {/* 带 capture，直接打开相机 */}
       <input
         ref={cameraInputRef}
         type="file"

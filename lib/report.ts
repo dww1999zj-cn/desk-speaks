@@ -51,6 +51,7 @@ export function reportToTraits(report: DeskReport): string[] {
 
 export const STORAGE_KEYS = {
   image: "desk-speaks-image",
+  imageThumb: "desk-speaks-image-thumb",
   report: "desk-speaks-report",
   reportId: "desk-speaks-report-id",
 } as const;

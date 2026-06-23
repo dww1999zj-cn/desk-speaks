@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { SYSTEM_PROMPT, MOCK_REPORT } from "@/lib/prompts";
 import { dataUrlToBase64 } from "@/lib/image";
 import { saveDeskReport } from "@/lib/stats";
 import type { DeskReport } from "@/lib/types";
 
 export const maxDuration = 60;
+
 const QWEN_API_BASE =
   "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
 
@@ -17,7 +18,7 @@ async function analyzeWithQwen(image: string): Promise<DeskReport> {
   const apiKey = process.env.DASHSCOPE_API_KEY;
   if (!apiKey) throw new Error("Missing DASHSCOPE_API_KEY");
 
-  const model = process.env.QWEN_VL_MODEL ?? "qwen-vl-plus";
+  const model = process.env.QWEN_VL_MODEL ?? "qwen2.5-vl-3b-instruct";
 
   const base64 = image.startsWith("data:")
     ? dataUrlToBase64(image)
@@ -42,13 +43,13 @@ async function analyzeWithQwen(image: string): Promise<DeskReport> {
             },
             {
               type: "text",
-              text: "请观察这张工位照片。用户上传的是关于自己的无意识自画像。以工位第一人称描述工位眼中的主人。intro.guessedAge 是工位根据物品、布局、使用痕迹猜测主人的年龄（只写XX岁），不是工位自己的年龄。生成 JSON。",
+              text: "观察工位照片，以工位第一人称生成 JSON。guessedAge 是猜主人年龄（XX岁），不是工位年龄。",
             },
           ],
         },
       ],
-      max_tokens: 1500,
-      temperature: 0.8,
+      max_tokens: 900,
+      temperature: 0.75,
     }),
   });
 
@@ -64,6 +65,16 @@ async function analyzeWithQwen(image: string): Promise<DeskReport> {
   return parseReport(content);
 }
 
+function scheduleSave(report: DeskReport) {
+  after(async () => {
+    try {
+      await saveDeskReport(report);
+    } catch (err) {
+      console.error("Background save error:", err);
+    }
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { image } = await req.json();
@@ -76,14 +87,14 @@ export async function POST(req: NextRequest) {
       process.env.USE_MOCK_DATA === "true" || !process.env.DASHSCOPE_API_KEY;
 
     if (useMock) {
-      await new Promise((r) => setTimeout(r, 2000));
-      const reportId = await saveDeskReport(MOCK_REPORT);
-      return NextResponse.json({ report: MOCK_REPORT, reportId });
+      await new Promise((r) => setTimeout(r, 1500));
+      scheduleSave(MOCK_REPORT);
+      return NextResponse.json({ report: MOCK_REPORT, reportId: null });
     }
 
     const report = await analyzeWithQwen(image);
-    const reportId = await saveDeskReport(report);
-    return NextResponse.json({ report, reportId });
+    scheduleSave(report);
+    return NextResponse.json({ report, reportId: null });
   } catch (error) {
     console.error("Analyze error:", error);
     return NextResponse.json(

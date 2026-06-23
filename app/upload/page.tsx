@@ -9,11 +9,15 @@ import { STORAGE_KEYS } from "@/lib/report";
 
 export default function UploadPage() {
   const router = useRouter();
-  const [image, setImage] = useState<string | null>(null);
+  const [images, setImages] = useState<{
+    full: string;
+    thumb: string;
+  } | null>(null);
 
   const handleAnalyze = () => {
-    if (!image) return;
-    sessionStorage.setItem(STORAGE_KEYS.image, image);
+    if (!images) return;
+    sessionStorage.setItem(STORAGE_KEYS.image, images.full);
+    sessionStorage.setItem(STORAGE_KEYS.imageThumb, images.thumb);
     router.push("/analyzing");
   };
 
@@ -34,14 +38,14 @@ export default function UploadPage() {
         </header>
 
         <section className="mt-8 flex-1">
-          <PhotoUploader onImageReady={setImage} />
+          <PhotoUploader onImageReady={setImages} />
         </section>
 
         <footer className="mt-8">
           <Button
             size="lg"
             className="w-full"
-            disabled={!image}
+            disabled={!images}
             onClick={handleAnalyze}
           >
             就这张，猜吧

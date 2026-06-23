@@ -16,7 +16,9 @@ export default function ReportPage() {
 
   useEffect(() => {
     const reportRaw = sessionStorage.getItem(STORAGE_KEYS.report);
-    const imageRaw = sessionStorage.getItem(STORAGE_KEYS.image);
+    const imageRaw =
+      sessionStorage.getItem(STORAGE_KEYS.imageThumb) ??
+      sessionStorage.getItem(STORAGE_KEYS.image);
 
     if (!reportRaw) {
       router.replace("/upload");

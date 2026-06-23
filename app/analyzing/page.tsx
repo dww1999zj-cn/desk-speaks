@@ -56,9 +56,7 @@ export default function AnalyzingPage() {
         const data = await res.json();
         const report: DeskReport = data.report ?? data;
         sessionStorage.setItem(STORAGE_KEYS.report, JSON.stringify(report));
-        if (data.reportId) {
-          sessionStorage.setItem(STORAGE_KEYS.reportId, data.reportId);
-        }
+        sessionStorage.removeItem(STORAGE_KEYS.image);
 
         doneRef.current = true;
         setProgress(100);
@@ -68,7 +66,7 @@ export default function AnalyzingPage() {
           await new Promise((r) => setTimeout(r, MIN_DISPLAY_MS - elapsed));
         }
 
-        await new Promise((r) => setTimeout(r, 800));
+        await new Promise((r) => setTimeout(r, 400));
         router.replace("/report");
       } catch (err) {
         const isTimeout =
