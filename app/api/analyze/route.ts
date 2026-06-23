@@ -9,21 +9,45 @@ export const maxDuration = 60;
 const QWEN_API_BASE =
   "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
 
-function parseReport(content: string): DeskReport {
-  const cleaned = content.replace(/```json\n?|\n?```/g, "").trim();
-  return JSON.parse(cleaned) as DeskReport;
+const FALLBACK_MODEL = "qwen-vl-plus";
+
+function getModelCandidates(): string[] {
+  const preferred = process.env.QWEN_VL_MODEL ?? FALLBACK_MODEL;
+  if (preferred === FALLBACK_MODEL) return [FALLBACK_MODEL];
+  return [preferred, FALLBACK_MODEL];
 }
 
-async function analyzeWithQwen(image: string): Promise<DeskReport> {
-  const apiKey = process.env.DASHSCOPE_API_KEY;
-  if (!apiKey) throw new Error("Missing DASHSCOPE_API_KEY");
+function stripTrailingCommas(json: string): string {
+  return json.replace(/,\s*([}\]])/g, "$1");
+}
 
-  const model = process.env.QWEN_VL_MODEL ?? "qwen2.5-vl-3b-instruct";
+function parseReport(content: string): DeskReport {
+  const cleaned = content.replace(/```json\n?|\n?```/g, "").trim();
+  const candidates = [cleaned, stripTrailingCommas(cleaned)];
 
-  const base64 = image.startsWith("data:")
-    ? dataUrlToBase64(image)
-    : image;
+  for (const candidate of candidates) {
+    try {
+      return JSON.parse(candidate) as DeskReport;
+    } catch {
+      const match = candidate.match(/\{[\s\S]*\}/);
+      if (match) {
+        try {
+          return JSON.parse(stripTrailingCommas(match[0])) as DeskReport;
+        } catch {
+          /* try next candidate */
+        }
+      }
+    }
+  }
 
+  throw new Error("AI 返回格式无法解析");
+}
+
+async function callQwen(
+  model: string,
+  apiKey: string,
+  base64: string
+): Promise<DeskReport> {
   const res = await fetch(QWEN_API_BASE, {
     method: "POST",
     headers: {
@@ -48,21 +72,44 @@ async function analyzeWithQwen(image: string): Promise<DeskReport> {
           ],
         },
       ],
-      max_tokens: 900,
+      max_tokens: 1500,
       temperature: 0.75,
     }),
   });
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`通义千问 API 错误: ${err}`);
+    throw new Error(`模型 ${model} 错误: ${err}`);
   }
 
   const data = await res.json();
   const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error("通义千问返回内容为空");
+  if (!content) throw new Error(`模型 ${model} 返回内容为空`);
 
   return parseReport(content);
+}
+
+async function analyzeWithQwen(image: string): Promise<DeskReport> {
+  const apiKey = process.env.DASHSCOPE_API_KEY;
+  if (!apiKey) throw new Error("Missing DASHSCOPE_API_KEY");
+
+  const base64 = image.startsWith("data:")
+    ? dataUrlToBase64(image)
+    : image;
+
+  const models = getModelCandidates();
+  let lastError: Error | null = null;
+
+  for (const model of models) {
+    try {
+      return await callQwen(model, apiKey, base64);
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      console.error(`Analyze with ${model} failed:`, lastError.message);
+    }
+  }
+
+  throw lastError ?? new Error("分析失败");
 }
 
 function scheduleSave(report: DeskReport) {
