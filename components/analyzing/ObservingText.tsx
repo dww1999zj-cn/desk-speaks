@@ -15,8 +15,8 @@ export function ObservingText() {
       timeoutRef.current = setTimeout(() => {
         setIndex((i) => (i + 1) % OBSERVING_TEXTS.length);
         setVisible(true);
-      }, 350);
-    }, 2800);
+      }, 400);
+    }, 3200);
 
     return () => {
       clearInterval(interval);
@@ -25,15 +25,21 @@ export function ObservingText() {
   }, []);
 
   return (
-    <div className="relative mx-auto h-20 w-full max-w-xs sm:max-w-sm">
-      <p
-        className={`absolute inset-0 flex items-center justify-center px-2 text-center text-base leading-relaxed text-text transition-opacity duration-300 sm:text-lg ${
-          visible ? "opacity-100" : "opacity-0"
-        }`}
-        aria-live="polite"
-      >
-        {OBSERVING_TEXTS[index]}
+    <div className="relative mx-auto w-full max-w-sm px-2">
+      <p className="mb-4 text-center text-4xl leading-none text-secondary/25">
+        &ldquo;
       </p>
+      <div className="relative min-h-[5.5rem]">
+        <p
+          className={`text-center text-xl leading-relaxed text-text transition-opacity duration-300 md:text-2xl ${
+            visible ? "opacity-100" : "opacity-0"
+          }`}
+          aria-live="polite"
+        >
+          {OBSERVING_TEXTS[index]}
+        </p>
+      </div>
+      <p className="mt-3 text-center text-xs text-muted">—— 你的工位</p>
     </div>
   );
 }
