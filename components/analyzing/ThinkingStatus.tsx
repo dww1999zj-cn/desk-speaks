@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { THINKING_STATUS_TEXTS } from "@/lib/prompts";
 
 function ThinkingMascot() {
@@ -52,38 +52,29 @@ function ThinkingDots() {
 
 export function ThinkingStatus() {
   const [index, setIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisible(false);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIndex((i) => (i + 1) % THINKING_STATUS_TEXTS.length);
-        setVisible(true);
-      }, 280);
-    }, 2800);
+      setIndex((i) => (i + 1) % THINKING_STATUS_TEXTS.length);
+    }, 3200);
 
-    return () => {
-      clearInterval(interval);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="flex w-full max-w-sm flex-col items-center">
       <ThinkingMascot />
 
-      <div className="mt-10 w-full rounded-3xl border-2 border-white/80 bg-white/75 px-5 py-6 shadow-md shadow-secondary/20 backdrop-blur-sm">
-        <p
-          className={`min-h-[3.5rem] text-center text-lg font-medium leading-relaxed text-text transition-opacity duration-300 ${
-            visible ? "opacity-100" : "opacity-0"
-          }`}
-          aria-live="polite"
-        >
-          {THINKING_STATUS_TEXTS[index]}
-        </p>
+      <div className="mt-10 w-full rounded-3xl border-2 border-white/80 bg-white/90 px-5 py-6 shadow-md shadow-secondary/20 md:bg-white/75 md:backdrop-blur-sm">
+        <div className="relative min-h-[4rem] overflow-hidden">
+          <p
+            key={index}
+            className="animate-fade-in text-center text-lg font-medium leading-relaxed text-text"
+            aria-live="polite"
+          >
+            {THINKING_STATUS_TEXTS[index]}
+          </p>
+        </div>
         <div className="flex justify-center">
           <ThinkingDots />
         </div>
