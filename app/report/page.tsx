@@ -47,7 +47,10 @@ export default function ReportPage() {
     <GradientBackground>
       <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
         <header className="mb-6">
-          <h1 className="text-2xl font-semibold text-text">工位眼中的你</h1>
+          <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-primary shadow-sm">
+            🐮 工位牛马报告
+          </p>
+          <h1 className="text-2xl font-bold text-text">工位眼中的你</h1>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             {matchQuestion}
           </p>

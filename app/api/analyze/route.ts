@@ -67,12 +67,12 @@ async function callQwen(
             },
             {
               type: "text",
-              text: "观察工位照片，以工位第一人称生成 JSON。guessedAge 是猜主人年龄（XX岁），不是工位年龄。",
+              text: "看工位照片，按格式输出JSON。信约70字。guessedAge猜主人年龄。",
             },
           ],
         },
       ],
-      max_tokens: 1500,
+      max_tokens: 1000,
       temperature: 0.75,
     }),
   });

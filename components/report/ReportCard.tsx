@@ -31,7 +31,7 @@ function KeywordTags({ keywords }: { keywords?: string[] }) {
       {keywords.map((kw) => (
         <span
           key={kw}
-          className="rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary"
+          className="rounded-full bg-secondary/25 px-4 py-2 text-sm font-medium text-primary"
         >
           {kw}
         </span>

@@ -60,10 +60,10 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        className={`relative flex min-h-[240px] flex-col items-center justify-center rounded-3xl border-2 border-dashed transition-all duration-200 ${
+        className={`relative flex min-h-[240px] flex-col items-center justify-center rounded-[2rem] border-[3px] border-dashed transition-all duration-200 ${
           dragOver
             ? "border-primary bg-primary/5"
-            : "border-primary/20 bg-white/60"
+            : "border-secondary/50 bg-white/70"
         }`}
       >
         {preview ? (
@@ -80,11 +80,11 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 p-6 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-2xl">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary/40 text-2xl">
               📷
             </div>
-            <p className="text-lg font-medium text-text">上传无意识自画像</p>
-            <p className="text-sm text-muted">从相册选择，或现场拍一张工位</p>
+            <p className="text-lg font-bold text-text">上传无意识自画像</p>
+            <p className="text-sm text-muted">从相册选，或现场拍一张工位</p>
           </div>
         )}
 
@@ -100,7 +100,7 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
           type="button"
           onClick={() => galleryInputRef.current?.click()}
           disabled={loading}
-          className="rounded-2xl border border-primary/20 bg-white px-4 py-3.5 text-sm font-medium text-text transition-colors active:bg-primary/5 disabled:opacity-50"
+          className="rounded-2xl border-2 border-white bg-white px-4 py-3.5 text-sm font-medium text-text shadow-sm transition-colors active:bg-primary/5 disabled:opacity-50"
         >
           从相册选择
         </button>
@@ -108,7 +108,7 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
           type="button"
           onClick={() => cameraInputRef.current?.click()}
           disabled={loading}
-          className="rounded-2xl bg-primary px-4 py-3.5 text-sm font-medium text-white transition-colors active:bg-primary/90 disabled:opacity-50"
+          className="rounded-2xl border-2 border-white bg-primary px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-primary/25 transition-colors active:bg-primary/90 disabled:opacity-50"
         >
           拍照上传
         </button>

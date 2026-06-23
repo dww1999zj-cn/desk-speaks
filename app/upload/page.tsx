@@ -27,13 +27,16 @@ export default function UploadPage() {
         <header>
           <button
             onClick={() => router.back()}
-            className="mb-6 text-sm text-muted hover:text-text"
+            className="mb-6 rounded-full bg-white/70 px-3 py-1.5 text-sm text-muted shadow-sm hover:text-text"
           >
             ← 返回
           </button>
-          <h1 className="text-2xl font-semibold text-text">拍张工位照</h1>
+          <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-secondary/30 px-3 py-1 text-xs font-medium text-text">
+            🐮 上传你的工位自画像
+          </p>
+          <h1 className="text-2xl font-bold text-text">拍张工位照</h1>
           <p className="mt-2 leading-relaxed text-muted">
-            不用摆拍，真实的最好。剩下的交给工位。
+            不用摆拍，真实的最好。剩下的交给工位牛马和通义千问。
           </p>
         </header>
 
@@ -48,7 +51,7 @@ export default function UploadPage() {
             disabled={!images}
             onClick={handleAnalyze}
           >
-            就这张，猜吧
+            就这张，开猜 ✨
           </Button>
         </footer>
       </main>

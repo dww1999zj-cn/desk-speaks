@@ -56,7 +56,7 @@ async function callModel(model, base64) {
           ],
         },
       ],
-      max_tokens: 1500,
+      max_tokens: 1000,
       temperature: 0.75,
     }),
   });
