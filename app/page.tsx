@@ -1,23 +1,21 @@
 import { GradientBackground } from "@/components/ui/GradientBackground";
-import { Button } from "@/components/ui/Button";
+import { HomeCta } from "@/components/home/HomeCta";
 
 export default function HomePage() {
   return (
     <GradientBackground>
-      <main className="relative mx-auto flex min-h-dvh max-w-lg flex-col overflow-hidden px-6 pb-10 pt-14 safe-bottom">
-        <div className="pointer-events-none absolute -right-6 top-20 text-5xl opacity-40 animate-float-cute">
+      <main className="relative mx-auto flex min-h-dvh max-w-lg flex-col px-6 pb-10 pt-14 safe-bottom">
+        {/* 装饰：移动端去掉 blur / 无限动画，减轻 GPU 与首屏压力 */}
+        <div className="pointer-events-none absolute -right-6 top-20 text-5xl opacity-40 max-md:opacity-30 md:animate-float-cute">
           🐮
         </div>
-        <div className="pointer-events-none absolute left-4 top-36 text-2xl opacity-30 animate-bounce-cute">
+        <div className="pointer-events-none absolute left-4 top-36 text-2xl opacity-30 max-md:hidden md:animate-bounce-cute">
           💻
         </div>
-        <div className="pointer-events-none absolute -left-8 bottom-44 h-36 w-36 rounded-full bg-secondary/30 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-28 h-32 w-32 rounded-full bg-accent/25 blur-3xl" />
+        <div className="pointer-events-none absolute -left-8 bottom-44 hidden h-36 w-36 rounded-full bg-secondary/30 blur-3xl md:block" />
+        <div className="pointer-events-none absolute -right-10 bottom-28 hidden h-32 w-32 rounded-full bg-accent/25 blur-3xl md:block" />
 
-        <header
-          className="relative animate-fade-in-up opacity-0"
-          style={{ animationFillMode: "forwards" }}
-        >
+        <header className="relative">
           <p className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-primary shadow-sm">
             <span>🐮</span>
             工位小牛马上线
@@ -36,10 +34,7 @@ export default function HomePage() {
           </h1>
         </header>
 
-        <section
-          className="relative mt-10 flex-1 animate-fade-in-up opacity-0"
-          style={{ animationDelay: "120ms", animationFillMode: "forwards" }}
-        >
+        <section className="relative mt-10 pointer-events-none">
           <div className="relative mx-auto h-[220px] w-full max-w-[300px]">
             <div className="absolute left-0 top-0 w-[88%] rotate-[-6deg] rounded-3xl border-2 border-white bg-white/90 px-4 py-3 shadow-lg shadow-secondary/25">
               <p className="text-xs text-muted">工位猜你</p>
@@ -64,13 +59,8 @@ export default function HomePage() {
           </p>
         </section>
 
-        <footer
-          className="relative mt-8 animate-fade-in-up opacity-0"
-          style={{ animationDelay: "240ms", animationFillMode: "forwards" }}
-        >
-          <Button href="/upload" size="lg" className="w-full text-base">
-            拍张工位照，开始猜我 🐮
-          </Button>
+        <footer className="relative z-20 mt-auto pt-8">
+          <HomeCta />
           <p className="mt-3 text-center text-xs text-muted/80">
             上传你日常办公桌面，不用摆拍
           </p>
