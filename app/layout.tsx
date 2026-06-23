@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "如果你的工位会说话",
-  description: "上传工位照片，收获一份来自工位视角的人格档案",
+  title: "你的工位人格",
+  description: "上传工位照片，看看工位眼中的你是否和真实的你一样",
 };
 
 export const viewport: Viewport = {

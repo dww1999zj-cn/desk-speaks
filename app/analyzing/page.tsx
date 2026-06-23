@@ -53,10 +53,11 @@ export default function AnalyzingPage() {
     <GradientBackground>
       <main className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center px-6 py-12">
         <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-lg shadow-primary/10">
-          <span className="text-3xl animate-pulse-soft">🖥️</span>
+          <span className="text-3xl animate-pulse-soft">🪞</span>
         </div>
 
-        <h1 className="text-xl font-semibold text-text">工位正在观察你…</h1>
+        <h1 className="text-xl font-semibold text-text">工位正在认你…</h1>
+        <p className="mt-2 text-sm text-muted">对照工位眼中的你，和真实的你</p>
 
         <div className="mt-8 w-full">
           <ObservingText />

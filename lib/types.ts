@@ -1,52 +1,58 @@
-export interface ReportSection {
-  title: string;
-  content: string;
-}
-
 export interface DeskReport {
-  cover: {
-    title: string;
-    subtitle: string;
+  intro: {
+    description: string;
+    guessedAge: string;
+    ageHint: string;
+    declaration: string;
   };
-  traits: string[];
-  workStyle: ReportSection;
-  hiddenTrait: ReportSection;
-  habit: ReportSection;
-  quote: string;
+  mbtiDesk: {
+    type: string;
+    keywords: string[];
+    declaration: string;
+  };
+  zodiacDesk: {
+    sign: string;
+    keywords: string[];
+    declaration: string;
+  };
+  letter: {
+    content: string;
+    yijingFengshui: string;
+  };
   shareCard: {
     title: string;
     summary: string;
+    keywords: string[];
   };
 }
 
-export interface DeskStats {
-  totalUsers: number;
-  traitStats: { trait: string; percentage: number }[];
-  similarCount: number;
-  similarPercentage: number;
-}
-
 export type ReportCardType =
-  | "cover"
-  | "traits"
-  | "workStyle"
-  | "hiddenTrait"
-  | "habit"
-  | "quote"
-  | "stats"
-  | "similar"
+  | "intro"
+  | "mbti"
+  | "zodiac"
+  | "letter"
   | "share";
 
 export interface ReportCardData {
   type: ReportCardType;
   title?: string;
   subtitle?: string;
-  traits?: string[];
   content?: string;
-  quote?: string;
+  guessedAge?: string;
+  ageHint?: string;
+  declaration?: string;
+  keywords?: string[];
+  mbtiType?: string;
+  zodiacSign?: string;
+  letter?: string;
+  yijingFengshui?: string;
   summary?: string;
-  totalUsers?: number;
-  traitStats?: { trait: string; percentage: number }[];
-  similarPercentage?: number;
-  similarCount?: number;
+}
+
+// 保留统计类型，供后续扩展
+export interface DeskStats {
+  totalUsers: number;
+  traitStats: { trait: string; percentage: number }[];
+  similarCount: number;
+  similarPercentage: number;
 }

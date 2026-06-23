@@ -40,7 +40,7 @@ async function analyzeWithQwen(image: string): Promise<DeskReport> {
             },
             {
               type: "text",
-              text: "请观察这张工位照片，以工位第一人称生成人格档案 JSON。",
+              text: "请观察这张工位照片。用户上传的是关于自己的无意识自画像。以工位第一人称描述工位眼中的主人。intro.guessedAge 是工位根据物品、布局、使用痕迹猜测主人的年龄（只写XX岁），不是工位自己的年龄。生成 JSON。",
             },
           ],
         },

@@ -83,8 +83,8 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-2xl">
               📷
             </div>
-            <p className="text-lg font-medium text-text">上传你的工位照片</p>
-            <p className="text-sm text-muted">从相册选择或现场拍一张</p>
+            <p className="text-lg font-medium text-text">上传无意识自画像</p>
+            <p className="text-sm text-muted">从相册选择，或现场拍一张工位</p>
           </div>
         )}
 

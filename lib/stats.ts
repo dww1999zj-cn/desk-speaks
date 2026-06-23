@@ -1,4 +1,5 @@
 import type { DeskReport, DeskStats } from "./types";
+import { reportToTraits } from "./report";
 import { getSupabaseAdmin } from "./supabase";
 
 const MIN_SIMILAR_OVERLAP = 2;
@@ -15,8 +16,8 @@ export async function saveDeskReport(report: DeskReport): Promise<string | null>
   const { data, error } = await supabase
     .from("desk_reports")
     .insert({
-      traits: report.traits,
-      cover_subtitle: report.cover.subtitle,
+      traits: reportToTraits(report),
+      cover_subtitle: report.intro.declaration,
     })
     .select("id")
     .single();
@@ -45,12 +46,11 @@ export async function getDeskStats(
     return null;
   }
 
-  const allRows = data;
   const otherRows = excludeId
     ? data.filter((row) => row.id !== excludeId)
     : data;
 
-  const totalUsers = allRows.length;
+  const totalUsers = data.length;
   const othersCount = otherRows.length;
 
   if (totalUsers === 0) {
@@ -63,7 +63,7 @@ export async function getDeskStats(
   }
 
   const traitStats = userTraits.map((trait) => {
-    const count = allRows.filter((row) => row.traits.includes(trait)).length;
+    const count = data.filter((row) => row.traits.includes(trait)).length;
     return {
       trait,
       percentage: Math.round((count / totalUsers) * 100),

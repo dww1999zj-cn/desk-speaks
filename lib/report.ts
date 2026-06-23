@@ -1,77 +1,52 @@
-import type { DeskReport, DeskStats, ReportCardData } from "./types";
+import type { DeskReport, ReportCardData } from "./types";
 
-export function reportToCards(
-  report: DeskReport,
-  stats?: DeskStats | null
-): ReportCardData[] {
-  const cards: ReportCardData[] = [
+export function reportToCards(report: DeskReport): ReportCardData[] {
+  return [
     {
-      type: "cover",
-      title: report.cover.title,
-      subtitle: report.cover.subtitle,
+      type: "intro",
+      title: "工位初见",
+      content: report.intro.description,
+      guessedAge: report.intro.guessedAge,
+      ageHint: report.intro.ageHint,
+      declaration: report.intro.declaration,
     },
     {
-      type: "traits",
-      title: "你的气质",
-      traits: report.traits,
+      type: "mbti",
+      title: "工位 MBTI 人格",
+      mbtiType: report.mbtiDesk.type,
+      keywords: report.mbtiDesk.keywords,
+      declaration: report.mbtiDesk.declaration,
     },
     {
-      type: "workStyle",
-      title: report.workStyle.title,
-      content: report.workStyle.content,
+      type: "zodiac",
+      title: "工位星座",
+      zodiacSign: report.zodiacDesk.sign,
+      keywords: report.zodiacDesk.keywords,
+      declaration: report.zodiacDesk.declaration,
     },
     {
-      type: "hiddenTrait",
-      title: report.hiddenTrait.title,
-      content: report.hiddenTrait.content,
+      type: "letter",
+      title: "工位写给你的信",
+      letter: report.letter.content,
+      yijingFengshui: report.letter.yijingFengshui,
+      keywords: report.shareCard.keywords,
     },
     {
-      type: "habit",
-      title: report.habit.title,
-      content: report.habit.content,
-    },
-    {
-      type: "quote",
-      quote: report.quote,
+      type: "share",
+      title: report.shareCard.title,
+      summary: report.shareCard.summary,
+      keywords: report.shareCard.keywords,
+      mbtiType: report.mbtiDesk.type,
+      zodiacSign: report.zodiacDesk.sign,
     },
   ];
+}
 
-  if (stats && stats.totalUsers > 0) {
-    const topTrait = [...stats.traitStats].sort(
-      (a, b) => b.percentage - a.percentage
-    )[0];
-
-    cards.push({
-      type: "stats",
-      title: "工位人格统计",
-      totalUsers: stats.totalUsers,
-      traitStats: stats.traitStats,
-      content: topTrait
-        ? `已有 ${stats.totalUsers} 位工位主人参与。其中 ${topTrait.percentage}% 的人，也和你一样「${topTrait.trait}」。`
-        : `已有 ${stats.totalUsers} 位工位主人参与。`,
-    });
-
-    cards.push({
-      type: "similar",
-      title: "和你一样的人",
-      similarPercentage: stats.similarPercentage,
-      similarCount: stats.similarCount,
-      traits: report.traits,
-      content:
-        stats.similarCount > 0
-          ? `在其他工位主人中，有 ${stats.similarCount} 位和你有着相似的气质组合——你们大概会用类似的方式布置自己的一方天地。`
-          : "目前还没有人和你有相似的气质组合，你的工位风格很独特。",
-    });
-  }
-
-  cards.push({
-    type: "share",
-    title: report.shareCard.title,
-    summary: report.shareCard.summary,
-    traits: report.traits,
-  });
-
-  return cards;
+export function reportToTraits(report: DeskReport): string[] {
+  return [
+    ...report.mbtiDesk.keywords,
+    ...report.zodiacDesk.keywords,
+  ].slice(0, 8);
 }
 
 export const STORAGE_KEYS = {

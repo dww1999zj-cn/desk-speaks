@@ -27,9 +27,9 @@ export default function UploadPage() {
           >
             ← 返回
           </button>
-          <h1 className="text-2xl font-semibold text-text">上传工位照片</h1>
-          <p className="mt-2 text-muted">
-            一张清晰的工位全景照，效果最好
+          <h1 className="text-2xl font-semibold text-text">拍张工位照</h1>
+          <p className="mt-2 leading-relaxed text-muted">
+            不用摆拍，真实的最好。剩下的交给工位。
           </p>
         </header>
 
@@ -44,7 +44,7 @@ export default function UploadPage() {
             disabled={!image}
             onClick={handleAnalyze}
           >
-            让工位开口说话
+            就这张，猜吧
           </Button>
         </footer>
       </main>

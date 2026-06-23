@@ -41,7 +41,14 @@ export function ReportSwiper({ cards }: ReportSwiperProps) {
   return (
     <div className="w-full">
       <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-        <Card variant="gradient" className="min-h-[420px] transition-all duration-300">
+        <Card
+          variant="gradient"
+          className={`transition-all duration-300 ${
+            cards[current].type === "letter"
+              ? "max-h-[70vh] min-h-[480px] overflow-y-auto"
+              : "min-h-[420px]"
+          }`}
+        >
           <ReportCard data={cards[current]} index={0} />
         </Card>
       </div>
