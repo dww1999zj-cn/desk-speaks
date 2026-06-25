@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Button } from "@/components/ui/Button";
 import { ReportSwiper } from "@/components/report/ReportSwiper";
-import { reportToCards, formatMbtiType, STORAGE_KEYS } from "@/lib/report";
+import { reportToCards, formatMbtiType, normalizeReport, STORAGE_KEYS } from "@/lib/report";
 import type { DeskReport, ReportCardData } from "@/lib/types";
 
 export default function ReportPage() {
@@ -28,11 +28,12 @@ export default function ReportPage() {
       return;
     }
 
-    const parsed: DeskReport = JSON.parse(reportRaw);
+    const parsed = normalizeReport(JSON.parse(reportRaw));
     setReport(parsed);
     setCards(reportToCards(parsed));
     setMatchQuestion(
-      `${formatMbtiType(parsed.mbtiDesk.type)} × ${parsed.zodiacDesk.sign}——这是工位眼中的你。像吗？`
+      parsed.shareCard.shareHook ||
+        `${formatMbtiType(parsed.mbtiDesk.type)} × ${parsed.zodiacDesk.sign}——工位眼里的你，像吗？`
     );
     if (imageRaw) setImage(imageRaw);
   }, [router]);

@@ -60,6 +60,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         </div>
 
         <div className="relative mt-4 rounded-2xl bg-primary/5 px-4 py-4 text-center">
+          <p className="text-xs text-muted">工位猜你像</p>
           <p className="text-4xl font-bold text-primary">
             {report.intro.guessedAge}
           </p>
@@ -72,10 +73,15 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
           <span className="rounded-full bg-secondary/60 px-3 py-1.5 text-sm font-medium text-text">
             {report.zodiacDesk.sign}
           </span>
+          {report.shareCard.summary && (
+            <span className="rounded-full bg-accent/40 px-3 py-1.5 text-sm font-medium text-text">
+              {report.shareCard.summary}
+            </span>
+          )}
         </div>
 
-        <p className="mt-4 text-base font-medium leading-relaxed text-text">
-          {report.shareCard.summary}
+        <p className="mt-4 text-base font-semibold leading-relaxed text-text">
+          {report.shareCard.shareHook}
         </p>
 
         <div className="mt-3 flex flex-wrap gap-2">
@@ -90,7 +96,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          「{report.intro.declaration}」
+          「{report.deskEvidence[0] ?? report.intro.declaration}」
         </p>
 
         <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/60 pt-4">

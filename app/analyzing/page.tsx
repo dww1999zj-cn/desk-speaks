@@ -8,7 +8,7 @@ import {
   AnalyzeErrorPanel,
   type AnalyzeErrorType,
 } from "@/components/analyzing/AnalyzeErrorPanel";
-import { STORAGE_KEYS } from "@/lib/report";
+import { STORAGE_KEYS, normalizeReport } from "@/lib/report";
 import type { DeskReport } from "@/lib/types";
 
 const MIN_DISPLAY_MS = 800;
@@ -68,7 +68,7 @@ function AnalyzingPageContent() {
         if (!res.ok) throw new Error("分析失败");
 
         const data = await res.json();
-        const report: DeskReport = data.report ?? data;
+        const report = normalizeReport(data.report ?? data);
         sessionStorage.setItem(STORAGE_KEYS.report, JSON.stringify(report));
         sessionStorage.removeItem(STORAGE_KEYS.image);
 

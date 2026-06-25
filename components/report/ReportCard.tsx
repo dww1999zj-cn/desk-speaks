@@ -44,6 +44,25 @@ function KeywordTags({ keywords }: { keywords?: string[] }) {
   );
 }
 
+function DeskEvidenceList({ items }: { items?: string[] }) {
+  if (!items?.length) return null;
+  return (
+    <div className="mt-6 rounded-2xl border border-primary/10 bg-white/60 px-4 py-4">
+      <p className="mb-3 text-xs font-semibold text-primary">工位目击 · 它看到了这些</p>
+      <ul className="space-y-2.5">
+        {items.map((item) => (
+          <li
+            key={item}
+            className="text-sm leading-relaxed text-text before:mr-1.5 before:content-['🐮']"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportCardProps) {
   const delay = `${index * 80}ms`;
 
@@ -70,6 +89,7 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
         <p className="mt-6 text-lg font-medium leading-relaxed text-text">
           「{data.declaration}」
         </p>
+        <DeskEvidenceList items={data.deskEvidence} />
       </CardWrapper>
     );
   }
@@ -80,6 +100,9 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
           第二层 · 工位 MBTI
         </p>
+        {data.subtitle && (
+          <p className="mb-3 text-xs text-muted">{data.subtitle}</p>
+        )}
         <p className="text-4xl font-semibold text-text">{data.mbtiType}</p>
         <KeywordTags keywords={data.keywords} />
         <p className="mt-6 text-base leading-relaxed text-muted md:text-lg">
@@ -95,6 +118,9 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
           第三层 · 工位星座
         </p>
+        {data.subtitle && (
+          <p className="mb-3 text-xs text-muted">{data.subtitle}</p>
+        )}
         <p className="text-4xl font-semibold text-text">{data.zodiacSign}</p>
         <KeywordTags keywords={data.keywords} />
         <p className="mt-6 text-base leading-relaxed text-muted md:text-lg">

@@ -1,4 +1,6 @@
 export interface DeskReport {
+  /** 工位目击：物件 → 人格/状态洞察，2-3 条 */
+  deskEvidence: string[];
   intro: {
     description: string;
     guessedAge: string;
@@ -21,6 +23,9 @@ export interface DeskReport {
   };
   shareCard: {
     title: string;
+    /** 分享金句，≤28 字，有梗可截图 */
+    shareHook: string;
+    /** 工位给你的称号，≤16 字 */
     summary: string;
     keywords: string[];
   };
@@ -41,11 +46,13 @@ export interface ReportCardData {
   guessedAge?: string;
   ageHint?: string;
   declaration?: string;
+  deskEvidence?: string[];
   keywords?: string[];
   mbtiType?: string;
   zodiacSign?: string;
   letter?: string;
   yijingFengshui?: string;
+  shareHook?: string;
   summary?: string;
 }
 

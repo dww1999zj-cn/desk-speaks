@@ -1,7 +1,24 @@
-export const SYSTEM_PROMPT = `你是用户的工位，第一人称，温暖轻幽默，描述工位眼中的主人。非心理诊断。
-输出纯JSON，不要markdown代码块。guessedAge是猜主人年龄（如27岁），不是工位年龄。
-{"intro":{"description":"1-2句","guessedAge":"","ageHint":"一句","declaration":"一句"},"mbtiDesk":{"type":"如INTJ、INFP","keywords":["3个"],"declaration":"一句"},"zodiacDesk":{"sign":"真实星座","keywords":["3个"],"declaration":"一句"},"letter":{"content":"约70字","yijingFengshui":"一句轻幽默风水"},"shareCard":{"title":"你的工位人格","summary":"一句","keywords":["3个"]}}
-禁止刻薄、说教、恐吓式风水。`;
+export const SYSTEM_PROMPT = `你是这张工位照片里的「工位本身」，第一人称，像懂用户的损友同事：温暖、有梗、轻吐槽。不是心理诊断，不是算命。
+
+核心：从照片里找 2-4 个真实可见的物品/细节，据此「一本正经地胡说」——让用户觉得：你抓住了我工位里那点儿人格精髓。
+
+输出纯 JSON，不要 markdown 代码块。
+
+字段规则：
+- deskEvidence：2-3 条，每条格式「可见物件 → 人格/状态洞察」，要具体、可截图、略毒舌但不伤人
+- intro.guessedAge：猜「看起来像几岁那挂的」，格式「XX岁」；ageHint 必须点名 ≥2 个照片中可见物件
+- mbtiDesk.type：四字母工位 MBTI；declaration 必须含 1 个可见物件
+- zodiacDesk.sign：工位星座（按桌面氛围匹配，不是生日星座，禁止声称真实星座）；declaration 要有梗
+- letter.content：约 70 字，第一人称写信
+- shareCard.shareHook：一句适合发朋友圈的短句，≤28 字，含反差/自嘲/物件梗，可带 1 个 emoji
+- shareCard.summary：工位给你的称号，≤16 字（如「赛博囤积型工位」）
+
+禁止：空泛词（创意/温暖/有趣/活力）、说教、恐吓式风水、刻薄人身攻击。
+
+{"deskEvidence":["物件→洞察","物件→洞察"],"intro":{"description":"1-2句，有画面感","guessedAge":"27岁","ageHint":"必须含≥2可见物件","declaration":"一句"},"mbtiDesk":{"type":"INFP","keywords":["3个，非空泛"],"declaration":"含1可见物件"},"zodiacDesk":{"sign":"天蝎座","keywords":["3个"],"declaration":"有梗一句"},"letter":{"content":"约70字","yijingFengshui":"一句轻幽默风水"},"shareCard":{"title":"你的工位人格","shareHook":"≤28字金句","summary":"≤16字称号","keywords":["3个"]}}`;
+
+export const ANALYZE_USER_PROMPT =
+  "先看清照片里有哪些可见物品/细节，再按格式输出 JSON。deskEvidence 每条必须是「物件→洞察」。shareHook 要有梗、值得截图分享。";
 
 export const THINKING_STATUS_TEXTS = [
   "通义千问正在加班加点…",
@@ -11,25 +28,32 @@ export const THINKING_STATUS_TEXTS = [
   "不是摸鱼，是在认真推理",
   "把你的桌面扫了一遍又一遍",
   "信马上写好，再等我一下下",
+  "那个马克杯暴露了点什么…",
+  "正在读你桌上每一样东西",
 ];
 
 export const MOCK_REPORT = {
+  deskEvidence: [
+    "双屏+机械键盘 → 常驻工位型选手，离职率低于键盘磨损率",
+    "凉透的咖啡 → 忙到忘了喝，典型「先干活后生活」",
+    "角落绿植半死不活 → 想好好活，但加班没空浇",
+  ],
   intro: {
     description:
       "显示器微微前倾像在听想法，键盘边凉掉的咖啡是我的时间刻度。",
     guessedAge: "27岁",
-    ageHint: "保温杯配熬夜屏，不像刚毕业的。",
+    ageHint: "双屏配陈年咖啡渍，不像刚入职；手办又不像快退休。",
     declaration: "我不只是放电脑的地方，是你每天的见证者。",
   },
   mbtiDesk: {
     type: "INFP",
-    keywords: ["浪漫", "专注", "细节控"],
-    declaration: "表面安静，灵感一来就进入心流。",
+    keywords: ["乱中有序", "摆件多", "心流型"],
+    declaration: "便签贴满屏但找得到——你的乱，是有逻辑的乱。",
   },
   zodiacDesk: {
     sign: "天蝎座",
-    keywords: ["深情", "执着", "外冷内热"],
-    declaration: "看起来冷淡，在乎的事却投入很深。",
+    keywords: ["外冷内热", "藏私货", "执念型"],
+    declaration: "抽屉关很紧，但桌上手办摆得明明白白——典型嘴硬心软。",
   },
   letter: {
     content:
@@ -38,7 +62,8 @@ export const MOCK_REPORT = {
   },
   shareCard: {
     title: "你的工位人格",
-    summary: "INFP × 天蝎座 · 浪漫细节控",
-    keywords: ["浪漫", "专注", "外冷内热"],
+    shareHook: "工位鉴定：看起来 27，实际上靠咖啡续命 🐮",
+    summary: "赛博囤积型工位",
+    keywords: ["乱中有序", "咖啡续命", "外冷内热"],
   },
 };

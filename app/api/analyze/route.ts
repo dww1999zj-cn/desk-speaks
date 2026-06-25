@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse, after } from "next/server";
-import { SYSTEM_PROMPT, MOCK_REPORT } from "@/lib/prompts";
+import { SYSTEM_PROMPT, ANALYZE_USER_PROMPT, MOCK_REPORT } from "@/lib/prompts";
 import { dataUrlToBase64 } from "@/lib/image";
+import { normalizeReport } from "@/lib/report";
 import { saveDeskReport } from "@/lib/stats";
 import type { DeskReport } from "@/lib/types";
 
@@ -27,12 +28,12 @@ function parseReport(content: string): DeskReport {
 
   for (const candidate of candidates) {
     try {
-      return JSON.parse(candidate) as DeskReport;
+      return normalizeReport(JSON.parse(candidate) as DeskReport);
     } catch {
       const match = candidate.match(/\{[\s\S]*\}/);
       if (match) {
         try {
-          return JSON.parse(stripTrailingCommas(match[0])) as DeskReport;
+          return normalizeReport(JSON.parse(stripTrailingCommas(match[0])) as DeskReport);
         } catch {
           /* try next candidate */
         }
@@ -67,13 +68,13 @@ async function callQwen(
             },
             {
               type: "text",
-              text: "看工位照片，按格式输出JSON。信约70字。guessedAge猜主人年龄。",
+              text: ANALYZE_USER_PROMPT,
             },
           ],
         },
       ],
-      max_tokens: 1000,
-      temperature: 0.75,
+      max_tokens: 1400,
+      temperature: 0.85,
     }),
   });
 

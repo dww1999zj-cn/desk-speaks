@@ -99,6 +99,10 @@ function wrapText(
   return cy;
 }
 
+function getShareHeadline(report: DeskReport): string {
+  return report.shareCard.shareHook || report.shareCard.summary;
+}
+
 function getHeaderStartY(): number {
   return CARD_MARGIN + CARD_PAD;
 }
@@ -232,7 +236,7 @@ function computeShareLayout(
   ctx.font = `600 40px ${font}`;
   const summaryEnd = measureWrapText(
     ctx,
-    report.shareCard.summary,
+    getShareHeadline(report),
     CONTENT_W,
     56,
     summaryY
@@ -244,7 +248,7 @@ function computeShareLayout(
   ctx.font = `500 34px ${font}`;
   const declarationEnd = measureWrapText(
     ctx,
-    `「${report.intro.declaration}」`,
+    `「${report.deskEvidence[0] ?? report.intro.declaration}」`,
     CONTENT_W,
     48,
     declarationY
@@ -369,6 +373,13 @@ export async function generateShareImage(
     { label: mbtiLabel, bg: COLORS.primary, fg: COLORS.white },
     { label: report.zodiacDesk.sign, bg: COLORS.secondary, fg: COLORS.text },
   ];
+  if (report.shareCard.summary) {
+    pills.push({
+      label: report.shareCard.summary,
+      bg: COLORS.accent,
+      fg: COLORS.text,
+    });
+  }
   let pillX = CONTENT_X;
   ctx.font = `600 36px ${font}`;
   for (const pill of pills) {
@@ -385,7 +396,7 @@ export async function generateShareImage(
   ctx.fillStyle = COLORS.text;
   wrapText(
     ctx,
-    report.shareCard.summary,
+    getShareHeadline(report),
     CONTENT_X,
     layout.summaryY,
     CONTENT_W,
@@ -409,7 +420,7 @@ export async function generateShareImage(
   ctx.fillStyle = COLORS.muted;
   wrapText(
     ctx,
-    `「${report.intro.declaration}」`,
+    `「${report.deskEvidence[0] ?? report.intro.declaration}」`,
     CONTENT_X,
     layout.declarationY,
     CONTENT_W,
