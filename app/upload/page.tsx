@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/upload/PhotoUploader";
+import { SiteFooter } from "@/components/ui/SiteFooter";
 import { STORAGE_KEYS } from "@/lib/report";
 
 export default function UploadPage() {
@@ -53,6 +54,7 @@ export default function UploadPage() {
           >
             就这张，开猜 ✨
           </Button>
+          <SiteFooter className="mt-4" />
         </footer>
       </main>
     </GradientBackground>

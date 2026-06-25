@@ -8,6 +8,7 @@ import {
   AnalyzeErrorPanel,
   type AnalyzeErrorType,
 } from "@/components/analyzing/AnalyzeErrorPanel";
+import { SiteFooter } from "@/components/ui/SiteFooter";
 import { STORAGE_KEYS, normalizeReport } from "@/lib/report";
 import type { DeskReport } from "@/lib/types";
 
@@ -112,16 +113,19 @@ function AnalyzingPageContent() {
 
   return (
     <GradientBackground>
-      <main className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center px-6 py-12">
-        {phase === "loading" ? (
-          <ThinkingStatus />
-        ) : (
-          <AnalyzeErrorPanel
-            type={errorType}
-            onRetry={handleRetry}
-            onChangePhoto={handleChangePhoto}
-          />
-        )}
+      <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
+        <div className="flex flex-1 flex-col items-center justify-center">
+          {phase === "loading" ? (
+            <ThinkingStatus />
+          ) : (
+            <AnalyzeErrorPanel
+              type={errorType}
+              onRetry={handleRetry}
+              onChangePhoto={handleChangePhoto}
+            />
+          )}
+        </div>
+        <SiteFooter className="mt-8 shrink-0" />
       </main>
     </GradientBackground>
   );
@@ -132,8 +136,11 @@ export default function AnalyzingPage() {
     <Suspense
       fallback={
         <GradientBackground>
-          <main className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center px-6 py-12">
-            <ThinkingStatus />
+          <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
+            <div className="flex flex-1 flex-col items-center justify-center">
+              <ThinkingStatus />
+            </div>
+            <SiteFooter className="mt-8 shrink-0" />
           </main>
         </GradientBackground>
       }

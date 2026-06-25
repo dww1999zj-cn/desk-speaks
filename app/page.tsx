@@ -1,5 +1,6 @@
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { HomeCta } from "@/components/home/HomeCta";
+import { SiteFooter } from "@/components/ui/SiteFooter";
 
 export default function HomePage() {
   return (
@@ -61,9 +62,10 @@ export default function HomePage() {
 
         <footer className="relative z-20 mt-auto pt-8">
           <HomeCta />
-          <p className="mt-3 text-center text-xs text-muted/80">
-            上传你日常办公桌面，不用摆拍 · © 闲里偷忙
-          </p>
+          <SiteFooter
+            className="mt-3"
+            hint="上传你日常办公桌面，不用摆拍"
+          />
         </footer>
       </main>
     </GradientBackground>

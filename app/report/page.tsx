@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Button } from "@/components/ui/Button";
 import { ReportSwiper } from "@/components/report/ReportSwiper";
+import { SiteFooter } from "@/components/ui/SiteFooter";
 import { reportToCards, formatMbtiType, normalizeReport, STORAGE_KEYS } from "@/lib/report";
 import type { DeskReport, ReportCardData } from "@/lib/types";
 
@@ -41,8 +42,9 @@ export default function ReportPage() {
   if (cards.length === 0 || !report) {
     return (
       <GradientBackground>
-        <main className="flex min-h-dvh items-center justify-center">
+        <main className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center px-6 py-12 safe-bottom">
           <p className="text-muted animate-pulse-soft">工位正在整理信件…</p>
+          <SiteFooter className="mt-8" />
         </main>
       </GradientBackground>
     );
@@ -93,6 +95,7 @@ export default function ReportPage() {
           <Button href="/" variant="ghost" size="sm" className="w-full">
             回到首页
           </Button>
+          <SiteFooter className="mt-2" />
         </footer>
       </main>
     </GradientBackground>
