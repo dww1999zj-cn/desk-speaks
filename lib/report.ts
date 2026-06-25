@@ -1,6 +1,12 @@
 import type { DeskReport, ReportCardData } from "./types";
 
+/** 展示用：去掉 MBTI 类型末尾的「工位」，如 INTJ工位 → INTJ */
+export function formatMbtiType(type: string): string {
+  return type.replace(/\s*工位\s*$/u, "").trim();
+}
+
 export function reportToCards(report: DeskReport): ReportCardData[] {
+  const mbtiType = formatMbtiType(report.mbtiDesk.type);
   return [
     {
       type: "intro",
@@ -13,7 +19,7 @@ export function reportToCards(report: DeskReport): ReportCardData[] {
     {
       type: "mbti",
       title: "工位 MBTI 人格",
-      mbtiType: report.mbtiDesk.type,
+      mbtiType,
       keywords: report.mbtiDesk.keywords,
       declaration: report.mbtiDesk.declaration,
     },
@@ -36,7 +42,7 @@ export function reportToCards(report: DeskReport): ReportCardData[] {
       title: report.shareCard.title,
       summary: report.shareCard.summary,
       keywords: report.shareCard.keywords,
-      mbtiType: report.mbtiDesk.type,
+      mbtiType,
       zodiacSign: report.zodiacDesk.sign,
     },
   ];

@@ -1,6 +1,6 @@
 export const SYSTEM_PROMPT = `你是用户的工位，第一人称，温暖轻幽默，描述工位眼中的主人。非心理诊断。
 输出纯JSON，不要markdown代码块。guessedAge是猜主人年龄（如27岁），不是工位年龄。
-{"intro":{"description":"1-2句","guessedAge":"","ageHint":"一句","declaration":"一句"},"mbtiDesk":{"type":"如INFP工位","keywords":["3个"],"declaration":"一句"},"zodiacDesk":{"sign":"真实星座","keywords":["3个"],"declaration":"一句"},"letter":{"content":"约70字","yijingFengshui":"一句轻幽默风水"},"shareCard":{"title":"你的工位人格","summary":"一句","keywords":["3个"]}}
+{"intro":{"description":"1-2句","guessedAge":"","ageHint":"一句","declaration":"一句"},"mbtiDesk":{"type":"如INTJ、INFP","keywords":["3个"],"declaration":"一句"},"zodiacDesk":{"sign":"真实星座","keywords":["3个"],"declaration":"一句"},"letter":{"content":"约70字","yijingFengshui":"一句轻幽默风水"},"shareCard":{"title":"你的工位人格","summary":"一句","keywords":["3个"]}}
 禁止刻薄、说教、恐吓式风水。`;
 
 export const THINKING_STATUS_TEXTS = [
@@ -22,7 +22,7 @@ export const MOCK_REPORT = {
     declaration: "我不只是放电脑的地方，是你每天的见证者。",
   },
   mbtiDesk: {
-    type: "INFP 工位",
+    type: "INFP",
     keywords: ["浪漫", "专注", "细节控"],
     declaration: "表面安静，灵感一来就进入心流。",
   },
@@ -38,7 +38,7 @@ export const MOCK_REPORT = {
   },
   shareCard: {
     title: "你的工位人格",
-    summary: "INFP 工位 × 天蝎座 · 浪漫细节控",
+    summary: "INFP × 天蝎座 · 浪漫细节控",
     keywords: ["浪漫", "专注", "外冷内热"],
   },
 };

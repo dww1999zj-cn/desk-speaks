@@ -1,10 +1,14 @@
 "use client";
 
-import type { ReportCardData } from "@/lib/types";
+import type { DeskReport, ReportCardData } from "@/lib/types";
+import { SharePreviewCard } from "./SharePreviewCard";
 
 interface ReportCardProps {
   data: ReportCardData;
   index: number;
+  report?: DeskReport;
+  deskThumb?: string | null;
+  onGoNext?: () => void;
 }
 
 function CardWrapper({
@@ -40,7 +44,7 @@ function KeywordTags({ keywords }: { keywords?: string[] }) {
   );
 }
 
-export function ReportCard({ data, index }: ReportCardProps) {
+export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportCardProps) {
   const delay = `${index * 80}ms`;
 
   if (data.type === "intro") {
@@ -110,56 +114,32 @@ export function ReportCard({ data, index }: ReportCardProps) {
         <p className="whitespace-pre-line text-base leading-relaxed text-muted md:text-lg">
           {data.letter}
         </p>
-        <div className="mt-6 rounded-2xl border border-secondary/20 bg-secondary/5 px-4 py-4">
-          <p className="mb-2 text-xs font-medium tracking-wider text-secondary">
-            易经 · 办公风水
-          </p>
-          <p className="text-sm leading-relaxed text-text">
-            {data.yijingFengshui}
-          </p>
-        </div>
+        <p className="mt-5 rounded-2xl bg-secondary/10 px-4 py-3 text-sm leading-relaxed text-muted">
+          <span className="font-medium text-secondary">风水一句 · </span>
+          {data.yijingFengshui}
+        </p>
         <button
           type="button"
           onClick={() =>
             alert("更多办公风水解读即将上线，敬请期待 🪴")
           }
-          className="mt-5 w-full rounded-2xl bg-primary px-4 py-3.5 text-sm font-medium text-white transition-colors active:bg-primary/90"
+          className="mt-3 text-xs text-primary/80 underline-offset-2 hover:underline"
         >
-          更多办公风水解锁 →
+          更多风水解读 · 敬请期待
         </button>
-        <p className="mt-3 text-center text-xs text-muted">
-          深度解读你的工位布局与运势
-        </p>
+        <button
+          type="button"
+          onClick={onGoNext}
+          className="mt-8 w-full rounded-2xl bg-primary/10 px-4 py-3.5 text-sm font-medium text-primary transition-colors active:bg-primary/20"
+        >
+          领取工位鉴定卡 →
+        </button>
       </CardWrapper>
     );
   }
 
-  if (data.type === "share") {
-    return (
-      <CardWrapper delay={delay}>
-        <p className="mb-2 text-sm text-muted">截图分享</p>
-        <h3 className="text-2xl font-semibold text-text">{data.title}</h3>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {data.mbtiType && (
-            <span className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
-              {data.mbtiType}
-            </span>
-          )}
-          {data.zodiacSign && (
-            <span className="rounded-full bg-secondary/20 px-4 py-1.5 text-sm text-text">
-              {data.zodiacSign}
-            </span>
-          )}
-        </div>
-        <p className="mt-5 text-lg leading-relaxed text-primary">
-          {data.summary}
-        </p>
-        <KeywordTags keywords={data.keywords} />
-        <p className="mt-8 text-center text-xs text-muted">
-          长按截图，分享到朋友圈 / 小红书 / 微信群
-        </p>
-      </CardWrapper>
-    );
+  if (data.type === "share" && report) {
+    return <SharePreviewCard report={report} deskThumb={deskThumb} />;
   }
 
   return null;

@@ -42,7 +42,7 @@ export default function HomePage() {
             </div>
             <div className="absolute right-0 top-10 w-[88%] rotate-[4deg] rounded-3xl border-2 border-white bg-white px-4 py-3 shadow-lg shadow-primary/15">
               <p className="text-xs text-muted">工位 MBTI</p>
-              <p className="text-lg font-bold text-text">INFP 工位</p>
+              <p className="text-lg font-bold text-text">INFP</p>
             </div>
             <div className="absolute bottom-0 left-4 w-[90%] rounded-3xl border-2 border-white bg-card-gradient px-4 py-3 shadow-lg shadow-accent/20">
               <p className="text-xs text-muted">工位星座 · 一封信</p>
@@ -62,7 +62,7 @@ export default function HomePage() {
         <footer className="relative z-20 mt-auto pt-8">
           <HomeCta />
           <p className="mt-3 text-center text-xs text-muted/80">
-            上传你日常办公桌面，不用摆拍
+            上传你日常办公桌面，不用摆拍 · © 闲里偷忙
           </p>
         </footer>
       </main>

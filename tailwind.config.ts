@@ -39,6 +39,7 @@ const config: Config = {
         "wiggle-cute": "wiggleCute 3s ease-in-out infinite",
         "think-dot": "thinkDot 1.2s ease-in-out infinite",
         "float-cute": "floatCute 2.5s ease-in-out infinite",
+        "stamp-in": "stampIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
       },
       keyframes: {
         fadeInUp: {
@@ -68,6 +69,10 @@ const config: Config = {
         floatCute: {
           "0%, 100%": { transform: "translateY(0) scale(1)" },
           "50%": { transform: "translateY(-8px) scale(1.05)" },
+        },
+        stampIn: {
+          "0%": { opacity: "0", transform: "scale(1.8) rotate(-24deg)" },
+          "100%": { opacity: "1", transform: "scale(1) rotate(12deg)" },
         },
       },
     },
