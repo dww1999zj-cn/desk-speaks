@@ -15,6 +15,9 @@ const HEADER_TITLE_SIZE = 72;
 const HEADER_TITLE_AGE_GAP = 48;
 const AGE_BOX_HEIGHT = 160;
 const AGE_BOX_BOTTOM_GAP = 32;
+const PILL_HEIGHT = 72;
+const PILL_SUMMARY_GAP = 32;
+const KEYWORD_PILL_HEIGHT = 60;
 
 const COLORS = {
   text: "#4A4458",
@@ -202,10 +205,15 @@ interface ShareLayout {
   qrX: number;
   footerDividerY: number;
   ageBoxY: number;
+  pillsY: number;
   summaryY: number;
   keywordsY: number;
   declarationY: number;
   footerTextY: number;
+}
+
+function getPillsY(): number {
+  return getAgeBoxY() + AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP;
 }
 
 function computeShareLayout(
@@ -217,11 +225,10 @@ function computeShareLayout(
   const qrPad = 12;
   const qrBoxSize = qrSize + qrPad * 2;
 
-  let y = getHeaderStartY();
   const ageBoxY = getAgeBoxY();
-  y = ageBoxY + AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP; // pills row
+  const pillsY = getPillsY();
+  const summaryY = pillsY + PILL_HEIGHT + PILL_SUMMARY_GAP;
 
-  const summaryY = y + 16; // mt-4
   ctx.font = `600 40px ${font}`;
   const summaryEnd = measureWrapText(
     ctx,
@@ -231,10 +238,9 @@ function computeShareLayout(
     summaryY
   );
 
-  const keywordsY = summaryEnd + 24; // mt-3
-  y = keywordsY + 60 + 24; // keyword pills + mt-3
+  const keywordsY = summaryEnd + 24;
+  const declarationY = keywordsY + KEYWORD_PILL_HEIGHT + 24;
 
-  const declarationY = y;
   ctx.font = `500 34px ${font}`;
   const declarationEnd = measureWrapText(
     ctx,
@@ -244,8 +250,8 @@ function computeShareLayout(
     declarationY
   );
 
-  const footerDividerY = declarationEnd + 40; // mt-5
-  const qrY = footerDividerY + 32; // pt-4
+  const footerDividerY = declarationEnd + 40;
+  const qrY = footerDividerY + 32;
   const footerTextY = qrY + qrBoxSize + 28;
   const canvasHeight = footerTextY + 48 + CARD_MARGIN;
 
@@ -259,6 +265,7 @@ function computeShareLayout(
     qrX,
     footerDividerY,
     ageBoxY,
+    pillsY,
     summaryY,
     keywordsY,
     declarationY,
@@ -352,12 +359,10 @@ export async function generateShareImage(
   drawCertificationStamp(
     ctx,
     W - CARD_MARGIN - CARD_PAD - 100,
-    y + AGE_BOX_HEIGHT / 2,
+    layout.ageBoxY + AGE_BOX_HEIGHT / 2,
     100,
     font
   );
-
-  y += AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP;
 
   const mbtiLabel = formatMbtiType(report.mbtiDesk.type);
   const pills = [
@@ -368,11 +373,11 @@ export async function generateShareImage(
   ctx.font = `600 36px ${font}`;
   for (const pill of pills) {
     const tw = ctx.measureText(pill.label).width + 64;
-    roundRect(ctx, pillX, y, tw, 72, 36);
+    roundRect(ctx, pillX, layout.pillsY, tw, PILL_HEIGHT, 36);
     ctx.fillStyle = pill.bg;
     ctx.fill();
     ctx.fillStyle = pill.fg;
-    ctx.fillText(pill.label, pillX + 32, y + 18);
+    ctx.fillText(pill.label, pillX + 32, layout.pillsY + 18);
     pillX += tw + 24;
   }
 
@@ -392,7 +397,7 @@ export async function generateShareImage(
   ctx.font = `500 32px ${font}`;
   for (const kw of keywords) {
     const kwW = ctx.measureText(kw).width + 56;
-    roundRect(ctx, kwX, layout.keywordsY, kwW, 60, 30);
+    roundRect(ctx, kwX, layout.keywordsY, kwW, KEYWORD_PILL_HEIGHT, 30);
     ctx.fillStyle = "rgba(255,181,194,0.45)";
     ctx.fill();
     ctx.fillStyle = COLORS.primary;
