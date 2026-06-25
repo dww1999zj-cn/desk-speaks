@@ -6,6 +6,7 @@ export const SHARE_CARD_COPY = {
   qrTitle: "扫码来测，更懂你的工位",
   saveButton: "保存鉴定卡 📸",
   savingButton: "正在生成鉴定卡…",
+  savePreviewHint: "长按图片 · 保存到相册",
   shareHint: "晒到朋友圈 / 小红书 / 微信群 · © 闲里偷忙",
   imageFooter: "© 闲里偷忙 · 长按保存分享",
 } as const;
