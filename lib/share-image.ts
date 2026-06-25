@@ -9,6 +9,13 @@ const CARD_PAD = 56;
 const CONTENT_X = CARD_MARGIN + CARD_PAD;
 const CONTENT_W = W - CARD_MARGIN * 2 - CARD_PAD * 2;
 
+const HEADER_BADGE_SIZE = 36;
+const HEADER_BADGE_TITLE_GAP = 16;
+const HEADER_TITLE_SIZE = 72;
+const HEADER_TITLE_AGE_GAP = 48;
+const AGE_BOX_HEIGHT = 160;
+const AGE_BOX_BOTTOM_GAP = 32;
+
 const COLORS = {
   text: "#4A4458",
   muted: "#9B93A8",
@@ -89,6 +96,20 @@ function wrapText(
   return cy;
 }
 
+function getHeaderStartY(): number {
+  return CARD_MARGIN + CARD_PAD;
+}
+
+function getAgeBoxY(): number {
+  return (
+    getHeaderStartY() +
+    HEADER_BADGE_SIZE +
+    HEADER_BADGE_TITLE_GAP +
+    HEADER_TITLE_SIZE +
+    HEADER_TITLE_AGE_GAP
+  );
+}
+
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -134,17 +155,21 @@ function drawCertificationStamp(
   ctx.setLineDash([]);
 
   ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
   ctx.fillStyle = COLORS.primary;
+
+  const lineGap = 26;
   ctx.font = `bold 24px ${font}`;
-  ctx.fillText("工位牛马", 0, -22);
+  ctx.fillText("工位牛马", 0, -lineGap);
   ctx.font = `bold 30px ${font}`;
-  ctx.fillText("鉴定通过", 0, 14);
+  ctx.fillText("鉴定通过", 0, 0);
   ctx.font = `500 20px ${font}`;
   ctx.fillStyle = COLORS.muted;
-  ctx.fillText(date, 0, 44);
+  ctx.fillText(date, 0, lineGap);
 
   ctx.restore();
   ctx.textAlign = "left";
+  ctx.textBaseline = "top";
 }
 
 function isIOS(): boolean {
@@ -190,13 +215,9 @@ function computeShareLayout(
   const qrPad = 12;
   const qrBoxSize = qrSize + qrPad * 2;
 
-  let y = CARD_MARGIN + CARD_PAD;
-
-  y += 80; // badge + title row
-  const ageBoxY = y;
-  y += 160 + 32; // age box + mt-4
-
-  y += 72 + 24; // pills + mt-3
+  let y = getHeaderStartY();
+  const ageBoxY = getAgeBoxY();
+  y = ageBoxY + AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP; // pills row
 
   const summaryY = y + 16; // mt-4
   ctx.font = `600 40px ${font}`;
@@ -279,15 +300,19 @@ export async function generateShareImage(
   ctx.lineWidth = 4;
   ctx.stroke();
 
-  let y = CARD_MARGIN + CARD_PAD;
+  let y = getHeaderStartY();
 
-  ctx.font = `600 36px ${font}`;
+  ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.primary;
   ctx.fillText(SHARE_CARD_COPY.certBadge, CONTENT_X, y);
 
-  ctx.font = `bold 72px ${font}`;
+  ctx.font = `bold ${HEADER_TITLE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.text;
-  ctx.fillText(SHARE_CARD_COPY.title, CONTENT_X, y + 56);
+  ctx.fillText(
+    SHARE_CARD_COPY.title,
+    CONTENT_X,
+    y + HEADER_BADGE_SIZE + HEADER_BADGE_TITLE_GAP
+  );
 
   if (deskThumb) {
     try {
@@ -310,25 +335,27 @@ export async function generateShareImage(
   }
 
   y = layout.ageBoxY;
-  roundRect(ctx, CONTENT_X, y, CONTENT_W, 160, 32);
+  roundRect(ctx, CONTENT_X, y, CONTENT_W, AGE_BOX_HEIGHT, 32);
   ctx.fillStyle = "rgba(139,124,246,0.08)";
   ctx.fill();
 
   ctx.font = `bold 96px ${font}`;
   ctx.fillStyle = COLORS.primary;
   ctx.textAlign = "center";
-  ctx.fillText(report.intro.guessedAge, W / 2, y + 32);
+  ctx.textBaseline = "middle";
+  ctx.fillText(report.intro.guessedAge, W / 2, y + AGE_BOX_HEIGHT / 2);
   ctx.textAlign = "left";
+  ctx.textBaseline = "top";
 
   drawCertificationStamp(
     ctx,
-    W - CARD_MARGIN - CARD_PAD - 60,
-    y + 80,
+    W - CARD_MARGIN - CARD_PAD - 100,
+    y + AGE_BOX_HEIGHT / 2,
     100,
     font
   );
 
-  y += 160 + 32;
+  y += AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP;
 
   const mbtiLabel = formatMbtiType(report.mbtiDesk.type);
   const pills = [
