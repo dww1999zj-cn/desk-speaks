@@ -7,6 +7,7 @@ export const SHARE_CARD_COPY = {
   saveButton: "保存鉴定卡 📸",
   savingButton: "正在生成鉴定卡…",
   savePreviewHint: "长按图片 · 保存到相册",
+  saveWeChatHint: "保存失败？点右上角 ··· → 在浏览器打开后再保存",
   shareHint: "晒到朋友圈 / 小红书 / 微信群 · © 闲里偷忙",
   imageFooter: "© 闲里偷忙 · 长按保存分享",
 } as const;

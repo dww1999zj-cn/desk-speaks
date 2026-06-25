@@ -185,6 +185,8 @@ export function shouldUseSavePreview(): boolean {
   return isIOS() || isWeChatBrowser();
 }
 
+export { isWeChatBrowser };
+
 export function getSiteUrl(): string {
   if (typeof window !== "undefined") {
     return process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
@@ -483,6 +485,18 @@ export async function generateShareImage(
   });
 }
 
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") resolve(reader.result);
+      else reject(new Error("无法读取图片"));
+    };
+    reader.onerror = () => reject(reader.error ?? new Error("无法读取图片"));
+    reader.readAsDataURL(blob);
+  });
+}
+
 function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -500,7 +514,8 @@ export async function saveShareImage(
   onPreview?: (imageUrl: string) => void
 ) {
   if (shouldUseSavePreview() && onPreview) {
-    onPreview(URL.createObjectURL(blob));
+    // 微信内置浏览器无法长按保存 blob: URL，需用 base64
+    onPreview(await blobToDataUrl(blob));
     return;
   }
 

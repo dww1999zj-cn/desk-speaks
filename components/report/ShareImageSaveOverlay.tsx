@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { isWeChatBrowser } from "@/lib/share-image";
 import { SHARE_CARD_COPY } from "@/lib/share-copy";
 
 interface ShareImageSaveOverlayProps {
@@ -12,6 +13,8 @@ export function ShareImageSaveOverlay({
   imageUrl,
   onClose,
 }: ShareImageSaveOverlayProps) {
+  const inWeChat = isWeChatBrowser();
+
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -28,9 +31,14 @@ export function ShareImageSaveOverlay({
       aria-modal="true"
       aria-label="保存鉴定卡"
     >
-      <p className="mb-4 text-center text-sm font-medium text-white">
+      <p className="mb-2 text-center text-sm font-medium text-white">
         {SHARE_CARD_COPY.savePreviewHint}
       </p>
+      {inWeChat && (
+        <p className="mb-4 text-center text-xs leading-relaxed text-white/70">
+          {SHARE_CARD_COPY.saveWeChatHint}
+        </p>
+      )}
       <div
         className="mx-auto w-full max-w-sm flex-1 overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
@@ -40,6 +48,11 @@ export function ShareImageSaveOverlay({
           src={imageUrl}
           alt="工位鉴定卡"
           className="w-full rounded-2xl shadow-2xl"
+          style={{
+            WebkitTouchCallout: "default",
+            WebkitUserSelect: "auto",
+            userSelect: "auto",
+          }}
         />
       </div>
       <button

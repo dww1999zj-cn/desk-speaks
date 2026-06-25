@@ -22,13 +22,13 @@ export function ShareImageButton({
 
   useEffect(() => {
     return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 
   const closePreview = useCallback(() => {
     setPreviewUrl((url) => {
-      if (url) URL.revokeObjectURL(url);
+      if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
       return null;
     });
   }, []);
