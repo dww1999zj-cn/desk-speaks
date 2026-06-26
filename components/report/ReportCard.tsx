@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { DeskReport, ReportCardData } from "@/lib/types";
 import { SharePreviewCard } from "./SharePreviewCard";
 
@@ -144,15 +145,12 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
           <span className="font-medium text-secondary">风水一句 · </span>
           {data.yijingFengshui}
         </p>
-        <button
-          type="button"
-          onClick={() =>
-            alert("更多办公风水解读即将上线，敬请期待 🪴")
-          }
-          className="mt-3 text-xs text-primary/80 underline-offset-2 hover:underline"
+        <Link
+          href="/recommend"
+          className="mt-3 inline-block text-xs font-medium text-primary/80 underline-offset-2 hover:text-primary hover:underline"
         >
-          更多风水解读 · 敬请期待
-        </button>
+          更多办公好物推荐 →
+        </Link>
         <button
           type="button"
           onClick={onGoNext}
