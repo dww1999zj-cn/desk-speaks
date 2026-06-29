@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { useLocale, useTranslations } from "next-intl";
 import type { DeskReport } from "@/lib/types";
@@ -18,14 +18,9 @@ interface SharePreviewCardProps {
 export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
   const locale = useLocale();
   const t = useTranslations("share");
-  const tCommon = useTranslations("common");
   const [qrSrc, setQrSrc] = useState<string | null>(null);
   const siteUrl = getSiteUrl(locale);
   const siteLabel = formatShareSiteLabel(siteUrl);
-  const shareHint = useMemo(
-    () => t("shareHint", { footer: tCommon("footer") }),
-    [t, tCommon]
-  );
 
   useEffect(() => {
     QRCode.toDataURL(siteUrl, {
@@ -123,7 +118,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
 
       <div className="mt-5">
         <ShareImageButton report={report} deskThumb={deskThumb} />
-        <p className="mt-2 text-center text-xs text-muted">{shareHint}</p>
+        <p className="mt-2 text-center text-xs text-muted">{t("shareHint")}</p>
       </div>
     </div>
   );

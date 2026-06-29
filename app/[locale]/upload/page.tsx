@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
@@ -10,21 +10,64 @@ import { SiteFooter } from "@/components/ui/SiteFooter";
 import { PageTopRow } from "@/components/ui/PageTopRow";
 import { STORAGE_KEYS } from "@/lib/report";
 
+type CompressedImages = { full: string; thumb: string };
+
+function persistImages(images: CompressedImages) {
+  sessionStorage.setItem(STORAGE_KEYS.image, images.full);
+  sessionStorage.setItem(STORAGE_KEYS.imageThumb, images.thumb);
+}
+
 export default function UploadPage() {
   const router = useRouter();
   const t = useTranslations("upload");
   const tCommon = useTranslations("common");
-  const [images, setImages] = useState<{
-    full: string;
-    thumb: string;
-  } | null>(null);
+  const [images, setImages] = useState<CompressedImages | null>(null);
+  const [stored, setStored] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleImageReady = useCallback((next: CompressedImages) => {
+    setImages(next);
+    setStored(false);
+    setSubmitting(false);
+
+    // 大图写 sessionStorage 会阻塞主线程，提前在后台写入，点击按钮可立即跳转
+    window.setTimeout(() => {
+      try {
+        persistImages(next);
+        setStored(true);
+      } catch {
+        setStored(false);
+      }
+    }, 0);
+  }, []);
 
   const handleAnalyze = () => {
-    if (!images) return;
-    sessionStorage.setItem(STORAGE_KEYS.image, images.full);
-    sessionStorage.setItem(STORAGE_KEYS.imageThumb, images.thumb);
-    router.push("/analyzing");
+    if (!images || submitting) return;
+
+    setSubmitting(true);
+
+    const go = () => router.push("/analyzing");
+
+    if (stored) {
+      go();
+      return;
+    }
+
+    window.setTimeout(() => {
+      try {
+        persistImages(images);
+        go();
+      } catch {
+        setSubmitting(false);
+      }
+    }, 0);
   };
+
+  const buttonLabel = submitting
+    ? t("submitting")
+    : images && !stored
+      ? t("preparing")
+      : t("submit");
 
   return (
     <GradientBackground>
@@ -49,17 +92,17 @@ export default function UploadPage() {
         </header>
 
         <section className="mt-8 flex-1">
-          <PhotoUploader onImageReady={setImages} />
+          <PhotoUploader onImageReady={handleImageReady} />
         </section>
 
         <footer className="mt-8">
           <Button
             size="lg"
             className="w-full"
-            disabled={!images}
+            disabled={!images || submitting || (Boolean(images) && !stored && !submitting)}
             onClick={handleAnalyze}
           >
-            {t("submit")}
+            {buttonLabel}
           </Button>
           <SiteFooter className="mt-4" />
         </footer>

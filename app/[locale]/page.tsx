@@ -73,7 +73,7 @@ export default async function HomePage({ params }: Props) {
 
         <footer className="relative z-20 mt-auto pt-8">
           <HomeCta />
-          <SiteFooter className="mt-3" hint={t("footerHint")} />
+          <SiteFooter className="mt-3" />
         </footer>
       </main>
     </GradientBackground>
