@@ -32,6 +32,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# demo source (gif is committed for README)
+docs/demo.mp4
+docs/demo-palette.png
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
