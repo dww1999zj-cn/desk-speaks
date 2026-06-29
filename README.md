@@ -2,7 +2,7 @@
 
 Upload a photo of your desk and get a playful AI persona report — age guess, desk MBTI, desk zodiac, a letter from your desk, and a shareable cert card.
 
-**Live:** [desk.zeabur.app/zh](https://desk.zeabur.app/zh) · [English](https://desk.zeabur.app/en)
+**Live:** [English](https://desk.zeabur.app/en) · [中文](https://desk.zeabur.app/zh)
 
 ---
 
@@ -24,7 +24,7 @@ Chinese version also includes curated desk essentials with JD affiliate links (`
 | Framework | Next.js 15 (App Router), React 19 |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
-| i18n | [next-intl](https://next-intl.dev) — `/zh`, `/en` |
+| i18n | [next-intl](https://next-intl.dev) — `/en`, `/zh` |
 | AI | Alibaba DashScope / Qwen-VL (`qwen-vl-plus`) |
 | Analytics (optional) | Supabase |
 | Deploy | [Zeabur](https://zeabur.com) |
@@ -70,7 +70,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 ```bash
 npm run dev
-# http://localhost:3000/zh  or  /en
+# http://localhost:3000/en  or  /zh
 ```
 
 Build for production:
@@ -102,7 +102,7 @@ Run `supabase/schema.sql` in Supabase SQL Editor if you enable stats.
 | Path | Description |
 |------|-------------|
 | `/` | Redirects to `/zh` |
-| `/zh`, `/en` | Home |
+| `/en`, `/zh` | Home |
 | `/[locale]/upload` | Photo upload |
 | `/[locale]/analyzing` | AI analysis |
 | `/[locale]/report` | Persona report |
