@@ -31,7 +31,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "桌面抽屉收纳盒",
     hook: "线材、便签、回形针终于有家了，乱中有序的第一步。",
     emoji: "🗂️",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/XawzbHn",
   },
   {
     id: "cable-box",
@@ -39,7 +39,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "桌下理线盒 / 魔术贴理线",
     hook: "双屏党的救命绳，不再和充电线搏斗。",
     emoji: "🔌",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X6wIehP",
   },
   {
     id: "monitor-stand",
@@ -47,7 +47,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "显示器增高架",
     hook: "抬高屏幕、腾出下层空间，颈椎和桌面双赢。",
     emoji: "🖥️",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
   {
     id: "lumbar-cushion",
@@ -55,7 +55,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "腰靠 / 人体工学坐垫",
     hook: "工位来信说你坐得久——腰先谢谢你不 abandon。",
     emoji: "💺",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
   {
     id: "wrist-rest",
@@ -63,7 +63,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "键盘手托 + 鼠标垫",
     hook: "机械键盘配软手托，敲字不那么废手腕。",
     emoji: "⌨️",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
   {
     id: "desk-lamp",
@@ -71,7 +71,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "屏幕挂灯 / 暖光台灯",
     hook: "加班不刺眼，拍照还显工位有生活气。",
     emoji: "💡",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
   {
     id: "desk-plant",
@@ -79,7 +79,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "懒人桌面小绿植",
     hook: "工位目击里半死不活的那个，可以换一盆好养活的。",
     emoji: "🪴",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
   {
     id: "mug-warmer",
@@ -87,7 +87,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "恒温杯垫",
     hook: "凉透的咖啡是工位时间刻度——这垫能帮你续一口热的。",
     emoji: "☕",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
   {
     id: "instant-coffee",
@@ -95,7 +95,7 @@ export const OFFICE_PICKS: OfficePick[] = [
     name: "挂耳 / 冻干咖啡包",
     hook: "抽屉里囤几包，下午三点和工位一起复活。",
     emoji: "🫘",
-    affiliateUrl: "https://u.jd.com/",
+    affiliateUrl: "https://u.jd.com/X1wyucp",
   },
 ];
 
