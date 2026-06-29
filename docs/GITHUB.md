@@ -28,10 +28,8 @@ On https://github.com/dww1999zj-cn → **Customize your pins** → select **desk
 
 ## Demo asset (README)
 
-`docs/demo.gif` is generated from a screen recording (400px wide, 12 fps). To regenerate from `docs/demo.mp4`:
+`docs/demo-preview.mp4` (~70 KB) is used in README for fast loading. Regenerate from `docs/demo.mp4`:
 
 ```bash
-# requires ffmpeg (or Python imageio-ffmpeg)
-ffmpeg -i docs/demo.mp4 -an -vf "fps=12,scale=400:-1:flags=lanczos,palettegen=stats_mode=diff" docs/demo-palette.png
-ffmpeg -i docs/demo.mp4 -i docs/demo-palette.png -an -lavfi "fps=12,scale=400:-1:flags=lanczos[x];[x][1:v]paletteuse" docs/demo.gif
+ffmpeg -i docs/demo.mp4 -an -vf "scale=280:-1:flags=lanczos" -c:v libx264 -crf 30 -preset slow -movflags +faststart -pix_fmt yuv420p docs/demo-preview.mp4
 ```

@@ -6,7 +6,9 @@ Upload a photo of your desk and get a playful AI persona report — age guess, d
 
 ## Demo
 
-![Desk persona: upload → report → share card](docs/demo.gif)
+<p align="center">
+  <video src="https://raw.githubusercontent.com/dww1999zj-cn/desk-speaks/main/docs/demo-preview.mp4" width="280" autoplay loop muted playsinline></video>
+</p>
 
 Try it live: [desk.zeabur.app/en](https://desk.zeabur.app/en) · [中文](https://desk.zeabur.app/zh)
 

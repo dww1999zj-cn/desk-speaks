@@ -32,8 +32,9 @@ yarn-error.log*
 .env*.local
 .env
 
-# demo source (gif is committed for README)
+# demo source (preview mp4 is committed for README)
 docs/demo.mp4
+docs/demo.gif
 docs/demo-palette.png
 
 # typescript
