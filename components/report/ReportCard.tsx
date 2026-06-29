@@ -1,7 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { DeskReport, ReportCardData } from "@/lib/types";
+import { isOfficePicksEnabled } from "@/lib/office-picks";
+import { isAppLocale } from "@/lib/i18n/locale";
 import { SharePreviewCard } from "./SharePreviewCard";
 
 interface ReportCardProps {
@@ -46,10 +49,12 @@ function KeywordTags({ keywords }: { keywords?: string[] }) {
 }
 
 function DeskEvidenceList({ items }: { items?: string[] }) {
+  const t = useTranslations("report.cards");
+
   if (!items?.length) return null;
   return (
     <div className="mt-6 rounded-2xl border border-primary/10 bg-white/60 px-4 py-4">
-      <p className="mb-3 text-xs font-semibold text-primary">工位目击 · 它看到了这些</p>
+      <p className="mb-3 text-xs font-semibold text-primary">{t("evidenceTitle")}</p>
       <ul className="space-y-2.5">
         {items.map((item) => (
           <li
@@ -64,27 +69,34 @@ function DeskEvidenceList({ items }: { items?: string[] }) {
   );
 }
 
-export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportCardProps) {
+export function ReportCard({
+  data,
+  index,
+  report,
+  deskThumb,
+  onGoNext,
+}: ReportCardProps) {
+  const t = useTranslations("report.cards");
+  const locale = useLocale();
+  const showOfficePicks = isOfficePicksEnabled(isAppLocale(locale) ? locale : "zh");
   const delay = `${index * 80}ms`;
 
   if (data.type === "intro") {
     return (
       <CardWrapper delay={delay}>
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
-          第一层 · 工位初见
+          {t("introLayer")}
         </p>
         <p className="text-base leading-relaxed text-muted md:text-lg">
           {data.content}
         </p>
         <div className="mt-6 rounded-2xl bg-primary/5 px-5 py-5 text-center">
-          <p className="text-sm text-muted">工位猜你</p>
+          <p className="text-sm text-muted">{t("guessLabel")}</p>
           <p className="mt-1 text-5xl font-semibold tracking-tight text-primary">
             {data.guessedAge}
           </p>
           {data.ageHint && (
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {data.ageHint}
-            </p>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{data.ageHint}</p>
           )}
         </div>
         <p className="mt-6 text-lg font-medium leading-relaxed text-text">
@@ -99,7 +111,7 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
     return (
       <CardWrapper delay={delay}>
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
-          第二层 · 工位 MBTI
+          {t("mbtiLayer")}
         </p>
         {data.subtitle && (
           <p className="mb-3 text-xs text-muted">{data.subtitle}</p>
@@ -117,7 +129,7 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
     return (
       <CardWrapper delay={delay}>
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
-          第三层 · 工位星座
+          {t("zodiacLayer")}
         </p>
         {data.subtitle && (
           <p className="mb-3 text-xs text-muted">{data.subtitle}</p>
@@ -135,28 +147,30 @@ export function ReportCard({ data, index, report, deskThumb, onGoNext }: ReportC
     return (
       <CardWrapper delay={delay}>
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
-          第四层 · 工位来信
+          {t("letterLayer")}
         </p>
         <h3 className="mb-4 text-xl font-semibold text-text">{data.title}</h3>
         <p className="whitespace-pre-line text-base leading-relaxed text-muted md:text-lg">
           {data.letter}
         </p>
         <p className="mt-5 rounded-2xl bg-secondary/10 px-4 py-3 text-sm leading-relaxed text-muted">
-          <span className="font-medium text-secondary">风水一句 · </span>
+          <span className="font-medium text-secondary">{t("fengshuiPrefix")}</span>
           {data.yijingFengshui}
         </p>
-        <Link
-          href="/recommend"
-          className="mt-3 inline-block text-xs font-medium text-primary/80 underline-offset-2 hover:text-primary hover:underline"
-        >
-          更多办公好物推荐 →
-        </Link>
+        {showOfficePicks && (
+          <Link
+            href="/recommend"
+            className="mt-3 inline-block text-xs font-medium text-primary/80 underline-offset-2 hover:text-primary hover:underline"
+          >
+            {t("recommendLink")}
+          </Link>
+        )}
         <button
           type="button"
           onClick={onGoNext}
           className="mt-8 w-full rounded-2xl bg-primary/10 px-4 py-3.5 text-sm font-medium text-primary transition-colors active:bg-primary/20"
         >
-          领取工位鉴定卡 →
+          {t("claimShareCard")}
         </button>
       </CardWrapper>
     );

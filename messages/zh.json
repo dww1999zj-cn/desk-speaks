@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "title": "你的工位人格",
+    "description": "上传工位照片，看看工位眼中的你是否和真实的你一样"
+  },
+  "common": {
+    "back": "← 返回",
+    "footer": "© 闲里偷忙 · vx：alex_198888",
+    "mascotName": "工位牛马",
+    "languageSwitch": "EN",
+    "languageSwitchToZh": "中文"
+  },
+  "home": {
+    "badge": "工位小牛马上线",
+    "lead1": "你每天坐在这里。",
+    "lead2": "桌上的小牛马，可能比你更懂你。",
+    "titleLine1": "你的",
+    "titleLine2": "工位人格",
+    "demoAgeLabel": "工位猜你",
+    "demoAge": "27 岁",
+    "demoMbtiLabel": "工位 MBTI",
+    "demoZodiacLabel": "工位星座 · 一封信",
+    "demoZodiacText": "天蝎座，想对你说点什么…",
+    "ctaDesc1": "拍张工位照，交给通义千问。",
+    "ctaDesc2": "看看它眼里的你，像不像你自己。",
+    "ctaButton": "拍张工位照，开始猜我 🐮",
+    "footerHint": "上传你日常办公桌面，不用摆拍"
+  },
+  "upload": {
+    "badge": "🐮 上传你的工位自画像",
+    "title": "拍张工位照",
+    "subtitle": "不用摆拍，真实的最好。剩下的交给工位牛马和通义千问。",
+    "submit": "就这张，开猜 ✨",
+    "previewAlt": "工位预览",
+    "reselect": "可以重新选择照片",
+    "dropTitle": "上传无意识自画像",
+    "dropHint": "从相册选，或现场拍一张工位",
+    "processing": "处理中…",
+    "gallery": "从相册选择",
+    "camera": "拍照上传",
+    "imageError": "图片处理失败，请换一张试试"
+  },
+  "analyzing": {
+    "reasoning": "推理中",
+    "engine": "通义千问 · 视觉推理中",
+    "thinkingTexts": [
+      "通义千问正在加班加点…",
+      "工位牛马正扒在键盘边看你",
+      "阿里云大脑 CPU 轻微冒烟中",
+      "先别关屏，我还在猜你几岁",
+      "不是摸鱼，是在认真推理",
+      "把你的桌面扫了一遍又一遍",
+      "信马上写好，再等我一下下",
+      "那个马克杯暴露了点什么…",
+      "正在读你桌上每一样东西"
+    ],
+    "errors": {
+      "timeout": {
+        "title": "通义同学加班超时了",
+        "message": "照片可能太大，或网络有点慢。",
+        "hint": "换一张更小的工位照，或稍后再试。"
+      },
+      "failed": {
+        "title": "牛马今天有点懵",
+        "message": "没看清你的工位，别慌。",
+        "hint": "通常再试一次就好，不行就换张照。"
+      }
+    },
+    "retry": "再试一次 🐮",
+    "changePhoto": "换张照片"
+  },
+  "report": {
+    "loading": "工位正在整理信件…",
+    "badge": "🐮 工位牛马报告",
+    "title": "工位眼中的你",
+    "matchFallback": "{mbti} × {zodiac}——工位眼里的你，像吗？",
+    "deskAlt": "你的工位",
+    "shareHint": "滑到「鉴定卡」可预览并保存分享图",
+    "retryUpload": "换张工位，再认一次",
+    "backHome": "回到首页",
+    "cards": {
+      "introLayer": "第一层 · 工位初见",
+      "introTitle": "工位初见",
+      "guessLabel": "工位猜你",
+      "evidenceTitle": "工位目击 · 它看到了这些",
+      "mbtiLayer": "第二层 · 工位 MBTI",
+      "mbtiTitle": "工位 MBTI 人格",
+      "mbtiSubtitle": "工位版 · 非心理测试",
+      "zodiacLayer": "第三层 · 工位星座",
+      "zodiacTitle": "工位星座",
+      "zodiacSubtitle": "按桌面氛围匹配 · 非生日星座",
+      "letterLayer": "第四层 · 工位来信",
+      "letterTitle": "工位写给你的信",
+      "fengshuiPrefix": "风水一句 · ",
+      "recommendLink": "更多办公好物推荐 →",
+      "claimShareCard": "领取工位鉴定卡 →"
+    },
+    "swiper": {
+      "labels": ["初见", "MBTI", "星座", "来信", "鉴定卡"],
+      "oneMoreCard": " · 还剩一张鉴定卡",
+      "prev": "上一张",
+      "next": "下一张",
+      "last": "已是最后",
+      "slideAria": "第 {index} 张 · {label}"
+    }
+  },
+  "share": {
+    "previewHint": "工位鉴定卡 · 保存即可分享",
+    "certBadge": "🐮 工位牛马认证",
+    "title": "你的工位人格",
+    "ageGuessLabel": "工位猜你像",
+    "qrTitle": "扫码来测，更懂你的工位",
+    "qrAlt": "二维码",
+    "saveButton": "保存鉴定卡 📸",
+    "savingButton": "正在生成鉴定卡…",
+    "savePreviewHint": "长按图片 · 保存到相册",
+    "saveWeChatHint": "保存失败？点右上角 ··· → 在浏览器打开后再保存",
+    "shareHint": "晒到朋友圈 / 小红书 / 微信群 · {footer}",
+    "imageFooter": "{footer} · 长按保存分享",
+    "saveDialogAria": "保存鉴定卡",
+    "cardAlt": "工位鉴定卡",
+    "close": "关闭",
+    "generateError": "分享图生成失败，请稍后再试",
+    "filename": "工位人格.png",
+    "stampLine1": "工位牛马",
+    "stampLine2": "鉴定通过"
+  },
+  "recommend": {
+    "badge": "🛒 工位牛马严选",
+    "title": "办公好物推荐",
+    "subtitle": "工位来信里聊到的那些东西，这里帮你挑好了。",
+    "disclosure": "以下链接为京东推广链接，价格与你直接购买相同；通过链接下单是对「闲里偷忙」的小支持 🐮",
+    "goJd": "去京东看看 →",
+    "categories": {
+      "deskOrganizer": "桌面收纳",
+      "sitLong": "久坐救星",
+      "vibes": "氛围感",
+      "caffeine": "续命水"
+    }
+  }
+}

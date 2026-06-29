@@ -1,4 +1,6 @@
-import { SITE_FOOTER } from "@/lib/site-copy";
+"use client";
+
+import { useTranslations } from "next-intl";
 
 interface SiteFooterProps {
   hint?: string;
@@ -6,6 +8,8 @@ interface SiteFooterProps {
 }
 
 export function SiteFooter({ hint, className = "" }: SiteFooterProps) {
+  const t = useTranslations("common");
+
   return (
     <p className={`text-center text-xs leading-relaxed text-muted/80 ${className}`}>
       {hint && (
@@ -14,7 +18,7 @@ export function SiteFooter({ hint, className = "" }: SiteFooterProps) {
           <br />
         </>
       )}
-      {SITE_FOOTER}
+      {t("footer")}
     </p>
   );
 }

@@ -1,17 +1,37 @@
+import type { AppLocale } from "@/lib/i18n/locale";
 import type { DeskReport, ReportCardData } from "./types";
-import { MOCK_REPORT } from "./prompts";
+import { getMockReport } from "./prompts/index";
 
-/** 展示用：去掉 MBTI 类型末尾的「工位」，如 INTJ工位 → INTJ */
+export interface ReportCardLabels {
+  introLayer: string;
+  introTitle: string;
+  mbtiLayer: string;
+  mbtiTitle: string;
+  mbtiSubtitle: string;
+  zodiacLayer: string;
+  zodiacTitle: string;
+  zodiacSubtitle: string;
+  letterLayer: string;
+  letterTitle: string;
+}
+
+/** 展示用：去掉 MBTI 类型末尾的「工位 / Desk」后缀 */
 export function formatMbtiType(type: string): string {
-  return type.replace(/\s*工位\s*$/u, "").trim();
+  return type.replace(/\s*(工位|Desk)\s*$/iu, "").trim();
 }
 
 /** 兼容旧版 sessionStorage 报告结构 */
-export function normalizeReport(raw: Partial<DeskReport>): DeskReport {
+export function normalizeReport(
+  raw: Partial<DeskReport>,
+  locale: AppLocale = "zh"
+): DeskReport {
+  const MOCK_REPORT = getMockReport(locale);
   const shareCard = (raw.shareCard ?? {}) as Partial<DeskReport["shareCard"]>;
   const summary =
     shareCard.summary ??
-    (typeof shareCard.shareHook === "string" ? shareCard.shareHook : MOCK_REPORT.shareCard.summary);
+    (typeof shareCard.shareHook === "string"
+      ? shareCard.shareHook
+      : MOCK_REPORT.shareCard.summary);
 
   return {
     deskEvidence: Array.isArray(raw.deskEvidence)
@@ -33,12 +53,15 @@ export function normalizeReport(raw: Partial<DeskReport>): DeskReport {
   };
 }
 
-export function reportToCards(report: DeskReport): ReportCardData[] {
+export function reportToCards(
+  report: DeskReport,
+  labels: ReportCardLabels
+): ReportCardData[] {
   const mbtiType = formatMbtiType(report.mbtiDesk.type);
   return [
     {
       type: "intro",
-      title: "工位初见",
+      title: labels.introTitle,
       content: report.intro.description,
       guessedAge: report.intro.guessedAge,
       ageHint: report.intro.ageHint,
@@ -47,23 +70,23 @@ export function reportToCards(report: DeskReport): ReportCardData[] {
     },
     {
       type: "mbti",
-      title: "工位 MBTI 人格",
-      subtitle: "工位版 · 非心理测试",
+      title: labels.mbtiTitle,
+      subtitle: labels.mbtiSubtitle,
       mbtiType,
       keywords: report.mbtiDesk.keywords,
       declaration: report.mbtiDesk.declaration,
     },
     {
       type: "zodiac",
-      title: "工位星座",
-      subtitle: "按桌面氛围匹配 · 非生日星座",
+      title: labels.zodiacTitle,
+      subtitle: labels.zodiacSubtitle,
       zodiacSign: report.zodiacDesk.sign,
       keywords: report.zodiacDesk.keywords,
       declaration: report.zodiacDesk.declaration,
     },
     {
       type: "letter",
-      title: "工位写给你的信",
+      title: labels.letterTitle,
       letter: report.letter.content,
       yijingFengshui: report.letter.yijingFengshui,
       keywords: report.shareCard.keywords,
@@ -92,4 +115,5 @@ export const STORAGE_KEYS = {
   imageThumb: "desk-speaks-image-thumb",
   report: "desk-speaks-report",
   reportId: "desk-speaks-report-id",
+  locale: "desk-speaks-locale",
 } as const;

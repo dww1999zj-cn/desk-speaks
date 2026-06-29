@@ -1,7 +1,9 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { ThinkingStatus } from "@/components/analyzing/ThinkingStatus";
 import {
@@ -9,17 +11,17 @@ import {
   type AnalyzeErrorType,
 } from "@/components/analyzing/AnalyzeErrorPanel";
 import { SiteFooter } from "@/components/ui/SiteFooter";
+import { PageTopRow } from "@/components/ui/PageTopRow";
 import { STORAGE_KEYS, normalizeReport } from "@/lib/report";
-import type { DeskReport } from "@/lib/types";
+import type { AppLocale } from "@/lib/i18n/locale";
+import { isAppLocale } from "@/lib/i18n/locale";
 
 const MIN_DISPLAY_MS = 800;
 const ANALYZE_TIMEOUT_MS = 90000;
 
 type Phase = "loading" | "error";
 
-function parsePreviewError(
-  value: string | null
-): AnalyzeErrorType | null {
+function parsePreviewError(value: string | null): AnalyzeErrorType | null {
   if (value === "failed" || value === "error") return "failed";
   if (value === "timeout") return "timeout";
   return null;
@@ -27,12 +29,11 @@ function parsePreviewError(
 
 function AnalyzingPageContent() {
   const router = useRouter();
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const previewError = parsePreviewError(searchParams.get("preview"));
 
-  const [phase, setPhase] = useState<Phase>(
-    previewError ? "error" : "loading"
-  );
+  const [phase, setPhase] = useState<Phase>(previewError ? "error" : "loading");
   const [errorType, setErrorType] = useState<AnalyzeErrorType>(
     previewError ?? "failed"
   );
@@ -50,6 +51,7 @@ function AnalyzingPageContent() {
     let cancelled = false;
     setPhase("loading");
     const startAt = Date.now();
+    const requestLocale: AppLocale = isAppLocale(locale) ? locale : "zh";
 
     const analyze = async () => {
       try {
@@ -59,18 +61,19 @@ function AnalyzingPageContent() {
         const res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image }),
+          body: JSON.stringify({ image, locale: requestLocale }),
           signal: controller.signal,
         });
 
         clearTimeout(timeout);
         if (cancelled) return;
 
-        if (!res.ok) throw new Error("分析失败");
+        if (!res.ok) throw new Error("analyze failed");
 
         const data = await res.json();
-        const report = normalizeReport(data.report ?? data);
+        const report = normalizeReport(data.report ?? data, requestLocale);
         sessionStorage.setItem(STORAGE_KEYS.report, JSON.stringify(report));
+        sessionStorage.setItem(STORAGE_KEYS.locale, requestLocale);
         sessionStorage.removeItem(STORAGE_KEYS.image);
 
         const elapsed = Date.now() - startAt;
@@ -93,7 +96,7 @@ function AnalyzingPageContent() {
     return () => {
       cancelled = true;
     };
-  }, [router, attempt, previewError]);
+  }, [router, attempt, previewError, locale]);
 
   const handleRetry = useCallback(() => {
     if (previewError) {
@@ -114,6 +117,7 @@ function AnalyzingPageContent() {
   return (
     <GradientBackground>
       <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
+        <PageTopRow className="mb-2" />
         <div className="flex flex-1 flex-col items-center justify-center">
           {phase === "loading" ? (
             <ThinkingStatus />
@@ -131,20 +135,23 @@ function AnalyzingPageContent() {
   );
 }
 
+function AnalyzingFallback() {
+  return (
+    <GradientBackground>
+      <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
+        <PageTopRow className="mb-2" />
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <ThinkingStatus />
+        </div>
+        <SiteFooter className="mt-8 shrink-0" />
+      </main>
+    </GradientBackground>
+  );
+}
+
 export default function AnalyzingPage() {
   return (
-    <Suspense
-      fallback={
-        <GradientBackground>
-          <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
-            <div className="flex flex-1 flex-col items-center justify-center">
-              <ThinkingStatus />
-            </div>
-            <SiteFooter className="mt-8 shrink-0" />
-          </main>
-        </GradientBackground>
-      }
-    >
+    <Suspense fallback={<AnalyzingFallback />}>
       <AnalyzingPageContent />
     </Suspense>
   );

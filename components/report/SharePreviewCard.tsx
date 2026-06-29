@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import QRCode from "qrcode";
+import { useLocale, useTranslations } from "next-intl";
 import type { DeskReport } from "@/lib/types";
 import { getSiteUrl } from "@/lib/share-image";
 import { formatMbtiType } from "@/lib/report";
-import { formatShareSiteLabel, SHARE_CARD_COPY } from "@/lib/share-copy";
+import { formatShareSiteLabel } from "@/lib/share-copy";
 import { CertificationStamp } from "./CertificationStamp";
 import { ShareImageButton } from "./ShareImageButton";
 
@@ -15,9 +16,16 @@ interface SharePreviewCardProps {
 }
 
 export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
+  const locale = useLocale();
+  const t = useTranslations("share");
+  const tCommon = useTranslations("common");
   const [qrSrc, setQrSrc] = useState<string | null>(null);
-  const siteUrl = getSiteUrl();
+  const siteUrl = getSiteUrl(locale);
   const siteLabel = formatShareSiteLabel(siteUrl);
+  const shareHint = useMemo(
+    () => t("shareHint", { footer: tCommon("footer") }),
+    [t, tCommon]
+  );
 
   useEffect(() => {
     QRCode.toDataURL(siteUrl, {
@@ -32,7 +40,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
   return (
     <div className="relative mx-auto w-full max-w-[340px]">
       <p className="mb-3 text-center text-xs font-medium text-primary">
-        {SHARE_CARD_COPY.previewHint}
+        {t("previewHint")}
       </p>
 
       <div className="relative overflow-hidden rounded-[1.75rem] border-2 border-white/90 bg-gradient-to-br from-[#FFF8F5] via-[#FFE8F0] to-[#F3EEFF] p-5 shadow-lg shadow-secondary/25">
@@ -40,12 +48,8 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
 
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold text-primary">
-              {SHARE_CARD_COPY.certBadge}
-            </p>
-            <h3 className="mt-1 text-xl font-bold text-text">
-              {SHARE_CARD_COPY.title}
-            </h3>
+            <p className="text-xs font-semibold text-primary">{t("certBadge")}</p>
+            <h3 className="mt-1 text-xl font-bold text-text">{t("title")}</h3>
           </div>
           {deskThumb && (
             <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-white shadow-sm">
@@ -60,7 +64,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         </div>
 
         <div className="relative mt-4 rounded-2xl bg-primary/5 px-4 py-4 text-center">
-          <p className="text-xs text-muted">工位猜你像</p>
+          <p className="text-xs text-muted">{t("ageGuessLabel")}</p>
           <p className="text-4xl font-bold text-primary">
             {report.intro.guessedAge}
           </p>
@@ -102,7 +106,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/60 pt-4">
           <div className="flex min-h-[84px] flex-col justify-center">
             <p className="text-sm font-semibold leading-snug text-text">
-              {SHARE_CARD_COPY.qrTitle}
+              {t("qrTitle")}
             </p>
             {siteLabel && (
               <p className="mt-1 text-xs text-muted">{siteLabel}</p>
@@ -111,7 +115,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
           {qrSrc && (
             <div className="shrink-0 rounded-xl bg-white p-1.5 shadow-sm">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={qrSrc} alt="二维码" className="h-[72px] w-[72px]" />
+              <img src={qrSrc} alt={t("qrAlt")} className="h-[72px] w-[72px]" />
             </div>
           )}
         </div>
@@ -119,9 +123,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
 
       <div className="mt-5">
         <ShareImageButton report={report} deskThumb={deskThumb} />
-        <p className="mt-2 text-center text-xs text-muted">
-          {SHARE_CARD_COPY.shareHint}
-        </p>
+        <p className="mt-2 text-center text-xs text-muted">{shareHint}</p>
       </div>
     </div>
   );

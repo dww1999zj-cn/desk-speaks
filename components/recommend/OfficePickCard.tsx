@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { OfficePick } from "@/lib/office-picks";
 
 interface OfficePickCardProps {
@@ -5,6 +8,8 @@ interface OfficePickCardProps {
 }
 
 export function OfficePickCard({ pick }: OfficePickCardProps) {
+  const t = useTranslations("recommend");
+
   return (
     <a
       href={pick.affiliateUrl}
@@ -20,9 +25,7 @@ export function OfficePickCard({ pick }: OfficePickCardProps) {
           {pick.name}
         </h3>
         <p className="mt-1.5 text-sm leading-relaxed text-muted">{pick.hook}</p>
-        <p className="mt-2 text-xs font-medium text-primary/80">
-          去京东看看 →
-        </p>
+        <p className="mt-2 text-xs font-medium text-primary/80">{t("goJd")}</p>
       </div>
     </a>
   );

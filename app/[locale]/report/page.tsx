@@ -1,16 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Button } from "@/components/ui/Button";
 import { ReportSwiper } from "@/components/report/ReportSwiper";
 import { SiteFooter } from "@/components/ui/SiteFooter";
-import { reportToCards, formatMbtiType, normalizeReport, STORAGE_KEYS } from "@/lib/report";
+import { PageTopRow } from "@/components/ui/PageTopRow";
+import {
+  reportToCards,
+  formatMbtiType,
+  normalizeReport,
+  STORAGE_KEYS,
+  type ReportCardLabels,
+} from "@/lib/report";
 import type { DeskReport, ReportCardData } from "@/lib/types";
+import { resolveLocale } from "@/lib/i18n/locale";
 
 export default function ReportPage() {
   const router = useRouter();
+  const t = useTranslations("report");
   const [report, setReport] = useState<DeskReport | null>(null);
   const [cards, setCards] = useState<ReportCardData[]>([]);
   const [image, setImage] = useState<string | null>(null);
@@ -18,32 +28,54 @@ export default function ReportPage() {
   const [slideIndex, setSlideIndex] = useState(0);
   const isShareSlide = slideIndex === cards.length - 1;
 
+  const cardLabels: ReportCardLabels = useMemo(
+    () => ({
+      introLayer: t("cards.introLayer"),
+      introTitle: t("cards.introTitle"),
+      mbtiLayer: t("cards.mbtiLayer"),
+      mbtiTitle: t("cards.mbtiTitle"),
+      mbtiSubtitle: t("cards.mbtiSubtitle"),
+      zodiacLayer: t("cards.zodiacLayer"),
+      zodiacTitle: t("cards.zodiacTitle"),
+      zodiacSubtitle: t("cards.zodiacSubtitle"),
+      letterLayer: t("cards.letterLayer"),
+      letterTitle: t("cards.letterTitle"),
+    }),
+    [t]
+  );
+
   useEffect(() => {
     const reportRaw = sessionStorage.getItem(STORAGE_KEYS.report);
     const imageRaw =
       sessionStorage.getItem(STORAGE_KEYS.imageThumb) ??
       sessionStorage.getItem(STORAGE_KEYS.image);
+    const storedLocale = resolveLocale(
+      sessionStorage.getItem(STORAGE_KEYS.locale)
+    );
 
     if (!reportRaw) {
       router.replace("/upload");
       return;
     }
 
-    const parsed = normalizeReport(JSON.parse(reportRaw));
+    const parsed = normalizeReport(JSON.parse(reportRaw), storedLocale);
     setReport(parsed);
-    setCards(reportToCards(parsed));
+    setCards(reportToCards(parsed, cardLabels));
     setMatchQuestion(
       parsed.shareCard.shareHook ||
-        `${formatMbtiType(parsed.mbtiDesk.type)} × ${parsed.zodiacDesk.sign}——工位眼里的你，像吗？`
+        t("matchFallback", {
+          mbti: formatMbtiType(parsed.mbtiDesk.type),
+          zodiac: parsed.zodiacDesk.sign,
+        })
     );
     if (imageRaw) setImage(imageRaw);
-  }, [router]);
+  }, [router, cardLabels, t]);
 
   if (cards.length === 0 || !report) {
     return (
       <GradientBackground>
         <main className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center px-6 py-12 safe-bottom">
-          <p className="text-muted animate-pulse-soft">工位正在整理信件…</p>
+          <p className="text-muted animate-pulse-soft">{t("loading")}</p>
           <SiteFooter className="mt-8" />
         </main>
       </GradientBackground>
@@ -53,16 +85,22 @@ export default function ReportPage() {
   return (
     <GradientBackground>
       <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
-        {!isShareSlide && (
+        {!isShareSlide ? (
           <header className="mb-6">
-            <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-primary shadow-sm">
-              🐮 工位牛马报告
-            </p>
-            <h1 className="text-2xl font-bold text-text">工位眼中的你</h1>
+            <PageTopRow
+              left={
+                <p className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-primary shadow-sm">
+                  {t("badge")}
+                </p>
+              }
+            />
+            <h1 className="mt-4 text-2xl font-bold text-text">{t("title")}</h1>
             <p className="mt-2 text-sm leading-relaxed text-muted">
               {matchQuestion}
             </p>
           </header>
+        ) : (
+          <PageTopRow className="mb-4" />
         )}
 
         {!isShareSlide && image && (
@@ -70,7 +108,7 @@ export default function ReportPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image}
-              alt="你的工位"
+              alt={t("deskAlt")}
               className="h-28 w-full object-cover opacity-80"
             />
           </div>
@@ -85,15 +123,13 @@ export default function ReportPage() {
 
         <footer className="mt-8 flex flex-col gap-3">
           {!isShareSlide && (
-            <p className="text-center text-xs text-muted">
-              滑到「鉴定卡」可预览并保存分享图
-            </p>
+            <p className="text-center text-xs text-muted">{t("shareHint")}</p>
           )}
           <Button href="/upload" variant="secondary" size="md" className="w-full">
-            换张工位，再认一次
+            {t("retryUpload")}
           </Button>
           <Button href="/" variant="ghost" size="sm" className="w-full">
-            回到首页
+            {t("backHome")}
           </Button>
           <SiteFooter className="mt-2" />
         </footer>

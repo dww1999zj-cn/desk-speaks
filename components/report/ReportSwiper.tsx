@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { DeskReport, ReportCardData } from "@/lib/types";
 import { Card } from "@/components/ui/Card";
 import { ReportCard } from "./ReportCard";
-
-const SLIDE_LABELS = ["初见", "MBTI", "星座", "来信", "鉴定卡"];
 
 interface ReportSwiperProps {
   cards: ReportCardData[];
@@ -20,6 +19,11 @@ export function ReportSwiper({
   deskThumb,
   onIndexChange,
 }: ReportSwiperProps) {
+  const t = useTranslations("report.swiper");
+  const slideLabels = useMemo(
+    () => t.raw("labels") as string[],
+    [t]
+  );
   const [current, setCurrent] = useState(0);
   const isShareSlide = cards[current]?.type === "share";
 
@@ -63,8 +67,8 @@ export function ReportSwiper({
   return (
     <div className="w-full">
       <p className="mb-3 text-center text-xs text-muted">
-        {current + 1}/{cards.length} · {SLIDE_LABELS[current]}
-        {cards[current]?.type === "letter" && " · 还剩一张鉴定卡"}
+        {current + 1}/{cards.length} · {slideLabels[current]}
+        {cards[current]?.type === "letter" && t("oneMoreCard")}
       </p>
 
       <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
@@ -102,7 +106,7 @@ export function ReportSwiper({
           disabled={current === 0}
           className="rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-text disabled:opacity-30"
         >
-          上一张
+          {t("prev")}
         </button>
 
         <div className="flex gap-2">
@@ -110,7 +114,10 @@ export function ReportSwiper({
             <button
               key={i}
               onClick={() => setSlide(i)}
-              aria-label={`第 ${i + 1} 张 · ${SLIDE_LABELS[i]}`}
+              aria-label={t("slideAria", {
+                index: i + 1,
+                label: slideLabels[i],
+              })}
               className={`h-2 rounded-full transition-all duration-300 ${
                 i === current
                   ? "w-6 bg-primary"
@@ -125,7 +132,7 @@ export function ReportSwiper({
           disabled={current === cards.length - 1}
           className="rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-text disabled:opacity-30"
         >
-          {isShareSlide ? "已是最后" : "下一张"}
+          {isShareSlide ? t("last") : t("next")}
         </button>
       </div>
     </div>

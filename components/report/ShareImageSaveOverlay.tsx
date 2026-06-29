@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { isWeChatBrowser } from "@/lib/share-image";
-import { SHARE_CARD_COPY } from "@/lib/share-copy";
 
 interface ShareImageSaveOverlayProps {
   imageUrl: string;
@@ -13,6 +13,7 @@ export function ShareImageSaveOverlay({
   imageUrl,
   onClose,
 }: ShareImageSaveOverlayProps) {
+  const t = useTranslations("share");
   const inWeChat = isWeChatBrowser();
 
   useEffect(() => {
@@ -29,14 +30,14 @@ export function ShareImageSaveOverlay({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="保存鉴定卡"
+      aria-label={t("saveDialogAria")}
     >
       <p className="mb-2 text-center text-sm font-medium text-white">
-        {SHARE_CARD_COPY.savePreviewHint}
+        {t("savePreviewHint")}
       </p>
       {inWeChat && (
         <p className="mb-4 text-center text-xs leading-relaxed text-white/70">
-          {SHARE_CARD_COPY.saveWeChatHint}
+          {t("saveWeChatHint")}
         </p>
       )}
       <div
@@ -46,7 +47,7 @@ export function ShareImageSaveOverlay({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imageUrl}
-          alt="工位鉴定卡"
+          alt={t("cardAlt")}
           className="w-full rounded-2xl shadow-2xl"
           style={{
             WebkitTouchCallout: "default",
@@ -60,7 +61,7 @@ export function ShareImageSaveOverlay({
         onClick={onClose}
         className="mt-4 w-full rounded-full bg-white/15 py-3 text-sm text-white"
       >
-        关闭
+        {t("close")}
       </button>
     </div>
   );

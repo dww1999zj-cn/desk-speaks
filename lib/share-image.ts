@@ -1,7 +1,18 @@
 import QRCode from "qrcode";
 import type { DeskReport } from "./types";
-import { formatShareSiteLabel, SHARE_CARD_COPY } from "./share-copy";
+import { formatShareSiteLabel } from "./share-copy";
 import { formatMbtiType } from "./report";
+
+export interface ShareImageCopy {
+  certBadge: string;
+  title: string;
+  ageGuessLabel: string;
+  qrTitle: string;
+  imageFooter: string;
+  stampLine1: string;
+  stampLine2: string;
+  filename: string;
+}
 
 const W = 1080;
 const CARD_MARGIN = 64;
@@ -131,10 +142,13 @@ function drawCertificationStamp(
   cx: number,
   cy: number,
   radius: number,
-  font: string
+  font: string,
+  stampLine1: string,
+  stampLine2: string,
+  locale: string
 ) {
   const date = new Date()
-    .toLocaleDateString("zh-CN", {
+    .toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -167,9 +181,9 @@ function drawCertificationStamp(
 
   const lineGap = 26;
   ctx.font = `bold 24px ${font}`;
-  ctx.fillText("工位牛马", 0, -lineGap);
+  ctx.fillText(stampLine1, 0, -lineGap);
   ctx.font = `bold 30px ${font}`;
-  ctx.fillText("鉴定通过", 0, 0);
+  ctx.fillText(stampLine2, 0, 0);
   ctx.font = `500 20px ${font}`;
   ctx.fillStyle = COLORS.muted;
   ctx.fillText(date, 0, lineGap);
@@ -194,11 +208,15 @@ export function shouldUseSavePreview(): boolean {
 
 export { isWeChatBrowser };
 
-export function getSiteUrl(): string {
-  if (typeof window !== "undefined") {
-    return process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
-  }
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://desk.zeabur.app";
+export function getSiteUrl(locale?: string): string {
+  const base =
+    typeof window !== "undefined"
+      ? (process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin)
+      : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://desk.zeabur.app");
+  const clean = base.replace(/\/$/, "");
+  if (locale === "en") return `${clean}/en`;
+  if (locale === "zh") return `${clean}/zh`;
+  return clean;
 }
 
 interface ShareLayout {
@@ -279,7 +297,9 @@ function computeShareLayout(
 
 export async function generateShareImage(
   report: DeskReport,
-  deskThumb?: string | null
+  deskThumb: string | null | undefined,
+  copy: ShareImageCopy,
+  locale: string
 ): Promise<Blob> {
   const measureCanvas = document.createElement("canvas");
   const measureCtx = measureCanvas.getContext("2d");
@@ -317,12 +337,12 @@ export async function generateShareImage(
 
   ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.primary;
-  ctx.fillText(SHARE_CARD_COPY.certBadge, CONTENT_X, y);
+  ctx.fillText(copy.certBadge, CONTENT_X, y);
 
   ctx.font = `bold ${HEADER_TITLE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.text;
   ctx.fillText(
-    SHARE_CARD_COPY.title,
+    copy.title,
     CONTENT_X,
     y + HEADER_BADGE_SIZE + HEADER_BADGE_TITLE_GAP
   );
@@ -365,7 +385,10 @@ export async function generateShareImage(
     W - CARD_MARGIN - CARD_PAD - 100,
     layout.ageBoxY + AGE_BOX_HEIGHT / 2,
     100,
-    font
+    font,
+    copy.stampLine1,
+    copy.stampLine2,
+    locale
   );
 
   const mbtiLabel = formatMbtiType(report.mbtiDesk.type);
@@ -434,7 +457,7 @@ export async function generateShareImage(
   ctx.lineTo(CONTENT_X + CONTENT_W, layout.footerDividerY);
   ctx.stroke();
 
-  const siteUrl = getSiteUrl();
+  const siteUrl = getSiteUrl(locale);
   const qrDataUrl = await QRCode.toDataURL(siteUrl, {
     width: layout.qrSize,
     margin: 1,
@@ -472,7 +495,7 @@ export async function generateShareImage(
 
     ctx.font = `600 ${titleSize}px ${font}`;
     ctx.fillStyle = COLORS.text;
-    ctx.fillText(SHARE_CARD_COPY.qrTitle, textX, blockTop);
+    ctx.fillText(copy.qrTitle, textX, blockTop);
 
     ctx.font = `500 ${labelSize}px ${font}`;
     ctx.fillStyle = COLORS.muted;
@@ -480,9 +503,9 @@ export async function generateShareImage(
   } else {
     ctx.font = `600 32px ${font}`;
     ctx.fillStyle = COLORS.text;
-    const titleMetrics = ctx.measureText(SHARE_CARD_COPY.qrTitle);
+    const titleMetrics = ctx.measureText(copy.qrTitle);
     ctx.fillText(
-      SHARE_CARD_COPY.qrTitle,
+      copy.qrTitle,
       textX,
       qrCenterY - titleMetrics.actualBoundingBoxAscent / 2
     );
@@ -490,7 +513,7 @@ export async function generateShareImage(
 
   ctx.font = `500 26px ${font}`;
   ctx.fillStyle = COLORS.muted;
-  ctx.fillText(SHARE_CARD_COPY.imageFooter, CONTENT_X, layout.footerTextY);
+  ctx.fillText(copy.imageFooter, CONTENT_X, layout.footerTextY);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(

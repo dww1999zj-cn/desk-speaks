@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "title": "Your Desk Persona",
+    "description": "Upload a photo of your desk and see if it reads you the way you read yourself"
+  },
+  "common": {
+    "back": "← Back",
+    "footer": "© Xianlitouman · WeChat: alex_198888",
+    "mascotName": "Desk Buddy",
+    "languageSwitch": "EN",
+    "languageSwitchToZh": "中文"
+  },
+  "home": {
+    "badge": "Your desk buddy is online",
+    "lead1": "You sit here every day.",
+    "lead2": "The little workhorse on your desk might know you better than you think.",
+    "titleLine1": "Your",
+    "titleLine2": "Desk Persona",
+    "demoAgeLabel": "Desk guesses",
+    "demoAge": "27",
+    "demoMbtiLabel": "Desk MBTI",
+    "demoZodiacLabel": "Desk sign · A letter",
+    "demoZodiacText": "Scorpio — your desk has thoughts…",
+    "ctaDesc1": "Snap your desk. Hand it to Qwen.",
+    "ctaDesc2": "See if its read on you matches yours.",
+    "ctaButton": "Snap my desk — read me 🐮",
+    "footerHint": "Your everyday desk is perfect — no staging needed"
+  },
+  "upload": {
+    "badge": "🐮 Upload your desk self-portrait",
+    "title": "Snap your desk",
+    "subtitle": "No staging — real beats polished. Your desk buddy and Qwen will handle the rest.",
+    "submit": "This one — read me ✨",
+    "previewAlt": "Desk preview",
+    "reselect": "Pick another photo",
+    "dropTitle": "Upload an unfiltered self-portrait",
+    "dropHint": "From gallery, or snap your desk now",
+    "processing": "Processing…",
+    "gallery": "Choose from gallery",
+    "camera": "Take a photo",
+    "imageError": "Couldn't process that image — try another"
+  },
+  "analyzing": {
+    "reasoning": "Thinking",
+    "engine": "Qwen · visual reasoning",
+    "thinkingTexts": [
+      "Qwen is burning the midnight oil…",
+      "Your desk buddy is peeking over the keyboard",
+      "Cloud brain CPU gently overheating",
+      "Don't close yet — still guessing your age",
+      "Not slacking — actually reasoning",
+      "Scanning your desktop again and again",
+      "Letter almost done — hang tight",
+      "That mug is giving something away…",
+      "Reading every item on your desk"
+    ],
+    "errors": {
+      "timeout": {
+        "title": "Qwen worked overtime",
+        "message": "Photo might be too large, or the network is slow.",
+        "hint": "Try a smaller desk photo, or come back later."
+      },
+      "failed": {
+        "title": "Desk buddy is confused today",
+        "message": "Couldn't quite read your desk — no panic.",
+        "hint": "Usually one more try works; otherwise swap the photo."
+      }
+    },
+    "retry": "Try again 🐮",
+    "changePhoto": "Change photo"
+  },
+  "report": {
+    "loading": "Your desk is folding the letter…",
+    "badge": "🐮 Desk buddy report",
+    "title": "You, through your desk's eyes",
+    "matchFallback": "{mbti} × {zodiac} — does your desk's read feel right?",
+    "deskAlt": "Your desk",
+    "shareHint": "Swipe to the cert card to preview and save a share image",
+    "retryUpload": "New desk, new read",
+    "backHome": "Back to home",
+    "cards": {
+      "introLayer": "Layer 1 · First look",
+      "introTitle": "First impression",
+      "guessLabel": "Desk guesses",
+      "evidenceTitle": "Desk witness · It noticed these",
+      "mbtiLayer": "Layer 2 · Desk MBTI",
+      "mbtiTitle": "Desk MBTI persona",
+      "mbtiSubtitle": "Desk edition · not a clinical test",
+      "zodiacLayer": "Layer 3 · Desk sign",
+      "zodiacTitle": "Desk zodiac",
+      "zodiacSubtitle": "Matched to desk vibes · not your birthday sign",
+      "letterLayer": "Layer 4 · Letter from your desk",
+      "letterTitle": "A letter from your desk",
+      "fengshuiPrefix": "Feng shui one-liner · ",
+      "recommendLink": "More desk picks →",
+      "claimShareCard": "Claim your desk cert →"
+    },
+    "swiper": {
+      "labels": ["First look", "MBTI", "Sign", "Letter", "Cert"],
+      "oneMoreCard": " · one cert card left",
+      "prev": "Previous",
+      "next": "Next",
+      "last": "Last card",
+      "slideAria": "Card {index} · {label}"
+    }
+  },
+  "share": {
+    "previewHint": "Desk cert · save to share",
+    "certBadge": "🐮 Desk buddy certified",
+    "title": "Your Desk Persona",
+    "ageGuessLabel": "Desk reads you as",
+    "qrTitle": "Scan to test — let your desk talk",
+    "qrAlt": "QR code",
+    "saveButton": "Save cert card 📸",
+    "savingButton": "Generating cert card…",
+    "savePreviewHint": "Long-press image · save to photos",
+    "saveWeChatHint": "Save failed? Tap ··· → Open in browser, then save",
+    "shareHint": "Share to Moments / social / group chat · {footer}",
+    "imageFooter": "{footer} · long-press to save",
+    "saveDialogAria": "Save cert card",
+    "cardAlt": "Desk cert card",
+    "close": "Close",
+    "generateError": "Couldn't generate share image — try again",
+    "filename": "desk-persona.png",
+    "stampLine1": "Desk buddy",
+    "stampLine2": "Certified"
+  },
+  "recommend": {
+    "badge": "🛒 Desk buddy picks",
+    "title": "Desk essentials",
+    "subtitle": "Stuff your desk letter hinted at — picked for you here.",
+    "disclosure": "Links below are affiliate links. Same price for you; a small thank-you to Xianlitouman 🐮",
+    "goJd": "View on JD →",
+    "categories": {
+      "deskOrganizer": "Desk organization",
+      "sitLong": "Sit-all-day saviors",
+      "vibes": "Desk vibes",
+      "caffeine": "Stay-alive fuel"
+    }
+  }
+}

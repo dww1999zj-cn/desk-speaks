@@ -1,16 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { THINKING_STATUS_TEXTS } from "@/lib/prompts";
+import { useTranslations } from "next-intl";
 
 function ThinkingMascot() {
+  const t = useTranslations("analyzing");
+  const tCommon = useTranslations("common");
+
   return (
     <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
       <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-secondary/40 to-primary/20 animate-pulse-soft" />
       <div className="relative flex h-24 w-24 animate-float-cute flex-col items-center justify-center rounded-[1.75rem] border-[3px] border-white bg-white shadow-lg shadow-primary/15">
         <span className="text-4xl leading-none animate-wiggle-cute">🐮</span>
         <span className="mt-0.5 text-[10px] font-medium text-primary/80">
-          工位牛马
+          {tCommon("mascotName")}
         </span>
       </div>
       <span
@@ -30,7 +33,7 @@ function ThinkingMascot() {
         className="absolute -right-1 bottom-2 rounded-full bg-accent/90 px-1.5 py-0.5 text-[10px] font-bold text-text shadow-sm animate-pulse-soft"
         aria-hidden
       >
-        推理中
+        {t("reasoning")}
       </span>
     </div>
   );
@@ -51,15 +54,18 @@ function ThinkingDots() {
 }
 
 export function ThinkingStatus() {
+  const t = useTranslations("analyzing");
+  const texts = t.raw("thinkingTexts") as string[];
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (!texts?.length) return;
     const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % THINKING_STATUS_TEXTS.length);
+      setIndex((i) => (i + 1) % texts.length);
     }, 3200);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [texts]);
 
   return (
     <div className="flex w-full max-w-sm flex-col items-center">
@@ -72,7 +78,7 @@ export function ThinkingStatus() {
             className="animate-fade-in text-center text-lg font-medium leading-relaxed text-text"
             aria-live="polite"
           >
-            {THINKING_STATUS_TEXTS[index]}
+            {texts[index]}
           </p>
         </div>
         <div className="flex justify-center">
@@ -82,7 +88,7 @@ export function ThinkingStatus() {
 
       <p className="mt-6 flex items-center gap-1.5 text-xs text-muted">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary animate-pulse-soft" />
-        通义千问 · 视觉推理中
+        {t("engine")}
       </p>
     </div>
   );
