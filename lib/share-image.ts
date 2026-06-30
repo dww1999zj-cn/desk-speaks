@@ -118,14 +118,53 @@ function getHeaderStartY(): number {
   return CARD_MARGIN + CARD_PAD;
 }
 
-function getAgeBoxY(): number {
-  return (
-    getHeaderStartY() +
-    HEADER_BADGE_SIZE +
-    HEADER_BADGE_TITLE_GAP +
-    HEADER_TITLE_SIZE +
-    HEADER_TITLE_AGE_GAP
+const HEADER_TITLE_LINE_HEIGHT = 80;
+const THUMB_SIZE = 200;
+const THUMB_GAP = 24;
+
+function getTitleMaxWidth(hasThumb: boolean): number {
+  if (!hasThumb) return CONTENT_W;
+  return W - CARD_MARGIN - CARD_PAD - THUMB_SIZE - THUMB_GAP - CONTENT_X;
+}
+
+function measureHeaderBottom(
+  ctx: CanvasRenderingContext2D,
+  copy: ShareImageCopy,
+  font: string,
+  hasThumb: boolean
+): number {
+  const maxW = getTitleMaxWidth(hasThumb);
+  let y = getHeaderStartY();
+
+  ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
+  y = measureWrapText(
+    ctx,
+    copy.certBadge,
+    maxW,
+    HEADER_BADGE_SIZE + 8,
+    y
   );
+  y += HEADER_BADGE_TITLE_GAP;
+
+  ctx.font = `bold ${HEADER_TITLE_SIZE}px ${font}`;
+  y = measureWrapText(
+    ctx,
+    copy.title,
+    maxW,
+    HEADER_TITLE_LINE_HEIGHT,
+    y
+  );
+
+  return y + HEADER_TITLE_AGE_GAP;
+}
+
+function getAgeBoxY(
+  ctx: CanvasRenderingContext2D,
+  copy: ShareImageCopy,
+  font: string,
+  hasThumb: boolean
+): number {
+  return measureHeaderBottom(ctx, copy, font, hasThumb);
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -234,21 +273,23 @@ interface ShareLayout {
   footerTextY: number;
 }
 
-function getPillsY(): number {
-  return getAgeBoxY() + AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP;
+function getPillsY(ageBoxY: number): number {
+  return ageBoxY + AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP;
 }
 
 function computeShareLayout(
   ctx: CanvasRenderingContext2D,
   report: DeskReport,
-  font: string
+  copy: ShareImageCopy,
+  font: string,
+  hasThumb: boolean
 ): ShareLayout {
   const qrSize = 200;
   const qrPad = 12;
   const qrBoxSize = qrSize + qrPad * 2;
 
-  const ageBoxY = getAgeBoxY();
-  const pillsY = getPillsY();
+  const ageBoxY = getAgeBoxY(ctx, copy, font, hasThumb);
+  const pillsY = getPillsY(ageBoxY);
   const summaryY = pillsY + PILL_HEIGHT + PILL_SUMMARY_GAP;
 
   ctx.font = `600 40px ${font}`;
@@ -307,8 +348,15 @@ export async function generateShareImage(
 
   const font =
     '"PingFang SC","Microsoft YaHei",system-ui,sans-serif';
+  const hasThumb = Boolean(deskThumb);
   measureCtx.font = `600 40px ${font}`;
-  const layout = computeShareLayout(measureCtx, report, font);
+  const layout = computeShareLayout(
+    measureCtx,
+    report,
+    copy,
+    font,
+    hasThumb
+  );
 
   const canvas = document.createElement("canvas");
   canvas.width = W;
@@ -334,33 +382,37 @@ export async function generateShareImage(
   ctx.stroke();
 
   let y = getHeaderStartY();
+  const titleMaxW = getTitleMaxWidth(hasThumb);
 
   ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.primary;
-  ctx.fillText(copy.certBadge, CONTENT_X, y);
+  y = wrapText(ctx, copy.certBadge, CONTENT_X, y, titleMaxW, HEADER_BADGE_SIZE + 8);
+  y += HEADER_BADGE_TITLE_GAP;
 
   ctx.font = `bold ${HEADER_TITLE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.text;
-  ctx.fillText(
+  y = wrapText(
+    ctx,
     copy.title,
     CONTENT_X,
-    y + HEADER_BADGE_SIZE + HEADER_BADGE_TITLE_GAP
+    y,
+    titleMaxW,
+    HEADER_TITLE_LINE_HEIGHT
   );
 
   if (deskThumb) {
     try {
       const img = await loadImage(deskThumb);
-      const thumbSize = 200;
-      const tx = W - CARD_MARGIN - CARD_PAD - thumbSize;
-      const ty = y;
-      roundRect(ctx, tx, ty, thumbSize, thumbSize, 24);
+      const tx = W - CARD_MARGIN - CARD_PAD - THUMB_SIZE;
+      const ty = getHeaderStartY();
+      roundRect(ctx, tx, ty, THUMB_SIZE, THUMB_SIZE, 24);
       ctx.save();
       ctx.clip();
-      ctx.drawImage(img, tx, ty, thumbSize, thumbSize);
+      ctx.drawImage(img, tx, ty, THUMB_SIZE, THUMB_SIZE);
       ctx.restore();
       ctx.strokeStyle = COLORS.white;
       ctx.lineWidth = 6;
-      roundRect(ctx, tx, ty, thumbSize, thumbSize, 24);
+      roundRect(ctx, tx, ty, THUMB_SIZE, THUMB_SIZE, 24);
       ctx.stroke();
     } catch {
       /* skip thumb */

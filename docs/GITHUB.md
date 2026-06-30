@@ -28,8 +28,9 @@ On https://github.com/dww1999zj-cn → **Customize your pins** → select **desk
 
 ## Demo asset (README)
 
-`docs/demo-preview.mp4` (~70 KB) is used in README for fast loading. Regenerate from `docs/demo.mp4`:
+`docs/demo.gif` (~650 KB, 280px, 8 fps). GitHub README does not reliably embed repo-hosted MP4 — use GIF. Regenerate from `docs/demo.mp4`:
 
 ```bash
-ffmpeg -i docs/demo.mp4 -an -vf "scale=280:-1:flags=lanczos" -c:v libx264 -crf 30 -preset slow -movflags +faststart -pix_fmt yuv420p docs/demo-preview.mp4
+ffmpeg -i docs/demo.mp4 -an -vf "fps=8,scale=280:-1:flags=lanczos,palettegen=max_colors=64:stats_mode=diff" -update 1 -frames:v 1 docs/demo-palette.png
+ffmpeg -i docs/demo.mp4 -i docs/demo-palette.png -an -lavfi "fps=8,scale=280:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" docs/demo.gif
 ```

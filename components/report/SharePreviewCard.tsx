@@ -39,12 +39,14 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
       </p>
 
       <div className="relative overflow-hidden rounded-[1.75rem] border-2 border-white/90 bg-gradient-to-br from-[#FFF8F5] via-[#FFE8F0] to-[#F3EEFF] p-5 shadow-lg shadow-secondary/25">
-        <CertificationStamp className="absolute -right-1 top-24 z-10" />
-
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold text-primary">{t("certBadge")}</p>
-            <h3 className="mt-1 text-xl font-bold text-text">{t("title")}</h3>
+        <div className="flex items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold leading-snug text-primary">
+              {t("certBadge")}
+            </p>
+            <h3 className="mt-1 text-xl font-bold leading-tight text-text">
+              {t("title")}
+            </h3>
           </div>
           {deskThumb && (
             <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border-2 border-white shadow-sm">
@@ -59,6 +61,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         </div>
 
         <div className="relative mt-4 rounded-2xl bg-primary/5 px-4 py-4 text-center">
+          <CertificationStamp className="pointer-events-none absolute -right-3 top-1/2 z-10 -translate-y-1/2" />
           <p className="text-xs text-muted">{t("ageGuessLabel")}</p>
           <p className="text-4xl font-bold text-primary">
             {report.intro.guessedAge}
