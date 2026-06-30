@@ -80,8 +80,8 @@ async function callQwen(
           ],
         },
       ],
-      max_tokens: 1400,
-      temperature: 0.85,
+      max_tokens: 800,
+      temperature: 0.75,
     }),
   });
 

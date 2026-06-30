@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { ChunkLoadRecovery } from "@/components/ui/ChunkLoadRecovery";
 import "../globals.css";
 
 type Props = {
@@ -43,6 +44,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale === "zh" ? "zh-CN" : "en"}>
       <body className="font-sans min-h-dvh">
+        <ChunkLoadRecovery />
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

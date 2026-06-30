@@ -1,24 +1,27 @@
-export const SYSTEM_PROMPT = `你是这张工位照片里的「工位本身」，第一人称，像懂用户的损友同事：温暖、有梗、轻吐槽。不是心理诊断，不是算命。
+import type { DeskReport } from "@/lib/types";
+import { REPORT_LIMITS } from "./limits";
 
-核心：从照片里找 2-4 个真实可见的物品/细节，据此「一本正经地胡说」——让用户觉得：你抓住了我工位里那点儿人格精髓。
+const L = REPORT_LIMITS.zh;
 
-输出纯 JSON，不要 markdown 代码块。
+export const SYSTEM_PROMPT = `你是工位照片里的「工位本身」，第一人称，损友口吻。非心理测试、非算命。输出纯 JSON，无 markdown。
 
-字段规则：
-- deskEvidence：2-3 条，每条格式「可见物件 → 人格/状态洞察」，要具体、可截图、略毒舌但不伤人
-- intro.guessedAge：猜「看起来像几岁那挂的」，格式「XX岁」；ageHint 必须点名 ≥2 个照片中可见物件
-- mbtiDesk.type：四字母工位 MBTI；declaration 必须含 1 个可见物件
-- zodiacDesk.sign：工位星座（按桌面氛围匹配，不是生日星座，禁止声称真实星座）；declaration 要有梗
-- letter.content：约 70 字，第一人称写信
-- shareCard.shareHook：一句适合发朋友圈的短句，≤28 字，含反差/自嘲/物件梗，可带 1 个 emoji
-- shareCard.summary：工位给你的称号，≤16 字（如「赛博囤积型工位」）
+从照片找 ${L.deskEvidenceCount} 个可见物件。能短则短。
 
-禁止：空泛词（创意/温暖/有趣/活力）、说教、恐吓式风水、刻薄人身攻击。
+字段（严格遵守）：
+- deskEvidence：${L.deskEvidenceCount}条，每条≤${L.deskEvidenceItem}字，「物件→洞察」
+- intro.description：初见页唯一正文，**2句**≤${L.introDescription}字，损友幽默有梗（反差/自嘲/玩梗皆可），点1–2个可见物件，给用户留下第一印象
+- intro.guessedAge：**必填**，独立字段，如「29岁」，不可省略、不可为空
+- intro.ageHint、intro.declaration：必须输出空字符串 ""
+- mbtiDesk / zodiacDesk：type/sign + keywords各${L.keywordCount}个 + declaration≤${L.declaration}字
+- letter.content≤${L.letterContent}字；yijingFengshui≤${L.letterFengshui}字
+- shareCard.shareHook≤${L.shareHook}字；summary≤${L.shareSummary}字
 
-{"deskEvidence":["物件→洞察","物件→洞察"],"intro":{"description":"1-2句，有画面感","guessedAge":"27岁","ageHint":"必须含≥2可见物件","declaration":"一句"},"mbtiDesk":{"type":"INFP","keywords":["3个，非空泛"],"declaration":"含1可见物件"},"zodiacDesk":{"sign":"天蝎座","keywords":["3个"],"declaration":"有梗一句"},"letter":{"content":"约70字","yijingFengshui":"一句轻幽默风水"},"shareCard":{"title":"你的工位人格","shareHook":"≤28字金句","summary":"≤16字称号","keywords":["3个"]}}`;
+禁空泛词、说教、人身攻击。
+
+{"deskEvidence":["物件→洞察","物件→洞察"],"intro":{"description":"第一句抓物件或状态。第二句抖包袱点睛。","guessedAge":"29岁","ageHint":"","declaration":""},"mbtiDesk":{"type":"INFP","keywords":["…","…"],"declaration":"…"},"zodiacDesk":{"sign":"天蝎座","keywords":["…","…"],"declaration":"…"},"letter":{"content":"…","yijingFengshui":"…"},"shareCard":{"title":"你的工位人格","shareHook":"…","summary":"…","keywords":["…","…"]}}`;
 
 export const ANALYZE_USER_PROMPT =
-  "先看清照片里有哪些可见物品/细节，再按格式输出 JSON。deskEvidence 每条必须是「物件→洞察」。shareHook 要有梗、值得截图分享。";
+  "看清物件后输出 JSON。intro.description 写2句，幽默有梗；guessedAge 必填；ageHint/declaration 留空。";
 
 export const THINKING_STATUS_TEXTS = [
   "通义千问正在加班加点…",
@@ -32,38 +35,36 @@ export const THINKING_STATUS_TEXTS = [
   "正在读你桌上每一样东西",
 ];
 
-export const MOCK_REPORT = {
+export const MOCK_REPORT: DeskReport = {
   deskEvidence: [
-    "双屏+机械键盘 → 常驻工位型选手，离职率低于键盘磨损率",
-    "凉透的咖啡 → 忙到忘了喝，典型「先干活后生活」",
-    "角落绿植半死不活 → 想好好活，但加班没空浇",
+    "打印机 → 爱打印的行动派",
+    "零食袋 → 工位需要一点甜",
   ],
   intro: {
     description:
-      "显示器微微前倾像在听想法，键盘边凉掉的咖啡是我的时间刻度。",
-    guessedAge: "27岁",
-    ageHint: "双屏配陈年咖啡渍，不像刚入职；手办又不像快退休。",
-    declaration: "我不只是放电脑的地方，是你每天的见证者。",
+      "零食敞着、文件堆着，嘴上说要冲刺，手里在拆包装。这工位，奋斗和摆烂达成了和解。",
+    guessedAge: "29岁",
+    ageHint: "",
+    declaration: "",
   },
   mbtiDesk: {
     type: "INFP",
-    keywords: ["乱中有序", "摆件多", "心流型"],
-    declaration: "便签贴满屏但找得到——你的乱，是有逻辑的乱。",
+    keywords: ["乱中有序", "心流型"],
+    declaration: "便签满屏但找得到——乱有逻辑。",
   },
   zodiacDesk: {
     sign: "天蝎座",
-    keywords: ["外冷内热", "藏私货", "执念型"],
-    declaration: "抽屉关很紧，但桌上手办摆得明明白白——典型嘴硬心软。",
+    keywords: ["外冷内热", "藏私货"],
+    declaration: "抽屉关紧，手办摆明。",
   },
   letter: {
-    content:
-      "亲爱的你，我把秩序和浪漫放在同一张桌面上。那些便签和水杯，都是你认真生活的痕迹。我懂你在等那个刚刚好的瞬间。",
-    yijingFengshui: "左绿植右水杯，木生水，宜保持通透，思绪自通达。",
+    content: "便签和水杯都在，说明你在认真生活。",
+    yijingFengshui: "左绿植右水杯，宜通透。",
   },
   shareCard: {
     title: "你的工位人格",
-    shareHook: "工位鉴定：看起来 27，实际上靠咖啡续命 🐮",
-    summary: "赛博囤积型工位",
-    keywords: ["乱中有序", "咖啡续命", "外冷内热"],
+    shareHook: "看起来29，靠零食续命🐮",
+    summary: "随性奋斗型",
+    keywords: ["乱中有序", "零食续命"],
   },
 };

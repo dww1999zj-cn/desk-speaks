@@ -87,7 +87,7 @@ export function ReportCard({
         <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
           {t("introLayer")}
         </p>
-        <p className="text-base leading-relaxed text-muted md:text-lg">
+        <p className="whitespace-pre-line text-base leading-relaxed text-muted md:text-lg">
           {data.content}
         </p>
         <div className="mt-6 rounded-2xl bg-primary/5 px-5 py-5 text-center">
@@ -95,13 +95,7 @@ export function ReportCard({
           <p className="mt-1 text-5xl font-semibold tracking-tight text-primary">
             {data.guessedAge}
           </p>
-          {data.ageHint && (
-            <p className="mt-3 text-sm leading-relaxed text-muted">{data.ageHint}</p>
-          )}
         </div>
-        <p className="mt-6 text-lg font-medium leading-relaxed text-text">
-          「{data.declaration}」
-        </p>
         <DeskEvidenceList items={data.deskEvidence} />
       </CardWrapper>
     );

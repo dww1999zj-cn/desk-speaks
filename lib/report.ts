@@ -21,6 +21,37 @@ export function formatMbtiType(type: string): string {
 }
 
 /** 兼容旧版 sessionStorage 报告结构 */
+function ensureStringArray(value: unknown, fallback: string[]): string[] {
+  if (!Array.isArray(value)) return fallback;
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function normalizeGuessedAge(
+  rawIntro: Partial<DeskReport["intro"]> | undefined,
+  locale: AppLocale,
+  fallback: string
+): string {
+  const raw = rawIntro?.guessedAge;
+  if (typeof raw === "number" && Number.isFinite(raw)) {
+    return locale === "zh" ? `${raw}岁` : String(raw);
+  }
+  if (typeof raw === "string") {
+    const trimmed = raw.trim();
+    if (trimmed) return trimmed;
+  }
+
+  const description = rawIntro?.description?.trim() ?? "";
+  if (description) {
+    const zhMatch = description.match(/(\d{1,2})\s*岁/);
+    if (zhMatch) return `${zhMatch[1]}岁`;
+    const enMatch = description.match(/\b(\d{1,2})\s*(?:years?\s*old)?\b/i);
+    if (enMatch) return enMatch[1];
+  }
+
+  return fallback;
+}
+
+/** 兼容旧版 sessionStorage 报告结构 */
 export function normalizeReport(
   raw: Partial<DeskReport>,
   locale: AppLocale = "zh"
@@ -37,9 +68,29 @@ export function normalizeReport(
     deskEvidence: Array.isArray(raw.deskEvidence)
       ? raw.deskEvidence.filter((item): item is string => typeof item === "string")
       : MOCK_REPORT.deskEvidence,
-    intro: { ...MOCK_REPORT.intro, ...(raw.intro ?? {}) },
-    mbtiDesk: { ...MOCK_REPORT.mbtiDesk, ...(raw.mbtiDesk ?? {}) },
-    zodiacDesk: { ...MOCK_REPORT.zodiacDesk, ...(raw.zodiacDesk ?? {}) },
+    intro: {
+      ...MOCK_REPORT.intro,
+      ...(raw.intro ?? {}),
+      guessedAge: normalizeGuessedAge(raw.intro, locale, MOCK_REPORT.intro.guessedAge),
+      ageHint: "",
+      declaration: "",
+    },
+    mbtiDesk: {
+      ...MOCK_REPORT.mbtiDesk,
+      ...(raw.mbtiDesk ?? {}),
+      keywords: ensureStringArray(
+        raw.mbtiDesk?.keywords,
+        MOCK_REPORT.mbtiDesk.keywords
+      ),
+    },
+    zodiacDesk: {
+      ...MOCK_REPORT.zodiacDesk,
+      ...(raw.zodiacDesk ?? {}),
+      keywords: ensureStringArray(
+        raw.zodiacDesk?.keywords,
+        MOCK_REPORT.zodiacDesk.keywords
+      ),
+    },
     letter: { ...MOCK_REPORT.letter, ...(raw.letter ?? {}) },
     shareCard: {
       ...MOCK_REPORT.shareCard,
@@ -49,6 +100,10 @@ export function normalizeReport(
         shareCard.summary ??
         MOCK_REPORT.shareCard.shareHook,
       summary,
+      keywords: ensureStringArray(
+        shareCard.keywords,
+        MOCK_REPORT.shareCard.keywords
+      ),
     },
   };
 }

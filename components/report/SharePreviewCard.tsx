@@ -38,7 +38,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         {t("previewHint")}
       </p>
 
-      <div className="relative overflow-hidden rounded-[1.75rem] border-2 border-white/90 bg-gradient-to-br from-[#FFF8F5] via-[#FFE8F0] to-[#F3EEFF] p-5 shadow-lg shadow-secondary/25">
+      <div className="relative overflow-visible rounded-[1.75rem] border-2 border-white/90 bg-gradient-to-br from-[#FFF8F5] via-[#FFE8F0] to-[#F3EEFF] p-5 shadow-lg shadow-secondary/25">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold leading-snug text-primary">
@@ -60,12 +60,14 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
           )}
         </div>
 
-        <div className="relative mt-4 rounded-2xl bg-primary/5 px-4 py-4 text-center">
-          <CertificationStamp className="pointer-events-none absolute -right-3 top-1/2 z-10 -translate-y-1/2" />
-          <p className="text-xs text-muted">{t("ageGuessLabel")}</p>
-          <p className="text-4xl font-bold text-primary">
-            {report.intro.guessedAge}
-          </p>
+        <div className="relative mt-4 overflow-visible rounded-2xl bg-primary/5 px-4 py-4 text-center">
+          <CertificationStamp className="pointer-events-none absolute right-0 top-0 z-0 translate-x-[38%] -translate-y-[48%]" />
+          <div className="relative z-10">
+            <p className="text-xs text-muted">{t("ageGuessLabel")}</p>
+            <p className="mt-1 text-4xl font-bold text-primary">
+              {report.intro.guessedAge}
+            </p>
+          </div>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">
@@ -87,7 +89,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         </p>
 
         <div className="mt-3 flex flex-wrap gap-2">
-          {report.shareCard.keywords.slice(0, 3).map((kw) => (
+          {(report.shareCard.keywords ?? []).slice(0, 2).map((kw) => (
             <span
               key={kw}
               className="rounded-full bg-secondary/35 px-3 py-1 text-xs font-medium text-primary"

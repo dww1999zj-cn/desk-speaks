@@ -424,6 +424,17 @@ export async function generateShareImage(
   ctx.fillStyle = "rgba(139,124,246,0.08)";
   ctx.fill();
 
+  drawCertificationStamp(
+    ctx,
+    CONTENT_X + CONTENT_W - 48,
+    layout.ageBoxY + 32,
+    100,
+    font,
+    copy.stampLine1,
+    copy.stampLine2,
+    locale
+  );
+
   ctx.font = `bold 96px ${font}`;
   ctx.fillStyle = COLORS.primary;
   ctx.textAlign = "center";
@@ -431,17 +442,6 @@ export async function generateShareImage(
   ctx.fillText(report.intro.guessedAge, W / 2, y + AGE_BOX_HEIGHT / 2);
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
-
-  drawCertificationStamp(
-    ctx,
-    W - CARD_MARGIN - CARD_PAD - 100,
-    layout.ageBoxY + AGE_BOX_HEIGHT / 2,
-    100,
-    font,
-    copy.stampLine1,
-    copy.stampLine2,
-    locale
-  );
 
   const mbtiLabel = formatMbtiType(report.mbtiDesk.type);
   const pills = [
@@ -478,7 +478,7 @@ export async function generateShareImage(
     56
   );
 
-  const keywords = report.shareCard.keywords.slice(0, 3);
+  const keywords = (report.shareCard.keywords ?? []).slice(0, 2);
   let kwX = CONTENT_X;
   ctx.font = `500 32px ${font}`;
   for (const kw of keywords) {

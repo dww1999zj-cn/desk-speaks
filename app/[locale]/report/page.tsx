@@ -45,30 +45,37 @@ export default function ReportPage() {
   );
 
   useEffect(() => {
-    const reportRaw = sessionStorage.getItem(STORAGE_KEYS.report);
-    const imageRaw =
-      sessionStorage.getItem(STORAGE_KEYS.imageThumb) ??
-      sessionStorage.getItem(STORAGE_KEYS.image);
-    const storedLocale = resolveLocale(
-      sessionStorage.getItem(STORAGE_KEYS.locale)
-    );
+    try {
+      const reportRaw = sessionStorage.getItem(STORAGE_KEYS.report);
+      const imageRaw =
+        sessionStorage.getItem(STORAGE_KEYS.imageThumb) ??
+        sessionStorage.getItem(STORAGE_KEYS.image);
+      const storedLocale = resolveLocale(
+        sessionStorage.getItem(STORAGE_KEYS.locale)
+      );
 
-    if (!reportRaw) {
+      if (!reportRaw) {
+        router.replace("/upload");
+        return;
+      }
+
+      const parsed = normalizeReport(JSON.parse(reportRaw), storedLocale);
+      setReport(parsed);
+      setCards(reportToCards(parsed, cardLabels));
+      setMatchQuestion(
+        parsed.shareCard.shareHook ||
+          t("matchFallback", {
+            mbti: formatMbtiType(parsed.mbtiDesk.type),
+            zodiac: parsed.zodiacDesk.sign,
+          })
+      );
+      if (imageRaw) setImage(imageRaw);
+    } catch {
+      sessionStorage.removeItem(STORAGE_KEYS.report);
+      sessionStorage.removeItem(STORAGE_KEYS.image);
+      sessionStorage.removeItem(STORAGE_KEYS.imageThumb);
       router.replace("/upload");
-      return;
     }
-
-    const parsed = normalizeReport(JSON.parse(reportRaw), storedLocale);
-    setReport(parsed);
-    setCards(reportToCards(parsed, cardLabels));
-    setMatchQuestion(
-      parsed.shareCard.shareHook ||
-        t("matchFallback", {
-          mbti: formatMbtiType(parsed.mbtiDesk.type),
-          zodiac: parsed.zodiacDesk.sign,
-        })
-    );
-    if (imageRaw) setImage(imageRaw);
   }, [router, cardLabels, t]);
 
   if (cards.length === 0 || !report) {
