@@ -5,6 +5,8 @@ import { analyzeDeskPersona } from "@/lib/persona/analyze";
 import { saveDeskReport } from "@/lib/stats";
 import type { DeskReport } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const maxDuration = 60;
 
 function scheduleSave(report: DeskReport) {

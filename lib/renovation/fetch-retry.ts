@@ -5,8 +5,14 @@ const FETCH_TIMEOUT_MS = 45000;
 const CONNECT_TIMEOUT_MS = 30000;
 const DEFAULT_RETRIES = 5;
 
-/** Default undici connect timeout is 10s — too short for flaky networks. */
-const dashscopeAgent = new Agent({ connectTimeout: CONNECT_TIMEOUT_MS });
+/** Lazy-init — avoid constructing Agent at module load during Next build. */
+let dashscopeAgent: Agent | null = null;
+function getDashscopeAgent(): Agent {
+  if (!dashscopeAgent) {
+    dashscopeAgent = new Agent({ connectTimeout: CONNECT_TIMEOUT_MS });
+  }
+  return dashscopeAgent;
+}
 
 async function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -43,7 +49,7 @@ export async function fetchWithRetry(
         url,
         {
           ...init,
-          dispatcher: dashscopeAgent,
+          dispatcher: getDashscopeAgent(),
           signal: init.signal ?? AbortSignal.timeout(FETCH_TIMEOUT_MS),
         } as Parameters<typeof undiciFetch>[1]
       );

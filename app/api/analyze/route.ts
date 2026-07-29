@@ -12,6 +12,8 @@ import { resolveDeskStyle, getDeskStyleLabel } from "@/lib/renovation";
 import type { RenovationResult } from "@/lib/renovation";
 import { recordGeneration } from "@/lib/generation-stats";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const maxDuration = 120;
 
 export async function POST(req: NextRequest) {

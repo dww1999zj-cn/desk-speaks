@@ -3,6 +3,9 @@ import { getGenerationCount } from "@/lib/generation-stats";
 import { getDeskStats } from "@/lib/stats";
 import { isSupabaseConfigured } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 /** GET — homepage total: 2000 + actual generations */
 export async function GET() {
   try {
