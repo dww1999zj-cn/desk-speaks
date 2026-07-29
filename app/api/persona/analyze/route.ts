@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse, after } from "next/server";
 import { getPrompts } from "@/lib/prompts/index";
 import { resolveLocale } from "@/lib/i18n/locale";
-import { analyzeDeskPersona } from "@/lib/persona/analyze";
-import { saveDeskReport } from "@/lib/stats";
 import type { DeskReport } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +10,7 @@ export const maxDuration = 60;
 function scheduleSave(report: DeskReport) {
   after(async () => {
     try {
+      const { saveDeskReport } = await import("@/lib/stats");
       await saveDeskReport(report);
     } catch (err) {
       console.error("Background persona save error:", err);
@@ -38,6 +37,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ report: mockReport, reportId: null, locale });
     }
 
+    const { analyzeDeskPersona } = await import("@/lib/persona/analyze");
     const report = await analyzeDeskPersona(image, locale);
     scheduleSave(report);
     return NextResponse.json({ report, reportId: null, locale });

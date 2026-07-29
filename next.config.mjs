@@ -7,6 +7,8 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Avoid bundling native/server packages into API route page-data collection
+  serverExternalPackages: ["undici", "@supabase/supabase-js"],
 };
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");

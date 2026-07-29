@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse, after } from "next/server";
 import { resolveLocale } from "@/lib/i18n/locale";
+import { resolveDeskStyle, getDeskStyleLabel } from "@/lib/renovation";
+import { planToResult } from "@/lib/renovation/parse";
 import {
-  analyzeDeskRenovation,
-  generateRenovationImage,
-  NotADeskError,
-  planToResult,
   MOCK_RENOVATION_ZH,
   MOCK_RENOVATION_EN,
-} from "@/lib/renovation/server";
-import { resolveDeskStyle, getDeskStyleLabel } from "@/lib/renovation";
+} from "@/lib/renovation/prompts";
 import type { RenovationResult } from "@/lib/renovation";
-import { recordGeneration } from "@/lib/generation-stats";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -44,43 +40,51 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ renovation, locale, deskStyle });
     }
 
+    const { analyzeDeskRenovation, generateRenovationImage, NotADeskError } =
+      await import("@/lib/renovation/server");
+
     const apiKey = process.env.DASHSCOPE_API_KEY!;
-    const plan = await analyzeDeskRenovation(image, locale, deskStyle);
+    try {
+      const plan = await analyzeDeskRenovation(image, locale, deskStyle);
 
-    const renovatedImage = await generateRenovationImage(
-      apiKey,
-      image,
-      plan,
-      locale,
-      deskStyle
-    );
-
-    const renovation = planToResult(plan, renovatedImage, styleLabel, locale);
-
-    after(async () => {
-      try {
-        await recordGeneration("renovation");
-      } catch (err) {
-        console.error("Background renovation count error:", err);
-      }
-    });
-
-    return NextResponse.json({
-      renovation,
-      locale,
-      deskStyle,
-      imageSkipped: renovatedImage === null,
-    });
-  } catch (error) {
-    if (error instanceof NotADeskError) {
-      return NextResponse.json(
-        {
-          error: "not_desk",
-          message: error.reason,
-        },
-        { status: 422 }
+      const renovatedImage = await generateRenovationImage(
+        apiKey,
+        image,
+        plan,
+        locale,
+        deskStyle
       );
+
+      const renovation = planToResult(plan, renovatedImage, styleLabel, locale);
+
+      after(async () => {
+        try {
+          const { recordGeneration } = await import("@/lib/generation-stats");
+          await recordGeneration("renovation");
+        } catch (err) {
+          console.error("Background renovation count error:", err);
+        }
+      });
+
+      return NextResponse.json({
+        renovation,
+        locale,
+        deskStyle,
+        imageSkipped: renovatedImage === null,
+      });
+    } catch (error) {
+      if (error instanceof NotADeskError) {
+        return NextResponse.json(
+          {
+            error: "not_desk",
+            message: (error as { reason: string }).reason,
+          },
+          { status: 422 }
+        );
+      }
+      throw error;
     }
+  } catch (error) {
     console.error("Renovation error:", error);
     return NextResponse.json(
       { error: "Analysis failed, please try again later" },

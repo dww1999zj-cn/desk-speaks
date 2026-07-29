@@ -1,18 +1,7 @@
 import "server-only";
-import { Agent, fetch as undiciFetch } from "undici";
 
 const FETCH_TIMEOUT_MS = 45000;
-const CONNECT_TIMEOUT_MS = 30000;
 const DEFAULT_RETRIES = 5;
-
-/** Lazy-init — avoid constructing Agent at module load during Next build. */
-let dashscopeAgent: Agent | null = null;
-function getDashscopeAgent(): Agent {
-  if (!dashscopeAgent) {
-    dashscopeAgent = new Agent({ connectTimeout: CONNECT_TIMEOUT_MS });
-  }
-  return dashscopeAgent;
-}
 
 async function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -35,7 +24,7 @@ function isTransientNetworkError(err: unknown): boolean {
   );
 }
 
-/** Retry transient network errors when calling DashScope. */
+/** Retry transient network errors when calling DashScope. Uses global fetch (no undici). */
 export async function fetchWithRetry(
   url: string,
   init: RequestInit,
@@ -45,15 +34,11 @@ export async function fetchWithRetry(
 
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
-      const res = await undiciFetch(
-        url,
-        {
-          ...init,
-          dispatcher: getDashscopeAgent(),
-          signal: init.signal ?? AbortSignal.timeout(FETCH_TIMEOUT_MS),
-        } as Parameters<typeof undiciFetch>[1]
-      );
-      return res as unknown as Response;
+      const res = await fetch(url, {
+        ...init,
+        signal: init.signal ?? AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
+      return res;
     } catch (err) {
       lastError = err;
       if (attempt < retries - 1 && isTransientNetworkError(err)) {

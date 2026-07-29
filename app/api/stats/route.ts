@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGenerationCount } from "@/lib/generation-stats";
-import { getDeskStats } from "@/lib/stats";
-import { isSupabaseConfigured } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -9,6 +6,7 @@ export const runtime = "nodejs";
 /** GET — homepage total: 2000 + actual generations */
 export async function GET() {
   try {
+    const { getGenerationCount } = await import("@/lib/generation-stats");
     const stats = await getGenerationCount();
     return NextResponse.json(stats);
   } catch (error) {
@@ -28,10 +26,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "缺少 traits 数据" }, { status: 400 });
     }
 
+    const { isSupabaseConfigured } = await import("@/lib/supabase");
     if (!isSupabaseConfigured()) {
       return NextResponse.json({ enabled: false, stats: null });
     }
 
+    const { getDeskStats } = await import("@/lib/stats");
     const stats = await getDeskStats(traits, excludeId);
 
     if (!stats) {
