@@ -9,12 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#FFF8F5",
-        primary: "#8B7CF6",
-        secondary: "#FFB5C2",
-        accent: "#FFD166",
-        text: "#4A4458",
-        muted: "#9B93A8",
+        background: "#F7F6F3",
+        surface: "#EEEDE8",
+        text: "#2C2C2A",
+        muted: "#8A8780",
+        wood: "#C4A882",
+        plant: "#5B8C5A",
+        primary: "#2C2C2A",
+        secondary: "#EEEDE8",
+        accent: "#C4A882",
       },
       fontFamily: {
         sans: [
@@ -27,9 +30,11 @@ const config: Config = {
       },
       backgroundImage: {
         "soft-gradient":
-          "linear-gradient(160deg, #FFF8F5 0%, #FFE8F0 45%, #F3EEFF 100%)",
+          "linear-gradient(180deg, #F7F6F3 0%, #EEEDE8 100%)",
         "card-gradient":
-          "linear-gradient(160deg, #FFFFFF 0%, #FFF0F5 100%)",
+          "linear-gradient(180deg, #FFFFFF 0%, #F7F6F3 100%)",
+        "ai-glow":
+          "linear-gradient(135deg, rgba(91,140,90,0.35) 0%, rgba(196,168,130,0.25) 50%, rgba(247,246,243,0.1) 100%)",
       },
       animation: {
         "fade-in-up": "fadeInUp 0.6s ease-out forwards",
@@ -40,6 +45,7 @@ const config: Config = {
         "think-dot": "thinkDot 1.2s ease-in-out infinite",
         "float-cute": "floatCute 2.5s ease-in-out infinite",
         "stamp-in": "stampIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        "handle-hint": "handleHint 2s ease-in-out 3",
       },
       keyframes: {
         fadeInUp: {
@@ -73,6 +79,10 @@ const config: Config = {
         stampIn: {
           "0%": { opacity: "0", transform: "scale(1.8) rotate(-24deg)" },
           "100%": { opacity: "1", transform: "scale(1) rotate(12deg)" },
+        },
+        handleHint: {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(255,255,255,0.45)" },
+          "50%": { boxShadow: "0 0 0 10px rgba(255,255,255,0)" },
         },
       },
     },

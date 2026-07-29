@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
     <button
       type="button"
       onClick={() => router.replace(pathname, { locale: nextLocale })}
-      className="inline-flex shrink-0 items-center rounded-full border border-white/90 bg-white/70 px-3 py-1 text-xs font-medium text-primary shadow-sm transition-colors hover:bg-white"
+      className="inline-flex shrink-0 items-center rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium text-text shadow-sm transition-colors hover:bg-surface"
       aria-label={label}
     >
       {label}

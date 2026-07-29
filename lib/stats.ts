@@ -1,6 +1,7 @@
 import type { DeskReport, DeskStats } from "./types";
 import { reportToTraits } from "./report";
 import { getSupabaseAdmin } from "./supabase";
+import { recordGeneration } from "./generation-stats";
 
 const MIN_SIMILAR_OVERLAP = 2;
 
@@ -26,6 +27,8 @@ export async function saveDeskReport(report: DeskReport): Promise<string | null>
     console.error("Supabase save error:", error);
     return null;
   }
+
+  await recordGeneration("persona");
 
   return data.id;
 }

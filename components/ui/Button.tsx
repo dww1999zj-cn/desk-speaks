@@ -9,9 +9,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   primary:
-    "bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/25 border-2 border-white/30",
+    "bg-text text-white hover:bg-text/90 shadow-sm border border-transparent",
   secondary:
-    "bg-white text-primary border-2 border-primary/15 hover:bg-primary/5 shadow-sm",
+    "bg-white text-text border border-black/10 hover:bg-surface",
   ghost: "bg-transparent text-muted hover:text-text",
 };
 
@@ -29,7 +29,7 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const classes = `inline-flex touch-manipulation select-none items-center justify-center rounded-full font-medium transition-colors duration-200 active:scale-[0.98] ${variants[variant]} ${sizes[size]} ${className}`;
+  const classes = `inline-flex touch-manipulation select-none items-center justify-center rounded-xl font-medium transition-colors duration-200 active:scale-[0.99] ${variants[variant]} ${sizes[size]} ${className}`;
 
   if (href) {
     return (

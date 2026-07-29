@@ -1,4 +1,4 @@
-const DESKTOP_MAX = 960;
+const DESKTOP_MAX = 1280;
 const MOBILE_MAX = 640;
 const THUMB_MAX = 320;
 const DESKTOP_QUALITY = 0.72;

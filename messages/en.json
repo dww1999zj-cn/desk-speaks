@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Your Desk Persona",
-    "description": "Upload a desk photo — see how AI reads your desk persona"
+    "title": "My Desk",
+    "description": "Upload a desk photo — get a custom renovation plan and visual result"
   },
   "common": {
     "back": "← Back",
@@ -10,27 +10,35 @@
     "languageSwitch": "EN",
     "languageSwitchToZh": "中文"
   },
-  "home": {
-    "badge": "Desk buddy online",
-    "lead1": "You sit here every day.",
-    "lead2": "Your desk might know you better.",
-    "titleLine1": "Your",
-    "titleLine2": "Desk Persona",
-    "demoAgeLabel": "Desk guesses",
-    "demoAge": "27",
-    "demoMbtiLabel": "Desk MBTI",
-    "demoZodiacLabel": "Sign · Letter",
-    "demoZodiacText": "Scorpio has thoughts…",
-    "ctaDesc1": "Snap your desk. Qwen reads it.",
-    "ctaDesc2": "See if its read matches yours.",
-    "ctaButton": "Snap my desk 🐮",
-    "footerHint": "Your everyday desk is perfect — no staging needed"
+  "hub": {
+    "badge": "Desk Designer",
+    "title": "Desk Designer",
+    "subtitle": "Upload one photo — discover your desk style and get a custom renovation plan.",
+    "heroAlt": "Renovated desk result",
+    "cta": "Start my desk makeover",
+    "personaLink": "Desk persona only? Tap here",
+    "trustGeneration": "{count}+ desks generated",
+    "showcase": {
+      "caption": "Same desk · slide to compare",
+      "before": "Before",
+      "after": "After",
+      "beforeAlt": "Messy desk before makeover",
+      "afterAlt": "Renovated desk illustration",
+      "dragHint": "Drag left or right",
+      "handleLabel": "Drag",
+      "compareAria": "Desk before and after comparison"
+    },
+    "trustItems": [
+      "2,000+ desks generated",
+      "~30s analysis",
+      "Shareable poster ready"
+    ]
   },
-  "upload": {
-    "badge": "🐮 Upload desk photo",
+  "personaUpload": {
+    "badge": "🐮 Desk Persona",
     "title": "Snap your desk",
-    "subtitle": "Real beats staged. We handle the rest.",
-    "submit": "This one ✨",
+    "subtitle": "No staging — real desks read best. See if your desk gets you.",
+    "submit": "This one — go 🐮",
     "submitting": "Starting…",
     "preparing": "Preparing…",
     "previewAlt": "Desk preview",
@@ -42,19 +50,68 @@
     "camera": "Camera",
     "imageError": "Couldn't process — try another"
   },
+  "upload": {
+    "badge": "Desk Designer",
+    "title": "Snap your desk to start designing",
+    "subtitle": "Everyday desk is fine — no staging. Only storage & decor change; desk stays the same.",
+    "submit": "Start design",
+    "submitting": "Starting…",
+    "preparing": "Preparing…",
+    "previewAlt": "Desk preview",
+    "reselect": "Pick another",
+    "dropTitle": "Choose or snap a desk photo",
+    "dropHint": "Gallery or camera",
+    "processing": "Processing…",
+    "gallery": "Gallery",
+    "camera": "Camera",
+    "imageError": "Couldn't process — try another",
+    "example": {
+      "caption": "Expected result: same desk · drag to compare",
+      "before": "Before",
+      "after": "After",
+      "beforeAlt": "Messy desk before makeover",
+      "afterAlt": "Renovated desk",
+      "dragHint": "Drag left or right",
+      "handleLabel": "Drag",
+      "compareAria": "Desk before and after comparison"
+    },
+    "styles": {
+      "title": "Pick a style",
+      "ins": {
+        "label": "INS Style",
+        "hint": "Bright & tidy · white storage · one corner accent"
+      },
+      "japanese": {
+        "label": "Japanese Cozy",
+        "hint": "Warm lamp or one corner accent · wood organizers"
+      },
+      "minimal": {
+        "label": "Minimal Office",
+        "hint": "Gray/white storage · cable tidy · workable desk"
+      }
+    }
+  },
   "analyzing": {
-    "reasoning": "Thinking",
-    "engine": "Qwen · vision",
+    "headline": "Designer at work",
+    "reasoning": "Analyzing",
+    "engine": "Qwen · multimodal space analysis",
+    "stepActive": "In progress…",
+    "designSteps": [
+      "Observing your desk",
+      "Identifying desktop elements",
+      "Analyzing spatial layout",
+      "Matching your desk style",
+      "Generating your renovation plan"
+    ],
     "thinkingTexts": [
-      "Qwen is on it…",
-      "Peeking at your keyboard",
-      "Brain warming up",
-      "Still guessing your age",
-      "Actually reasoning",
-      "Scanning your desk",
-      "Letter almost done",
-      "That mug says a lot…",
-      "Reading every item"
+      "Checking if this is a desk photo…",
+      "Identifying bare desk layout",
+      "Listing clutter on desktop…",
+      "Planning storage: what goes where",
+      "Planning decor placement",
+      "Pass 1: putting clutter into organizers",
+      "Pass 2: adding decor accents",
+      "Almost done — stay on screen"
     ],
     "errors": {
       "timeout": {
@@ -63,23 +120,73 @@
         "hint": "Try a smaller photo or come back later."
       },
       "failed": {
-        "title": "Couldn't read your desk",
-        "message": "No panic — happens sometimes.",
-        "hint": "Retry once, or swap the photo."
+        "title": "Generation failed",
+        "message": "Network or model hiccup.",
+        "hint": "Retry, or use a clearer desk photo."
+      },
+      "not_desk": {
+        "title": "Not a desk photo",
+        "message": "Please upload an office desk / workstation.",
+        "hint": "Selfies, portraits, food, landscapes are rejected."
       }
     },
     "retry": "Try again 🐮",
-    "changePhoto": "Change photo"
+    "changePhoto": "Change photo",
+    "persona": {
+      "reasoning": "Thinking",
+      "engine": "Qwen · Desk Persona",
+      "thinkingTexts": [
+        "Studying your desk…",
+        "Collecting clues on the surface",
+        "Guessing your vibe age",
+        "Running desk MBTI",
+        "Matching a desk sign",
+        "Your desk is writing a letter…",
+        "Almost done — stay on screen"
+      ]
+    }
   },
   "report": {
-    "loading": "Folding the letter…",
-    "badge": "🐮 Desk report",
-    "title": "Your desk's read",
-    "matchFallback": "{mbti} × {zodiac} — feel right?",
-    "deskAlt": "Your desk",
-    "shareHint": "Swipe to cert card to save",
+    "loading": "Preparing your plan…",
     "retryUpload": "Try another desk",
     "backHome": "Home",
+    "persona": {
+      "loading": "Desk is finishing the letter…",
+      "badge": "🐮 Desk Buddy report",
+      "title": "You, through your desk",
+      "matchFallback": "{mbti} × {zodiac} — does your desk get you?",
+      "deskAlt": "Your desk",
+      "shareHint": "Swipe to the cert card to preview & save"
+    },
+    "renovation": {
+      "badge": "Renovation plan",
+      "before": "Before",
+      "after": "After",
+      "beforeAlt": "Desk before",
+      "afterAlt": "Renovated desk result",
+      "afterPending": "Image not ready — see the 3-step plan below",
+      "dragHint": "Drag left or right",
+      "handleLabel": "Drag",
+      "compareAria": "Before and after comparison slider",
+      "stepsTitle": "3-step logic",
+      "step1": "Bare desk",
+      "step2": "Organize",
+      "step3": "Decorate",
+      "highlights": "Results",
+      "tips": "How to pull it off",
+      "closeLightbox": "Close",
+      "tapToEnlarge": "Tap to enlarge",
+      "disclaimer": "Fixed furniture unchanged — clutter stored first, then decor; after image is a 2-pass edit",
+      "fengShui": {
+        "sectionTitle": "Desk placement",
+        "topicLabel": "Key point",
+        "quoteLabel": "Classical source",
+        "briefLabel": "For your desk",
+        "toggle": "Tradition · office layout",
+        "disclaimer": "Traditional placement reference only — personal preference comes first.",
+        "recommendLink": "More office picks →"
+      }
+    },
     "cards": {
       "introLayer": "First look",
       "introTitle": "First look",
@@ -125,7 +232,19 @@
     "generateError": "Couldn't generate — retry",
     "filename": "desk-persona.png",
     "stampLine1": "Desk buddy",
-    "stampLine2": "Certified"
+    "stampLine2": "Certified",
+    "renovation": {
+      "previewHint": "Share poster · save to post",
+      "badge": "Desk Designer",
+      "beforeLabel": "Before",
+      "afterLabel": "After",
+      "qrTitle": "Scan to renovate your desk",
+      "saveButton": "Save share image 📸",
+      "savingButton": "Generating poster…",
+      "imageFooter": "{footer} · long-press to save",
+      "filename": "desk-renovation.png",
+      "generateError": "Couldn't generate — retry"
+    }
   },
   "recommend": {
     "badge": "🛒 Desk picks",

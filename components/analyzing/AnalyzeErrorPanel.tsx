@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 
-export type AnalyzeErrorType = "timeout" | "failed";
+export type AnalyzeErrorType = "timeout" | "failed" | "not_desk";
 
 interface AnalyzeErrorPanelProps {
   type: AnalyzeErrorType;

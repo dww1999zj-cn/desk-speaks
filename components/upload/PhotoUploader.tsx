@@ -6,10 +6,11 @@ import { compressImageForUpload } from "@/lib/image";
 
 interface PhotoUploaderProps {
   onImageReady: (images: { full: string; thumb: string }) => void;
+  i18nNamespace?: "upload" | "personaUpload";
 }
 
-export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
-  const t = useTranslations("upload");
+export function PhotoUploader({ onImageReady, i18nNamespace = "upload" }: PhotoUploaderProps) {
+  const t = useTranslations(i18nNamespace);
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -62,10 +63,10 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        className={`relative flex min-h-[240px] flex-col items-center justify-center rounded-[2rem] border-[3px] border-dashed transition-all duration-200 ${
+        className={`relative flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed transition-all duration-200 ${
           dragOver
             ? "border-primary bg-primary/5"
-            : "border-secondary/50 bg-white/70"
+            : "border-muted/30 bg-surface/80"
         }`}
       >
         {preview ? (
@@ -80,10 +81,10 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 p-6 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary/40 text-2xl">
-              📷
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-lg font-light text-muted ring-1 ring-black/5">
+              +
             </div>
-            <p className="text-lg font-bold text-text">{t("dropTitle")}</p>
+            <p className="text-base font-medium text-text">{t("dropTitle")}</p>
             <p className="text-sm text-muted">{t("dropHint")}</p>
           </div>
         )}
@@ -100,7 +101,7 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
           type="button"
           onClick={() => galleryInputRef.current?.click()}
           disabled={loading}
-          className="rounded-2xl border-2 border-white bg-white px-4 py-3.5 text-sm font-medium text-text shadow-sm transition-colors active:bg-primary/5 disabled:opacity-50"
+          className="rounded-xl border border-black/5 bg-white px-4 py-3.5 text-sm font-medium text-text transition-colors active:bg-surface disabled:opacity-50"
         >
           {t("gallery")}
         </button>
@@ -108,7 +109,7 @@ export function PhotoUploader({ onImageReady }: PhotoUploaderProps) {
           type="button"
           onClick={() => cameraInputRef.current?.click()}
           disabled={loading}
-          className="rounded-2xl border-2 border-white bg-primary px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-primary/25 transition-colors active:bg-primary/90 disabled:opacity-50"
+          className="rounded-xl bg-text px-4 py-3.5 text-sm font-medium text-white transition-colors active:bg-text/90 disabled:opacity-50"
         >
           {t("camera")}
         </button>

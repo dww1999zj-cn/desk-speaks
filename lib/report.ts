@@ -169,6 +169,9 @@ export const STORAGE_KEYS = {
   image: "desk-speaks-image",
   imageThumb: "desk-speaks-image-thumb",
   report: "desk-speaks-report",
+  renovation: "desk-speaks-renovation",
   reportId: "desk-speaks-report-id",
   locale: "desk-speaks-locale",
+  deskStyle: "desk-speaks-desk-style",
+  product: "desk-speaks-product",
 } as const;

@@ -2,19 +2,26 @@
 
 import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
 import { Button } from "@/components/ui/Button";
 import { PhotoUploader } from "@/components/upload/PhotoUploader";
+import { StylePicker } from "@/components/upload/StylePicker";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { PageTopRow } from "@/components/ui/PageTopRow";
 import { STORAGE_KEYS } from "@/lib/report";
+import {
+  DEFAULT_DESK_STYLE,
+  type DeskStyleId,
+} from "@/lib/renovation/desk-styles";
 
 type CompressedImages = { full: string; thumb: string };
 
 function persistImages(images: CompressedImages) {
   sessionStorage.setItem(STORAGE_KEYS.image, images.full);
   sessionStorage.setItem(STORAGE_KEYS.imageThumb, images.thumb);
+  sessionStorage.setItem(STORAGE_KEYS.product, "renovation");
+  sessionStorage.removeItem(STORAGE_KEYS.report);
 }
 
 export default function UploadPage() {
@@ -22,6 +29,7 @@ export default function UploadPage() {
   const t = useTranslations("upload");
   const tCommon = useTranslations("common");
   const [images, setImages] = useState<CompressedImages | null>(null);
+  const [deskStyle, setDeskStyle] = useState<DeskStyleId>(DEFAULT_DESK_STYLE);
   const [stored, setStored] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -34,12 +42,18 @@ export default function UploadPage() {
     window.setTimeout(() => {
       try {
         persistImages(next);
+        sessionStorage.setItem(STORAGE_KEYS.deskStyle, deskStyle);
         setStored(true);
       } catch {
         setStored(false);
       }
     }, 0);
-  }, []);
+  }, [deskStyle]);
+
+  const handleStyleChange = (style: DeskStyleId) => {
+    setDeskStyle(style);
+    sessionStorage.setItem(STORAGE_KEYS.deskStyle, style);
+  };
 
   const handleAnalyze = () => {
     if (!images || submitting) return;
@@ -49,6 +63,7 @@ export default function UploadPage() {
     const go = () => router.push("/analyzing");
 
     if (stored) {
+      sessionStorage.setItem(STORAGE_KEYS.deskStyle, deskStyle);
       go();
       return;
     }
@@ -56,6 +71,7 @@ export default function UploadPage() {
     window.setTimeout(() => {
       try {
         persistImages(images);
+        sessionStorage.setItem(STORAGE_KEYS.deskStyle, deskStyle);
         go();
       } catch {
         setSubmitting(false);
@@ -70,41 +86,42 @@ export default function UploadPage() {
       : t("submit");
 
   return (
-    <GradientBackground>
-      <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-6 py-12 safe-bottom">
+    <GradientBackground variant="minimal">
+      <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-5 py-10 safe-bottom sm:px-6 sm:py-12">
         <header>
           <PageTopRow
-            className="mb-6"
+            className="mb-8"
             left={
-              <button
-                onClick={() => router.back()}
-                className="rounded-full bg-white/70 px-3 py-1.5 text-sm text-muted shadow-sm hover:text-text"
+              <Link
+                href="/"
+                className="text-sm text-muted transition hover:text-text"
               >
                 {tCommon("back")}
-              </button>
+              </Link>
             }
           />
-          <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-secondary/30 px-3 py-1 text-xs font-medium text-text">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-plant">
             {t("badge")}
           </p>
-          <h1 className="text-2xl font-bold text-text">{t("title")}</h1>
-          <p className="mt-2 leading-relaxed text-muted">{t("subtitle")}</p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-text">{t("title")}</h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted">{t("subtitle")}</p>
         </header>
 
-        <section className="mt-8 flex-1">
+        <section className="mt-6 flex-1">
           <PhotoUploader onImageReady={handleImageReady} />
+          <StylePicker value={deskStyle} onChange={handleStyleChange} />
         </section>
 
-        <footer className="mt-8">
+        <footer className="mt-10">
           <Button
             size="lg"
-            className="w-full"
+            className="w-full rounded-2xl shadow-md"
             disabled={!images || submitting || (Boolean(images) && !stored && !submitting)}
             onClick={handleAnalyze}
           >
             {buttonLabel}
           </Button>
-          <SiteFooter className="mt-4" />
+          <SiteFooter className="mt-6" />
         </footer>
       </main>
     </GradientBackground>

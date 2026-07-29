@@ -1,6 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getGenerationCount } from "@/lib/generation-stats";
 import { getDeskStats } from "@/lib/stats";
 import { isSupabaseConfigured } from "@/lib/supabase";
+
+/** GET — homepage total: 2000 + actual generations */
+export async function GET() {
+  try {
+    const stats = await getGenerationCount();
+    return NextResponse.json(stats);
+  } catch (error) {
+    console.error("Generation count error:", error);
+    return NextResponse.json(
+      { enabled: false, base: 2000, actual: 0, displayCount: 2000 },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {

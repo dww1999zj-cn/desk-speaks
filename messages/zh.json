@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "你的工位人格",
-    "description": "上传工位照片，看看工位眼中的你是否和真实的你一样"
+    "title": "我的工位",
+    "description": "上传工位照片，生成专属改造方案与效果图"
   },
   "common": {
     "back": "← 返回",
@@ -10,51 +10,108 @@
     "languageSwitch": "EN",
     "languageSwitchToZh": "中文"
   },
-  "home": {
-    "badge": "工位小牛马上线",
-    "lead1": "你每天坐在这里。",
-    "lead2": "桌上的小牛马，可能比你更懂你。",
-    "titleLine1": "你的",
-    "titleLine2": "工位人格",
-    "demoAgeLabel": "工位猜你",
-    "demoAge": "27 岁",
-    "demoMbtiLabel": "工位 MBTI",
-    "demoZodiacLabel": "工位星座 · 一封信",
-    "demoZodiacText": "天蝎座，想对你说点什么…",
-    "ctaDesc1": "拍张工位照，交给通义千问。",
-    "ctaDesc2": "看看它眼里的你，像不像你自己。",
-    "ctaButton": "拍张工位照，开始猜我 🐮",
-    "footerHint": "上传你日常办公桌面，不用摆拍"
+  "hub": {
+    "badge": "工位设计师",
+    "title": "工位设计师",
+    "subtitle": "上传一张照片，发现你的工位风格，生成专属空间改造方案。",
+    "heroAlt": "改造后的工位效果",
+    "cta": "开始改造我的工位",
+    "personaLink": "只想测工位人格？点这里",
+    "trustGeneration": "已有 {count}+ 人生成",
+    "showcase": {
+      "caption": "同一张桌子 · 滑动对比",
+      "before": "改造前",
+      "after": "改造后",
+      "beforeAlt": "改造前的杂乱工位示意",
+      "afterAlt": "改造后的工位示意",
+      "dragHint": "左右拖动对比",
+      "handleLabel": "拖动",
+      "compareAria": "工位改造前后对比"
+    },
+    "trustItems": [
+      "已有 2,000+ 人生成",
+      "分析约 30 秒",
+      "支持生成分享海报"
+    ]
   },
-  "upload": {
-    "badge": "🐮 上传你的工位自画像",
+  "personaUpload": {
+    "badge": "🐮 工位人格",
     "title": "拍张工位照",
-    "subtitle": "不用摆拍，真实的最好。剩下的交给工位牛马和通义千问。",
-    "submit": "就这张，开猜 ✨",
+    "subtitle": "不用摆拍，真实的最好。看看工位眼中的你像不像你自己。",
+    "submit": "就这张，开始猜 🐮",
     "submitting": "出发中…",
     "preparing": "准备照片…",
     "previewAlt": "工位预览",
     "reselect": "可以重新选择照片",
-    "dropTitle": "上传无意识自画像",
+    "dropTitle": "上传工位照片",
     "dropHint": "从相册选，或现场拍一张工位",
     "processing": "处理中…",
     "gallery": "从相册选择",
     "camera": "拍照上传",
     "imageError": "图片处理失败，请换一张试试"
   },
+  "upload": {
+    "badge": "工位设计师",
+    "title": "拍下你的工位，开始设计",
+    "subtitle": "日常办公桌面即可，不用摆拍。只改收纳与装饰，办公桌本身不变。",
+    "submit": "开始设计",
+    "submitting": "启动中…",
+    "preparing": "准备照片…",
+    "previewAlt": "工位预览",
+    "reselect": "可以重新选择照片",
+    "dropTitle": "选择或拍摄工位照片",
+    "dropHint": "从相册选，或现场拍一张",
+    "processing": "处理中…",
+    "gallery": "从相册选择",
+    "camera": "拍照上传",
+    "imageError": "图片处理失败，请换一张试试",
+    "example": {
+      "caption": "预期效果：同一张桌子 · 拖动看变化",
+      "before": "改造前",
+      "after": "改造后",
+      "beforeAlt": "改造前的杂乱工位示意",
+      "afterAlt": "改造后的工位示意",
+      "dragHint": "左右拖动对比",
+      "handleLabel": "拖动",
+      "compareAria": "工位改造前后对比"
+    },
+    "styles": {
+      "title": "选择改造风格",
+      "ins": {
+        "label": "INS风",
+        "hint": "明亮整洁·白收纳·角位点缀1件"
+      },
+      "japanese": {
+        "label": "日系治愈",
+        "hint": "暖光或角位小物1件·原木收纳"
+      },
+      "minimal": {
+        "label": "极简商务",
+        "hint": "灰白收纳·理线整洁·可办公"
+      }
+    }
+  },
   "analyzing": {
-    "reasoning": "推理中",
-    "engine": "通义千问 · 视觉推理中",
+    "headline": "设计师正在工作中",
+    "reasoning": "分析中",
+    "engine": "通义千问 · 多模态空间分析",
+    "stepActive": "进行中…",
+    "designSteps": [
+      "正在观察你的工位",
+      "识别桌面元素",
+      "分析空间布局",
+      "匹配你的工位风格",
+      "生成专属改造方案"
+    ],
     "thinkingTexts": [
-      "通义千问正在加班加点…",
-      "工位牛马正扒在键盘边看你",
-      "阿里云大脑 CPU 轻微冒烟中",
-      "先别关屏，我还在猜你几岁",
-      "不是摸鱼，是在认真推理",
-      "把你的桌面扫了一遍又一遍",
-      "信马上写好，再等我一下下",
-      "那个马克杯暴露了点什么…",
-      "正在读你桌上每一样东西"
+      "正在确认这是不是工位照片…",
+      "识别裸工位：桌子与固定布局",
+      "清点桌面散落杂物…",
+      "规划收纳：什么放进哪个盒子",
+      "规划点缀：角位放哪一件小物",
+      "第1遍：把杂物收进收纳盒",
+      "第2遍：添加装饰点缀",
+      "快好了，别关屏"
     ],
     "errors": {
       "timeout": {
@@ -63,23 +120,73 @@
         "hint": "换一张更小的工位照，或稍后再试。"
       },
       "failed": {
-        "title": "牛马今天有点懵",
-        "message": "没看清你的工位，别慌。",
-        "hint": "通常再试一次就好，不行就换张照。"
+        "title": "生成失败了",
+        "message": "网络或模型有点抽风。",
+        "hint": "再试一次，或换一张更清晰的工位照。"
+      },
+      "not_desk": {
+        "title": "这不是工位照片",
+        "message": "请上传办公工位/书桌桌面照。",
+        "hint": "人像自拍、风景、美食等都会被拒绝。"
       }
     },
     "retry": "再试一次 🐮",
-    "changePhoto": "换张照片"
+    "changePhoto": "换张照片",
+    "persona": {
+      "reasoning": "推理中",
+      "engine": "通义千问 · 工位人格",
+      "thinkingTexts": [
+        "正在端详你的工位…",
+        "清点桌面上的线索",
+        "猜猜你像几岁",
+        "推演工位 MBTI",
+        "匹配工位星座",
+        "工位正在写信…",
+        "快好了，别关屏"
+      ]
+    }
   },
   "report": {
-    "loading": "工位正在整理信件…",
-    "badge": "🐮 工位牛马报告",
-    "title": "工位眼中的你",
-    "matchFallback": "{mbti} × {zodiac}——工位眼里的你，像吗？",
-    "deskAlt": "你的工位",
-    "shareHint": "滑到「鉴定卡」可预览并保存分享图",
-    "retryUpload": "换张工位，再认一次",
+    "loading": "改造方案整理中…",
+    "retryUpload": "换张工位，再试一次",
     "backHome": "回到首页",
+    "persona": {
+      "loading": "工位正在整理信件…",
+      "badge": "🐮 工位牛马报告",
+      "title": "工位眼中的你",
+      "matchFallback": "{mbti} × {zodiac}——工位眼里的你，像吗？",
+      "deskAlt": "你的工位",
+      "shareHint": "滑到「鉴定卡」可预览并保存分享图"
+    },
+    "renovation": {
+      "badge": "工位改造方案",
+      "before": "改造前",
+      "after": "改造后",
+      "beforeAlt": "改造前的工位",
+      "afterAlt": "生成的改造效果",
+      "afterPending": "效果图暂未生成，可先参考下方三步方案",
+      "dragHint": "左右拖动对比",
+      "handleLabel": "拖动",
+      "compareAria": "改造前后对比滑块",
+      "stepsTitle": "三步整理逻辑",
+      "step1": "识别裸工位",
+      "step2": "收纳置物",
+      "step3": "装饰摆放",
+      "highlights": "整理成果",
+      "tips": "落地建议",
+      "closeLightbox": "关闭大图",
+      "tapToEnlarge": "点击放大",
+      "disclaimer": "固定家具不变；先收纳杂物再添加装饰，效果图为分步编辑生成",
+      "fengShui": {
+        "sectionTitle": "工位风水",
+        "topicLabel": "摆放要点",
+        "quoteLabel": "典籍原文",
+        "briefLabel": "结合你的工位",
+        "toggle": "传统文化 · 办公摆放",
+        "disclaimer": "传统文化与摆放习惯参考，仅供参考，个人习惯优先。",
+        "recommendLink": "更多办公好物推荐 →"
+      }
+    },
     "cards": {
       "introLayer": "第一层 · 工位初见",
       "introTitle": "工位初见",
@@ -125,7 +232,19 @@
     "generateError": "分享图生成失败，请稍后再试",
     "filename": "工位人格.png",
     "stampLine1": "工位牛马",
-    "stampLine2": "鉴定通过"
+    "stampLine2": "鉴定通过",
+    "renovation": {
+      "previewHint": "改造分享图 · 保存即可发朋友圈",
+      "badge": "工位设计师",
+      "beforeLabel": "改造前",
+      "afterLabel": "改造后",
+      "qrTitle": "扫码改造你的工位",
+      "saveButton": "保存分享图 📸",
+      "savingButton": "正在生成分享图…",
+      "imageFooter": "{footer} · 长按保存分享",
+      "filename": "工位改造.png",
+      "generateError": "分享图生成失败，请稍后再试"
+    }
   },
   "recommend": {
     "badge": "🛒 工位牛马严选",
