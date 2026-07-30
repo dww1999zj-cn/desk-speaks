@@ -6,7 +6,7 @@ Upload a desk photo → get an AI renovation preview (before / after) plus a sho
 **Live:** [中文](https://desk.zeabur.app/zh) · [English](https://desk.zeabur.app/en)
 
 <p align="center">
-  <img src="public/marketing/desk-showcase-after-v10c-display.webp" alt="Desk renovation after" width="420" />
+  <img src="public/marketing/promo-half-half-qr-en.png" alt="Desk Designer — before / after promo" width="420" />
 </p>
 
 ---
