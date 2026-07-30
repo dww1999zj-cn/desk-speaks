@@ -3,7 +3,10 @@
 import { useTranslations } from "next-intl";
 import {
   MARKETING_DESK_AFTER,
+  MARKETING_DESK_AFTER_SRCSET,
   MARKETING_DESK_BEFORE,
+  MARKETING_DESK_BEFORE_SRCSET,
+  MARKETING_DESK_SIZES,
 } from "@/lib/marketing-assets";
 import { BeforeAfterSlider } from "@/components/report/BeforeAfterSlider";
 
@@ -29,11 +32,15 @@ export function DeskShowcaseCompare({ variant = "upload" }: DeskShowcaseCompareP
       <BeforeAfterSlider
         beforeSrc={MARKETING_DESK_BEFORE}
         afterSrc={MARKETING_DESK_AFTER}
+        beforeSrcSet={MARKETING_DESK_BEFORE_SRCSET}
+        afterSrcSet={MARKETING_DESK_AFTER_SRCSET}
+        sizes={MARKETING_DESK_SIZES}
         beforeAlt={t("beforeAlt")}
         afterAlt={t("afterAlt")}
         labelsNamespace={ns}
         variant="marketing"
         autoDemo
+        priority
       />
     </div>
   );

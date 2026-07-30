@@ -6,11 +6,16 @@ import { useTranslations } from "next-intl";
 interface BeforeAfterSliderProps {
   beforeSrc: string;
   afterSrc: string;
+  beforeSrcSet?: string;
+  afterSrcSet?: string;
+  sizes?: string;
   beforeAlt: string;
   afterAlt: string;
   labelsNamespace?: string;
   variant?: "report" | "marketing";
   autoDemo?: boolean;
+  /** Eager-load for above-the-fold marketing slider */
+  priority?: boolean;
   className?: string;
 }
 
@@ -42,11 +47,15 @@ function CompareHandle({
 export function BeforeAfterSlider({
   beforeSrc,
   afterSrc,
+  beforeSrcSet,
+  afterSrcSet,
+  sizes,
   beforeAlt,
   afterAlt,
   labelsNamespace = "report.renovation",
   variant = "report",
   autoDemo = false,
+  priority = false,
   className = "",
 }: BeforeAfterSliderProps) {
   const t = useTranslations(labelsNamespace);
@@ -165,7 +174,14 @@ export function BeforeAfterSlider({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={afterSrc}
+          srcSet={afterSrcSet}
+          sizes={sizes}
           alt={afterAlt}
+          width={960}
+          height={640}
+          decoding="async"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
           className={`absolute inset-0 h-full w-full object-cover object-center ${
             isMarketing ? "brightness-105 saturate-110" : ""
           }`}
@@ -179,7 +195,14 @@ export function BeforeAfterSlider({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={beforeSrc}
+            srcSet={beforeSrcSet}
+            sizes={sizes}
             alt={beforeAlt}
+            width={960}
+            height={640}
+            decoding="async"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
             className={`absolute inset-0 h-full w-full object-cover object-center ${
               isMarketing ? "brightness-90 saturate-75 contrast-105" : ""
             }`}
