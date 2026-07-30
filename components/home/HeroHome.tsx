@@ -44,7 +44,7 @@ export function HeroHome() {
       <div className="pointer-events-none absolute -left-20 bottom-32 h-64 w-64 rounded-full bg-wood/15 blur-3xl" />
       <div className="pointer-events-none absolute inset-0 bg-ai-glow opacity-[0.35]" />
 
-      <div className="pointer-events-none absolute left-5 top-[max(1rem,env(safe-area-inset-top))] z-10 sm:left-6">
+      <div className="pointer-events-none absolute inset-x-5 top-[max(1rem,env(safe-area-inset-top))] z-20 sm:inset-x-6">
         <div className="pointer-events-auto">
           <PageTopRow
             left={

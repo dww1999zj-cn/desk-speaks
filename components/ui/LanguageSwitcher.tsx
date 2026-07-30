@@ -12,11 +12,15 @@ export function LanguageSwitcher() {
   const nextLocale = locale === "zh" ? "en" : "zh";
   const label = locale === "zh" ? t("languageSwitch") : t("languageSwitchToZh");
 
+  const switchLocale = () => {
+    router.replace(pathname || "/", { locale: nextLocale });
+  };
+
   return (
     <button
       type="button"
-      onClick={() => router.replace(pathname, { locale: nextLocale })}
-      className="inline-flex shrink-0 items-center rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium text-text shadow-sm transition-colors hover:bg-surface"
+      onClick={switchLocale}
+      className="relative z-30 inline-flex shrink-0 items-center rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium text-text shadow-sm transition-colors hover:bg-surface"
       aria-label={label}
     >
       {label}
