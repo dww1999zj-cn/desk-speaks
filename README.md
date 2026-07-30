@@ -1,27 +1,30 @@
-# Desk Speaks · 你的工位人格
+# 工位设计师 · Desk Designer
 
-Upload a photo of your desk and get a playful AI persona report — age guess, desk MBTI, desk zodiac, a letter from your desk, and a shareable cert card.
+Upload a desk photo → get an AI renovation preview (before / after) plus a short organize plan.  
+上传一张工位照，生成改造前后对比图与收纳方案。
 
-**Live:** [English](https://desk.zeabur.app/en) · [中文](https://desk.zeabur.app/zh)
-
-## Demo
+**Live:** [中文](https://desk.zeabur.app/zh) · [English](https://desk.zeabur.app/en)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/dww1999zj-cn/desk-speaks/main/docs/demo.gif" alt="Desk Speaks demo" width="280" />
+  <img src="public/marketing/desk-showcase-after-v10c-display.webp" alt="Desk renovation after" width="420" />
 </p>
-
-Try it live: [desk.zeabur.app/en](https://desk.zeabur.app/en) · [中文](https://desk.zeabur.app/zh)
 
 ---
 
 ## What it does
 
-1. **Upload** — snap or pick a photo of your everyday desk (no staging required)
-2. **Analyze** — [Qwen-VL](https://help.aliyun.com/zh/model-studio/developer-reference/qwen-vl/) reads visible items and infers a “desk persona”
-3. **Report** — swipe through five cards: first look → MBTI → zodiac → letter → share cert
-4. **Share** — save a portrait-style cert image with QR code
+### Main · Desk renovation（工位改造）
 
-Chinese version also includes curated desk essentials with JD affiliate links (`/zh/recommend`). English version skips product recommendations for now.
+1. **Upload** — everyday desk photo; pick a style (INS / Japanese / Cyberpunk)
+2. **Analyze** — [Qwen-VL](https://help.aliyun.com/zh/model-studio/) detects the desk, clutter, and a renovation plan
+3. **Generate** — [通义万相](https://help.aliyun.com/zh/model-studio/developer-reference/wan-image-edit-api-reference/) produces an after image (same desk geometry; storage & decor only)
+4. **Report** — before/after slider, step plan, share poster with QR
+
+### Secondary · Desk persona（工位人格）
+
+Optional playful report from the desk’s POV (MBTI / zodiac / letter). Entry: homepage → “工位人格” / persona link → `/persona/upload`.
+
+Chinese build can also surface desk picks with JD links (`/zh/recommend`).
 
 ---
 
@@ -29,13 +32,15 @@ Chinese version also includes curated desk essentials with JD affiliate links (`
 
 | Layer | Choice |
 |-------|--------|
-| Framework | Next.js 15 (App Router), React 19 |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| i18n | [next-intl](https://next-intl.dev) — `/en`, `/zh` |
-| AI | Alibaba DashScope / Qwen-VL (`qwen-vl-plus`) |
-| Analytics (optional) | Supabase |
+| App | Next.js 15 (App Router), React 19, TypeScript |
+| UI | Tailwind CSS |
+| i18n | [next-intl](https://next-intl.dev) — `/zh`, `/en` |
+| Vision / plan | DashScope · Qwen-VL (`qwen-vl-plus`) |
+| After image | DashScope · Wan (`wan2.6-image`, fallback `wanx2.1-imageedit`) |
+| Stats (optional) | Supabase |
 | Deploy | [Zeabur](https://zeabur.com) |
+
+Model details: [`docs/MODEL_CONFIG.md`](docs/MODEL_CONFIG.md)
 
 ---
 
@@ -43,22 +48,31 @@ Chinese version also includes curated desk essentials with JD affiliate links (`
 
 ```
 app/
-  [locale]/          # Pages: home, upload, analyzing, report, recommend
-  api/analyze/       # Vision analysis API
-  api/stats/         # Optional trait stats
-components/          # UI + report swiper + share image
+  [locale]/                 # Home, upload, analyzing, report, recommend
+    persona/                 # Secondary persona flow
+  api/analyze/               # Renovation: Qwen plan + Wan image
+  api/persona/analyze/       # Persona report
+  api/stats/                 # Generation counter
+components/
+  marketing/                 # Homepage before/after showcase
+  report/                    # Slider, share image, plan UI
+  upload/                    # Photo + style picker
 lib/
-  prompts/           # zh/en system prompts + mock reports
-  office-picks/      # Product catalog (zh only)
-messages/            # zh.json, en.json UI copy
-i18n/                # Routing & navigation helpers
+  renovation/                # Prompts, Wan client, parse, accents/styles
+  prompts/                   # Persona prompts + mocks
+  marketing-assets.ts        # Showcase image paths (WebP display)
+messages/                    # zh.json / en.json
+scripts/
+  compose-promo-poster.mjs   # zh/en promo posters + QR
+  optimize-marketing-display.mjs
+  generate-marketing-afters.mjs
 ```
 
 ---
 
 ## Local development
 
-**Requirements:** Node 20.x
+**Node 20.x**
 
 ```bash
 git clone https://github.com/dww1999zj-cn/desk-speaks.git
@@ -67,25 +81,33 @@ npm install
 cp .env.example .env.local
 ```
 
-Edit `.env.local`:
+Minimal `.env.local` for mock UI:
 
 ```bash
-DASHSCOPE_API_KEY=sk-your-key        # Required for real AI (omit + USE_MOCK_DATA=true for mock)
+USE_MOCK_DATA=true
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Real renovation (Qwen + Wan):
+
+```bash
+DASHSCOPE_API_KEY=sk-your-key
 QWEN_VL_MODEL=qwen-vl-plus
-USE_MOCK_DATA=true                   # Set false when you have an API key
+WANX_EDIT_MODEL=wan2.6-image
+WANX_FALLBACK_EDIT_MODEL=wanx2.1-imageedit
+WANX_TWO_PASS=false
+WANX_IMAGE_SIZE=2K
+USE_MOCK_DATA=false
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 ```bash
 npm run dev
-# http://localhost:3000/en  or  /zh
+# http://localhost:3000/zh  or  /en
 ```
 
-Build for production:
-
 ```bash
-npm run build
-npm start
+npm run build && npm start
 ```
 
 ---
@@ -94,14 +116,19 @@ npm start
 
 | Variable | Description |
 |----------|-------------|
-| `DASHSCOPE_API_KEY` | Alibaba Bailian / Qwen API key |
+| `DASHSCOPE_API_KEY` | Alibaba Bailian API key |
 | `QWEN_VL_MODEL` | Vision model (default `qwen-vl-plus`) |
-| `USE_MOCK_DATA` | `true` → return mock report without API |
-| `NEXT_PUBLIC_SITE_URL` | Base URL for share-card QR codes |
-| `NEXT_PUBLIC_SUPABASE_URL` | Optional — stats storage |
-| `SUPABASE_SERVICE_ROLE_KEY` | Optional — server-side Supabase |
+| `WANX_EDIT_MODEL` | After-image model (default `wan2.6-image`) |
+| `WANX_FALLBACK_EDIT_MODEL` | Quota / failure fallback (`wanx2.1-imageedit` or `none`) |
+| `WANX_TWO_PASS` | `true` = organize then accent (2× Wan calls); default `false` |
+| `WANX_IMAGE_SIZE` | Wan 2.6/2.7 size (default `2K`) |
+| `USE_MOCK_DATA` | `true` → mock plan/report, skip live AI |
+| `SKIP_WANX_IMAGE` | Skip after-image; keep text plan only |
+| `NEXT_PUBLIC_SITE_URL` | Share / promo QR base URL |
+| `NEXT_PUBLIC_SUPABASE_URL` | Optional stats |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional stats |
 
-Run `supabase/schema.sql` in Supabase SQL Editor if you enable stats.
+See `.env.example` and [`docs/MODEL_CONFIG.md`](docs/MODEL_CONFIG.md).
 
 ---
 
@@ -109,19 +136,46 @@ Run `supabase/schema.sql` in Supabase SQL Editor if you enable stats.
 
 | Path | Description |
 |------|-------------|
-| `/` | Redirects to `/zh` |
-| `/en`, `/zh` | Home |
-| `/[locale]/upload` | Photo upload |
-| `/[locale]/analyzing` | AI analysis |
-| `/[locale]/report` | Persona report |
-| `/[locale]/recommend` | Desk picks (zh only) |
+| `/` | → `/zh` |
+| `/[locale]` | Home + marketing before/after |
+| `/[locale]/upload` | Renovation upload + style |
+| `/[locale]/analyzing` | Plan + image generation |
+| `/[locale]/report` | Before/after + plan + share |
+| `/[locale]/persona/upload` | Persona upload |
+| `/[locale]/persona/analyzing` | Persona analysis |
+| `/[locale]/persona/report` | Persona cards |
+| `/[locale]/recommend` | Desk picks (zh) |
+
+---
+
+## Marketing assets
+
+Homepage slider uses compressed WebP (`*-display.webp`), not full PNG masters:
+
+```bash
+node scripts/optimize-marketing-display.mjs
+```
+
+Promo posters (zh / en QR):
+
+```bash
+node scripts/compose-promo-poster.mjs --locale all
+# → public/marketing/promo-half-half-qr.png
+# → public/marketing/promo-half-half-qr-en.png
+```
+
+---
+
+## Deploy (Zeabur)
+
+1. Connect the GitHub repo; build on `main`
+2. Set the same env vars as production (at least `DASHSCOPE_API_KEY`, `USE_MOCK_DATA=false`, Wan model vars, `NEXT_PUBLIC_SITE_URL`)
+3. Optional: run `supabase/schema.sql` / `add_generations.sql` for the counter
 
 ---
 
 ## License
 
 Private project. All rights reserved.
-
----
 
 **© 闲里偷忙 · WeChat: alex_198888**
