@@ -97,6 +97,41 @@ function extractJsonBlocks(text: string): string[] {
   return blocks;
 }
 
+/** Pull key string/array fields from partially truncated JSON. */
+function salvagePartialPlan(text: string): RenovationPlan | null {
+  if (!/"isDesk"\s*:\s*true/.test(text)) return null;
+
+  const pick = (key: string): string | undefined => {
+    const m = text.match(new RegExp(`"${key}"\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`));
+    return m?.[1]?.replace(/\\"/g, '"').replace(/\\n/g, "\n");
+  };
+  const pickList = (key: string): string[] => {
+    const m = text.match(new RegExp(`"${key}"\\s*:\\s*\\[([^\\]]*)\\]`));
+    if (!m) return [];
+    return [...m[1].matchAll(/"((?:\\.|[^"\\])*)"/g)].map((x) =>
+      x[1].replace(/\\"/g, '"')
+    );
+  };
+
+  return {
+    isDesk: true,
+    title: pick("title"),
+    style: pick("style"),
+    summary: pick("summary"),
+    bareDesk: pick("bareDesk"),
+    clutterItems: pickList("clutterItems"),
+    organizePlan: pick("organizePlan"),
+    organizePrompt: pick("organizePrompt"),
+    decorPlan: pick("decorPlan"),
+    decorPrompt: pick("decorPrompt"),
+    highlights: pickList("highlights"),
+    tips: pickList("tips"),
+    fengShuiRefId: pick("fengShuiRefId"),
+    fengShuiBrief: pick("fengShuiBrief"),
+    imagePrompt: pick("imagePrompt"),
+  };
+}
+
 export function parseRenovationPlan(content: string): RenovationPlan {
   const cleaned = normalizeJsonText(stripFences(content));
   const candidates = [
@@ -110,6 +145,12 @@ export function parseRenovationPlan(content: string): RenovationPlan {
     const normalized = normalizeJsonText(candidate);
     const parsed = tryParseObject(normalized);
     if (parsed) return parsed;
+  }
+
+  const salvaged = salvagePartialPlan(cleaned);
+  if (salvaged) {
+    console.warn("Renovation plan salvaged from truncated JSON");
+    return salvaged;
   }
 
   console.error("Renovation plan parse failed, raw:", content.slice(0, 500));

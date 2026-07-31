@@ -126,7 +126,9 @@ async function pollTask(apiKey: string, taskId: string): Promise<string | null> 
         return typeof url === "string" ? url : null;
       }
       if (status === "FAILED" || status === "CANCELED") {
-        console.error("Wan task failed:", pollData);
+        const code = pollData.output?.code ?? pollData.code;
+        const message = pollData.output?.message ?? pollData.message;
+        console.error("Wan task failed:", { taskId, status, code, message });
         return null;
       }
     } catch (err) {
@@ -171,28 +173,32 @@ async function runI2iEdit(
     });
   }
 
-  const createRes = await fetchWithRetry(IMAGE2IMAGE_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "X-DashScope-Async": "enable",
+  const createRes = await fetchWithRetry(
+    IMAGE2IMAGE_URL,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "X-DashScope-Async": "enable",
+      },
+      body: JSON.stringify({
+        model,
+        input: {
+          prompt,
+          images: [toImageInput(sourceImage)],
+        },
+        parameters: {
+          n: 1,
+          prompt_extend: promptExtend,
+          watermark: false,
+          ...(negativePrompt ? { negative_prompt: negativePrompt } : {}),
+          ...(Number.isFinite(seed) ? { seed } : {}),
+        },
+      }),
     },
-    body: JSON.stringify({
-      model,
-      input: {
-        prompt,
-        images: [toImageInput(sourceImage)],
-      },
-      parameters: {
-        n: 1,
-        prompt_extend: promptExtend,
-        watermark: false,
-        ...(negativePrompt ? { negative_prompt: negativePrompt } : {}),
-        ...(Number.isFinite(seed) ? { seed } : {}),
-      },
-    }),
-  });
+    { timeoutMs: 120_000, retries: 3 }
+  );
 
   if (!createRes.ok) {
     const text = await createRes.text();
@@ -225,26 +231,30 @@ async function runWanImageGeneration(
     });
   }
 
-  const createRes = await fetchWithRetry(IMAGE_GENERATION_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "X-DashScope-Async": "enable",
-    },
-    body: JSON.stringify({
-      model,
-      input: {
-        messages: [
-          {
-            role: "user",
-            content: [{ image: toImageInput(sourceImage) }, { text: prompt }],
-          },
-        ],
+  const createRes = await fetchWithRetry(
+    IMAGE_GENERATION_URL,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "X-DashScope-Async": "enable",
       },
-      parameters: { n: 1, size, watermark: false },
-    }),
-  });
+      body: JSON.stringify({
+        model,
+        input: {
+          messages: [
+            {
+              role: "user",
+              content: [{ image: toImageInput(sourceImage) }, { text: prompt }],
+            },
+          ],
+        },
+        parameters: { n: 1, size, watermark: false },
+      }),
+    },
+    { timeoutMs: 120_000, retries: 3 }
+  );
 
   if (!createRes.ok) {
     const text = await createRes.text();
@@ -277,23 +287,27 @@ async function runDescriptionEdit(
     });
   }
 
-  const createRes = await fetchWithRetry(IMAGE2IMAGE_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "X-DashScope-Async": "enable",
-    },
-    body: JSON.stringify({
-      model,
-      input: {
-        function: "description_edit",
-        prompt,
-        base_image_url: toImageInput(sourceImage),
+  const createRes = await fetchWithRetry(
+    IMAGE2IMAGE_URL,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "X-DashScope-Async": "enable",
       },
-      parameters: { n: 1, strength, watermark: false },
-    }),
-  });
+      body: JSON.stringify({
+        model,
+        input: {
+          function: "description_edit",
+          prompt,
+          base_image_url: toImageInput(sourceImage),
+        },
+        parameters: { n: 1, strength, watermark: false },
+      }),
+    },
+    { timeoutMs: 120_000, retries: 3 }
+  );
 
   if (!createRes.ok) {
     const text = await createRes.text();
