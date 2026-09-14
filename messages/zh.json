@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "工位月薪",
-    "description": "拍一张工位照，趣味猜月薪，再看摆放风水与升职加薪小建议"
+    "description": "拍工位，让工位本人损你一嘴：猜月薪、吐槽摆放、给升职小动作"
   },
   "common": {
     "back": "← 返回",
@@ -12,23 +12,25 @@
   },
   "hub": {
     "badge": "工位月薪",
-    "eyebrow": "娱乐向 · 非真实收入鉴定",
-    "title": "拍工位，猜月薪",
-    "subtitle": "上传一张日常工位照，工位先猜你的月薪，再评摆放风水，给几条升职加薪向的小建议。",
-    "disclaimer": "纯属玩笑，不构成任何薪资、风水或职业承诺。",
-    "cta": "拍张工位开始猜",
-    "trustGeneration": "已有 {count}+ 人玩过",
+    "eyebrow": "工位比 HR 更敢说",
+    "title": "工位月薪",
+    "subtitle": "拍一张日常桌面，让工位本人损你一嘴：猜月薪、吐槽摆放、塞三条升职小动作。",
+    "teaseLabel": "工位正在开价…",
+    "teaseHint": "每张桌子价不一样——别急着对号入座",
+    "disclaimer": "纯属玩笑，不是查社保，也不是风水改命。",
+    "cta": "拍工位，开价！",
+    "trustGeneration": "已有 {count}+ 人被工位骂过",
     "trustItems": [
-      "已有 2,000+ 人玩过",
+      "已有 2,000+ 人被工位骂过",
       "约 30 秒出结果",
-      "可保存分享海报"
+      "海报可发朋友圈"
     ]
   },
   "personaUpload": {
     "badge": "🐮 工位月薪",
-    "title": "拍张工位照",
-    "subtitle": "不用摆拍。越日常越好——猜月薪、看风水、拿升职摆放建议。",
-    "submit": "就这张，开始猜 🐮",
+    "title": "把工位拍清楚",
+    "subtitle": "越乱越好认。零食、双屏、理线——都会被用来乱猜月薪。",
+    "submit": "就这张，让工位开价 🐮",
     "submitting": "出发中…",
     "preparing": "准备照片…",
     "previewAlt": "工位预览",
@@ -126,13 +128,14 @@
       "reasoning": "推理中",
       "engine": "通义千问 · 工位月薪",
       "thinkingTexts": [
-        "正在端详你的工位…",
-        "清点桌面上的线索",
-        "趣味猜测你的月薪",
-        "看看摆放与「明堂」",
-        "起草升职加薪小建议",
-        "鉴定卡马上盖章…",
-        "快好了，别关屏"
+        "工位正在开价…",
+        "零食堆？还是人体工学椅？",
+        "先砍一刀月薪",
+        "这档为什么不是隔壁那档？",
+        "摆放扫一眼（开玩笑的）",
+        "三条升职小动作起草中",
+        "不是查社保，是在损你",
+        "鉴定章马上盖上"
       ]
     }
   },
@@ -178,17 +181,17 @@
       }
     },
     "cards": {
-      "salaryLayer": "第一层 · 猜月薪",
-      "salaryTitle": "工位猜月薪",
-      "salaryGuessLabel": "工位猜你月薪",
-      "salaryDisclaimer": "娱乐向玩笑，非真实收入鉴定。",
-      "evidenceTitle": "工位目击 · 它看到了这些",
-      "fengshuiLayer": "第二层 · 工位风水",
+      "salaryLayer": "第一层 · 开价",
+      "salaryTitle": "工位开价",
+      "salaryGuessLabel": "工位喊价",
+      "salaryDisclaimer": "纯属损你一嘴，不是查社保。",
+      "evidenceTitle": "目击证物",
+      "fengshuiLayer": "第二层 · 摆放吐槽",
       "fengshuiTitle": "摆放风水",
-      "fengshuiEmpty": "这张工位的风水线索有点少，先看升职建议吧。",
-      "careerLayer": "第三层 · 升职摆放",
-      "careerTitle": "升职加薪向 · 摆放建议",
-      "claimShareCard": "领取月薪鉴定卡 →"
+      "fengshuiEmpty": "这张工位线索太少，先去看升职小动作。",
+      "careerLayer": "第三层 · 升职小动作",
+      "careerTitle": "想加薪？先动这三下",
+      "claimShareCard": "领取鉴定卡去炫耀 →"
     },
     "swiper": {
       "labels": ["月薪", "风水", "升职", "鉴定卡"],

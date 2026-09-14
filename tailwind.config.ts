@@ -21,10 +21,17 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
+          "var(--font-sans)",
           "PingFang SC",
           "Microsoft YaHei",
           "system-ui",
-          "-apple-system",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-display)",
+          "PingFang SC",
+          "Microsoft YaHei",
+          "system-ui",
           "sans-serif",
         ],
       },

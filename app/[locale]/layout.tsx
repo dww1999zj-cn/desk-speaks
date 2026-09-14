@@ -2,9 +2,24 @@ import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { ZCOOL_KuaiLe, Noto_Sans_SC } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import { ChunkLoadRecovery } from "@/components/ui/ChunkLoadRecovery";
 import "../globals.css";
+
+const displayFont = ZCOOL_KuaiLe({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const bodyFont = Noto_Sans_SC({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 type Props = {
   children: React.ReactNode;
@@ -42,7 +57,10 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale === "zh" ? "zh-CN" : "en"}>
+    <html
+      lang={locale === "zh" ? "zh-CN" : "en"}
+      className={`${displayFont.variable} ${bodyFont.variable}`}
+    >
       <body className="font-sans min-h-dvh">
         <ChunkLoadRecovery />
         <NextIntlClientProvider messages={messages}>

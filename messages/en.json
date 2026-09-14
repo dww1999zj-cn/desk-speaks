@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Desk Salary",
-    "description": "Snap your desk — fun salary guess, placement notes, and career desk tips"
+    "description": "Snap your desk — get roasted on pay band, placement, and three career desk moves"
   },
   "common": {
     "back": "← Back",
@@ -12,23 +12,25 @@
   },
   "hub": {
     "badge": "Desk Salary",
-    "eyebrow": "For fun · not a real income appraisal",
-    "title": "Snap your desk. Guess your salary.",
-    "subtitle": "Upload an everyday desk photo. We guess a playful salary range, check placement vibe, and share a few career-minded desk tips.",
-    "disclaimer": "Entertainment only — not salary advice, fortune-telling, or career promises.",
-    "cta": "Snap a desk to start",
-    "trustGeneration": "{count}+ desks tried",
+    "eyebrow": "Your desk talks louder than HR",
+    "title": "Desk Salary",
+    "subtitle": "Snap an everyday desk. It roasts your pay band, teases placement, and drops three career-desk moves.",
+    "teaseLabel": "Desk is pricing you…",
+    "teaseHint": "Different desks, different numbers — don't take it personally",
+    "disclaimer": "For fun only — not payroll, not fortune-telling.",
+    "cta": "Snap desk. Get priced.",
+    "trustGeneration": "{count}+ desks roasted",
     "trustItems": [
-      "2,000+ desks tried",
+      "2,000+ desks roasted",
       "~30s result",
-      "Shareable poster ready"
+      "Poster ready to share"
     ]
   },
   "personaUpload": {
     "badge": "🐮 Desk Salary",
-    "title": "Snap your desk",
-    "subtitle": "No staging. Real desks work best — salary guess, placement, career tips.",
-    "submit": "This one — go 🐮",
+    "title": "Show the whole desk",
+    "subtitle": "Messy is fine. Snacks, dual screens, cable chaos — all fair game for a salary roast.",
+    "submit": "This one — price me 🐮",
     "submitting": "Starting…",
     "preparing": "Preparing…",
     "previewAlt": "Desk preview",
@@ -126,13 +128,14 @@
       "reasoning": "Thinking",
       "engine": "Qwen · Desk Salary",
       "thinkingTexts": [
-        "Studying your desk…",
-        "Collecting clues on the surface",
-        "Guessing a fun salary range",
-        "Checking placement vibe",
-        "Drafting career desk tips",
-        "Stamp almost ready…",
-        "Almost done — stay on screen"
+        "Desk is pricing you…",
+        "Snack pile or ergonomic chair?",
+        "Salary roast first",
+        "Why this band, not the next?",
+        "Placement glance (joking)",
+        "Drafting three career desk moves",
+        "Not HR — just roasting",
+        "Stamp almost ready"
       ]
     }
   },
@@ -178,17 +181,17 @@
       }
     },
     "cards": {
-      "salaryLayer": "Salary guess",
-      "salaryTitle": "Desk salary guess",
-      "salaryGuessLabel": "Desk says you earn",
-      "salaryDisclaimer": "For fun only — not a real income appraisal.",
-      "evidenceTitle": "Desk noticed",
-      "fengshuiLayer": "Placement",
+      "salaryLayer": "Layer 1 · The price",
+      "salaryTitle": "Desk prices you",
+      "salaryGuessLabel": "Desk's offer",
+      "salaryDisclaimer": "A roast, not payroll.",
+      "evidenceTitle": "Exhibit A",
+      "fengshuiLayer": "Layer 2 · Placement roast",
       "fengshuiTitle": "Desk placement",
-      "fengshuiEmpty": "Not many placement clues — jump to career tips.",
-      "careerLayer": "Career tips",
-      "careerTitle": "Career-minded desk tips",
-      "claimShareCard": "Get your cert →"
+      "fengshuiEmpty": "Thin clues here — jump to career moves.",
+      "careerLayer": "Layer 3 · Career moves",
+      "careerTitle": "Want a raise? Move these three",
+      "claimShareCard": "Grab the cert →"
     },
     "swiper": {
       "labels": ["Salary", "Placement", "Career", "Cert"],
