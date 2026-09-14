@@ -38,18 +38,20 @@ Fields (strict; isDesk must be true):
 - isDesk: true
 - deskEvidence: ${L.deskEvidenceCount} lines, ≤${L.deskEvidenceItem} chars, "object→funny clue"
 - salary.description: 2 sentences ≤${L.salaryDescription} chars, roast then price
-- salary.guessedSalary: required string; never bare number; never exact to the dollar
+- salary.guessedSalary: required English string, e.g. "~$4k" or "$3–4k"; NEVER Chinese (no 约/万/元); never a bare number; never exact to the dollar
 - salary.salaryHint: ≤${L.salaryHint} chars, one humorous reason
 - fengShuiRefId: must pick 1 id from the list below
 - fengShuiBrief: ≤${L.fengShuiBrief} chars, scene-specific; do NOT promise luck
 - careerTips: ${L.careerTipCount} tips, ≤${L.careerTipItem} chars each, actionable + witty
 - shareCard.shareHook ≤${L.shareHook} (works alone as a caption); summary ≤${L.shareSummary}; ${L.keywordCount} keywords; title "Desk Salary Guess"
 
+LANGUAGE: every string value in the JSON MUST be English. No Chinese characters anywhere in the output.
+
 {"isDesk":true,"deskEvidence":["crushed snack bag→sugar payroll","tilted monitor→neck on overtime"],"salary":{"description":"Snacks opened fire before the screen stood straight. This desk prices the stomach and the neck first.","guessedSalary":"~$3.5k","salaryHint":"Snack bag busier than the keyboard — call it $3.5k"},"fengShuiRefId":"tidy_qi","fengShuiBrief":"Clear a pocket of desk so it can breathe.","careerTips":["Straighten the monitor — neck off OT","Park snacks in one zone","Sit with a wall behind you"],"shareCard":{"title":"Desk Salary Guess","shareHook":"Desk says ~$3.5k — snacks got paid first 🐮","summary":"Sugar payroll tier","keywords":["snack war","tilted screen"]}}
 ${getFengShuiPromptBlock("en")}`;
 
 export const ANALYZE_USER_PROMPT =
-  "First decide if this is a desk photo. If not, output isDesk:false. If yes, humorously price a distinctive salary (don't default to the mid band), then placement + career moves. JSON only. Entertainment only.";
+  "First decide if this is a desk photo. If not, output isDesk:false. If yes, humorously price a distinctive salary in English $k format (never Chinese 约/万), then placement + career moves. JSON only, all English. Entertainment only.";
 
 export const THINKING_STATUS_TEXTS = [
   "Desk is pricing you…",

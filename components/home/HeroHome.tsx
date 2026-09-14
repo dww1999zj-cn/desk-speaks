@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { PageTopRow } from "@/components/ui/PageTopRow";
@@ -11,13 +11,17 @@ interface GenerationStats {
   displayCount: number;
 }
 
-const SAMPLE_SALARIES = ["约6k", "约1.5万", "约2.3万", "约9k"] as const;
+const SAMPLE_SALARIES_ZH = ["约6k", "约1.5万", "约2.3万", "约9k"] as const;
+const SAMPLE_SALARIES_EN = ["~$3.5k", "~$8k", "~$12k", "~$4.5k"] as const;
 
 export function HeroHome() {
   const t = useTranslations("hub");
+  const locale = useLocale();
   const trustItems = t.raw("trustItems") as string[];
   const [displayCount, setDisplayCount] = useState<number | null>(null);
   const [salaryIndex, setSalaryIndex] = useState(0);
+  const sampleSalaries =
+    locale === "en" ? SAMPLE_SALARIES_EN : SAMPLE_SALARIES_ZH;
 
   useEffect(() => {
     fetch("/api/stats")
@@ -32,10 +36,10 @@ export function HeroHome() {
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      setSalaryIndex((i) => (i + 1) % SAMPLE_SALARIES.length);
+      setSalaryIndex((i) => (i + 1) % sampleSalaries.length);
     }, 2200);
     return () => window.clearInterval(id);
-  }, []);
+  }, [sampleSalaries.length]);
 
   const trustLines = useMemo(() => {
     return trustItems.map((item, index) => {
@@ -80,10 +84,10 @@ export function HeroHome() {
             {t("teaseLabel")}
           </p>
           <p
-            key={SAMPLE_SALARIES[salaryIndex]}
+            key={sampleSalaries[salaryIndex]}
             className="mt-1.5 font-display text-4xl font-semibold tracking-tight text-plant sm:text-5xl"
           >
-            {SAMPLE_SALARIES[salaryIndex]}
+            {sampleSalaries[salaryIndex]}
           </p>
           <p className="mt-1.5 text-sm text-white/55">{t("teaseHint")}</p>
         </div>
