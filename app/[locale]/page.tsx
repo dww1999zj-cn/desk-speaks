@@ -9,5 +9,15 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <HeroHome />;
+  return (
+    <>
+      <link
+        rel="preload"
+        as="image"
+        href="/marketing/hero-desk-a-480.webp"
+        type="image/webp"
+      />
+      <HeroHome />
+    </>
+  );
 }

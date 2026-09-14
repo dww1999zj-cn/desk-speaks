@@ -12,13 +12,16 @@ const displayFont = ZCOOL_KuaiLe({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
+  preload: true,
 });
 
 const bodyFont = Noto_Sans_SC({
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
+  preload: false,
+  adjustFontFallback: true,
 });
 
 type Props = {
