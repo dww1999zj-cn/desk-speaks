@@ -12,6 +12,16 @@ const QWEN_API_BASE =
 
 const FALLBACK_MODEL = "qwen-vl-plus";
 
+export class NotADeskError extends Error {
+  readonly rejectReason: string;
+
+  constructor(message: string, rejectReason = "") {
+    super(message);
+    this.name = "NotADeskError";
+    this.rejectReason = rejectReason;
+  }
+}
+
 function getModelCandidates(): string[] {
   const preferred = process.env.QWEN_VL_MODEL ?? FALLBACK_MODEL;
   if (preferred === FALLBACK_MODEL) return [FALLBACK_MODEL];
@@ -22,26 +32,64 @@ function stripTrailingCommas(json: string): string {
   return json.replace(/,\s*([}\]])/g, "$1");
 }
 
+function assertIsDesk(raw: unknown, locale: AppLocale): void {
+  const obj = raw as { isDesk?: unknown; rejectReason?: unknown };
+  const isDesk =
+    obj?.isDesk === true ||
+    obj?.isDesk === "true" ||
+    obj?.isDesk === 1;
+
+  if (isDesk) return;
+
+  if (
+    obj?.isDesk === false ||
+    obj?.isDesk === "false" ||
+    obj?.isDesk === 0 ||
+    /"isDesk"\s*:\s*false/.test(JSON.stringify(raw))
+  ) {
+    const reason =
+      typeof obj.rejectReason === "string" && obj.rejectReason.trim()
+        ? obj.rejectReason.trim()
+        : locale === "zh"
+          ? "这张看起来不是工位照片，请换一张桌面/工位照"
+          : "This doesn't look like a desk photo — try a clear workstation shot";
+    throw new NotADeskError(reason, reason);
+  }
+}
+
 function parseReport(content: string, locale: AppLocale): DeskReport {
   const cleaned = content.replace(/```json\n?|\n?```/g, "").trim();
   const candidates = [cleaned, stripTrailingCommas(cleaned)];
 
   for (const candidate of candidates) {
     try {
-      return normalizeReport(JSON.parse(candidate) as Partial<DeskReport>, locale);
-    } catch {
+      const parsed = JSON.parse(candidate) as Record<string, unknown>;
+      assertIsDesk(parsed, locale);
+      return normalizeReport(parsed as Partial<DeskReport>, locale);
+    } catch (err) {
+      if (err instanceof NotADeskError) throw err;
       const match = candidate.match(/\{[\s\S]*\}/);
       if (match) {
         try {
-          return normalizeReport(
-            JSON.parse(stripTrailingCommas(match[0])) as Partial<DeskReport>,
-            locale
-          );
-        } catch {
-          /* try next */
+          const parsed = JSON.parse(
+            stripTrailingCommas(match[0])
+          ) as Record<string, unknown>;
+          assertIsDesk(parsed, locale);
+          return normalizeReport(parsed as Partial<DeskReport>, locale);
+        } catch (inner) {
+          if (inner instanceof NotADeskError) throw inner;
         }
       }
     }
+  }
+
+  // Explicit reject string without full parse
+  if (/"isDesk"\s*:\s*false/.test(cleaned)) {
+    throw new NotADeskError(
+      locale === "zh"
+        ? "这张看起来不是工位照片，请换一张桌面/工位照"
+        : "This doesn't look like a desk photo — try a clear workstation shot"
+    );
   }
 
   throw new Error("Persona response parse failed");
@@ -108,6 +156,7 @@ export async function analyzeDeskPersona(
     try {
       return await callQwen(model, apiKey, base64, locale);
     } catch (err) {
+      if (err instanceof NotADeskError) throw err;
       lastError = err instanceof Error ? err : new Error(String(err));
       console.error(`Persona analyze with ${model} failed:`, lastError.message);
     }

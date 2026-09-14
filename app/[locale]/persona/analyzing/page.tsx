@@ -24,6 +24,7 @@ type Phase = "loading" | "error";
 function parsePreviewError(value: string | null): AnalyzeErrorType | null {
   if (value === "failed" || value === "error") return "failed";
   if (value === "timeout") return "timeout";
+  if (value === "not_desk") return "not_desk";
   return null;
 }
 
@@ -67,6 +68,15 @@ function PersonaAnalyzingContent() {
 
         clearTimeout(timeout);
         if (cancelled) return;
+
+        if (res.status === 422) {
+          const data = await res.json().catch(() => ({}));
+          if (data.error === "not_desk") {
+            setErrorType("not_desk");
+            setPhase("error");
+            return;
+          }
+        }
 
         if (!res.ok) throw new Error("analyze failed");
 

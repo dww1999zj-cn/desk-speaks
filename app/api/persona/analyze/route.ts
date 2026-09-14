@@ -50,6 +50,21 @@ export async function POST(req: NextRequest) {
     scheduleSave(report);
     return NextResponse.json({ report, reportId: null, locale });
   } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "name" in error &&
+      (error as { name: string }).name === "NotADeskError"
+    ) {
+      return NextResponse.json(
+        {
+          error: "not_desk",
+          message:
+            error instanceof Error ? error.message : "Not a desk photo",
+        },
+        { status: 422 }
+      );
+    }
     console.error("Persona analyze error:", error);
     return NextResponse.json(
       { error: "Analysis failed, please try again later" },
