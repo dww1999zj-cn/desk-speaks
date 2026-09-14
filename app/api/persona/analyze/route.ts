@@ -27,15 +27,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing image data" }, { status: 400 });
     }
 
-    const useMock =
-      process.env.USE_MOCK_DATA === "true" || !process.env.DASHSCOPE_API_KEY;
-
-    if (useMock) {
+    // Mock only when explicitly enabled. Missing API key must not silently
+    // return the same canned report for every photo.
+    if (process.env.USE_MOCK_DATA === "true") {
       await new Promise((r) => setTimeout(r, 1500));
       const { normalizeReport } = await import("@/lib/report");
       const mockReport = normalizeReport(getPrompts(locale).mockReport, locale);
       scheduleSave(mockReport);
       return NextResponse.json({ report: mockReport, reportId: null, locale });
+    }
+
+    if (!process.env.DASHSCOPE_API_KEY) {
+      console.error("Persona analyze blocked: DASHSCOPE_API_KEY is not set");
+      return NextResponse.json(
+        { error: "Analysis service is not configured" },
+        { status: 503 }
+      );
     }
 
     const { analyzeDeskPersona } = await import("@/lib/persona/analyze");
