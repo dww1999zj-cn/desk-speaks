@@ -18,7 +18,7 @@ export async function saveDeskReport(report: DeskReport): Promise<string | null>
     .from("desk_reports")
     .insert({
       traits: reportToTraits(report),
-      cover_subtitle: report.intro.declaration,
+      cover_subtitle: report.salary.guessedSalary,
     })
     .select("id")
     .single();

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "我的工位",
-    "description": "上传工位照片，生成专属改造方案与效果图"
+    "title": "工位月薪",
+    "description": "拍一张工位照，趣味猜月薪，再看摆放风水与升职加薪小建议"
   },
   "common": {
     "back": "← 返回",
@@ -11,33 +11,23 @@
     "languageSwitchToZh": "中文"
   },
   "hub": {
-    "badge": "工位设计师",
-    "title": "工位设计师",
-    "subtitle": "上传一张照片，发现你的工位风格，生成专属空间改造方案。",
-    "heroAlt": "改造后的工位效果",
-    "cta": "开始改造我的工位",
-    "personaLink": "只想测工位人格？点这里",
-    "trustGeneration": "已有 {count}+ 人生成",
-    "showcase": {
-      "caption": "同一张桌子 · 滑动对比",
-      "before": "改造前",
-      "after": "改造后",
-      "beforeAlt": "改造前的杂乱工位示意",
-      "afterAlt": "改造后的工位示意",
-      "dragHint": "左右拖动对比",
-      "handleLabel": "拖动",
-      "compareAria": "工位改造前后对比"
-    },
+    "badge": "工位月薪",
+    "eyebrow": "娱乐向 · 非真实收入鉴定",
+    "title": "拍工位，猜月薪",
+    "subtitle": "上传一张日常工位照，工位先猜你的月薪，再评摆放风水，给几条升职加薪向的小建议。",
+    "disclaimer": "纯属玩笑，不构成任何薪资、风水或职业承诺。",
+    "cta": "拍张工位开始猜",
+    "trustGeneration": "已有 {count}+ 人玩过",
     "trustItems": [
-      "已有 2,000+ 人生成",
-      "分析约 30 秒",
-      "支持生成分享海报"
+      "已有 2,000+ 人玩过",
+      "约 30 秒出结果",
+      "可保存分享海报"
     ]
   },
   "personaUpload": {
-    "badge": "🐮 工位人格",
+    "badge": "🐮 工位月薪",
     "title": "拍张工位照",
-    "subtitle": "不用摆拍，真实的最好。看看工位眼中的你像不像你自己。",
+    "subtitle": "不用摆拍。越日常越好——猜月薪、看风水、拿升职摆放建议。",
     "submit": "就这张，开始猜 🐮",
     "submitting": "出发中…",
     "preparing": "准备照片…",
@@ -134,27 +124,27 @@
     "changePhoto": "换张照片",
     "persona": {
       "reasoning": "推理中",
-      "engine": "通义千问 · 工位人格",
+      "engine": "通义千问 · 工位月薪",
       "thinkingTexts": [
         "正在端详你的工位…",
         "清点桌面上的线索",
-        "猜猜你像几岁",
-        "推演工位 MBTI",
-        "匹配工位星座",
-        "工位正在写信…",
+        "趣味猜测你的月薪",
+        "看看摆放与「明堂」",
+        "起草升职加薪小建议",
+        "鉴定卡马上盖章…",
         "快好了，别关屏"
       ]
     }
   },
   "report": {
-    "loading": "改造方案整理中…",
+    "loading": "结果整理中…",
     "retryUpload": "换张工位，再试一次",
     "backHome": "回到首页",
     "persona": {
-      "loading": "工位正在整理信件…",
-      "badge": "🐮 工位牛马报告",
-      "title": "工位眼中的你",
-      "matchFallback": "{mbti} × {zodiac}——工位眼里的你，像吗？",
+      "loading": "工位正在盖章…",
+      "badge": "🐮 工位月薪报告",
+      "title": "工位眼里的你",
+      "matchFallback": "工位猜你 {salary}——像吗？",
       "deskAlt": "你的工位",
       "shareHint": "滑到「鉴定卡」可预览并保存分享图"
     },
@@ -188,24 +178,20 @@
       }
     },
     "cards": {
-      "introLayer": "第一层 · 工位初见",
-      "introTitle": "工位初见",
-      "guessLabel": "工位猜你",
+      "salaryLayer": "第一层 · 猜月薪",
+      "salaryTitle": "工位猜月薪",
+      "salaryGuessLabel": "工位猜你月薪",
+      "salaryDisclaimer": "娱乐向玩笑，非真实收入鉴定。",
       "evidenceTitle": "工位目击 · 它看到了这些",
-      "mbtiLayer": "第二层 · 工位 MBTI",
-      "mbtiTitle": "工位 MBTI 人格",
-      "mbtiSubtitle": "工位版 · 非心理测试",
-      "zodiacLayer": "第三层 · 工位星座",
-      "zodiacTitle": "工位星座",
-      "zodiacSubtitle": "按桌面氛围匹配 · 非生日星座",
-      "letterLayer": "第四层 · 工位来信",
-      "letterTitle": "工位写给你的信",
-      "fengshuiPrefix": "风水一句 · ",
-      "recommendLink": "更多办公好物推荐 →",
-      "claimShareCard": "领取工位鉴定卡 →"
+      "fengshuiLayer": "第二层 · 工位风水",
+      "fengshuiTitle": "摆放风水",
+      "fengshuiEmpty": "这张工位的风水线索有点少，先看升职建议吧。",
+      "careerLayer": "第三层 · 升职摆放",
+      "careerTitle": "升职加薪向 · 摆放建议",
+      "claimShareCard": "领取月薪鉴定卡 →"
     },
     "swiper": {
-      "labels": ["初见", "MBTI", "星座", "来信", "鉴定卡"],
+      "labels": ["月薪", "风水", "升职", "鉴定卡"],
       "oneMoreCard": " · 还剩一张鉴定卡",
       "prev": "上一张",
       "next": "下一张",
@@ -214,11 +200,11 @@
     }
   },
   "share": {
-    "previewHint": "工位鉴定卡 · 保存即可分享",
-    "certBadge": "🐮 工位牛马认证",
-    "title": "你的工位人格",
-    "ageGuessLabel": "工位猜你像",
-    "qrTitle": "扫码来测，更懂你的工位",
+    "previewHint": "月薪鉴定卡 · 保存即可分享",
+    "certBadge": "🐮 工位月薪认证",
+    "title": "工位月薪鉴定",
+    "salaryGuessLabel": "工位猜你月薪",
+    "qrTitle": "扫码来猜你的工位月薪",
     "qrAlt": "二维码",
     "saveButton": "保存鉴定卡 📸",
     "savingButton": "正在生成鉴定卡…",
@@ -227,11 +213,11 @@
     "shareHint": "保存鉴定卡，即可分享",
     "imageFooter": "{footer} · 长按保存分享",
     "saveDialogAria": "保存鉴定卡",
-    "cardAlt": "工位鉴定卡",
+    "cardAlt": "工位月薪鉴定卡",
     "close": "关闭",
     "generateError": "分享图生成失败，请稍后再试",
-    "filename": "工位人格.png",
-    "stampLine1": "工位牛马",
+    "filename": "工位月薪.png",
+    "stampLine1": "工位月薪",
     "stampLine2": "鉴定通过",
     "renovation": {
       "previewHint": "改造分享图 · 保存即可发朋友圈",

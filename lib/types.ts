@@ -1,62 +1,51 @@
+import type { FengShuiNote } from "@/lib/renovation/types";
+
 export interface DeskReport {
-  /** 工位目击：物件 → 人格/状态洞察，2-3 条 */
+  /** 工位目击：物件 → 线索，2 条 */
   deskEvidence: string[];
-  intro: {
+  salary: {
+    /** 趣味开场，2 句 */
     description: string;
-    guessedAge: string;
-    ageHint: string;
-    declaration: string;
+    /** 如「约 1.2 万」/「8k–1.2万」 */
+    guessedSalary: string;
+    /** 一句依据，可为空 */
+    salaryHint: string;
   };
-  mbtiDesk: {
-    type: string;
-    keywords: string[];
-    declaration: string;
-  };
-  zodiacDesk: {
-    sign: string;
-    keywords: string[];
-    declaration: string;
-  };
-  letter: {
-    content: string;
-    yijingFengshui: string;
-  };
+  /** 模型选出的风水 snippet id */
+  fengShuiRefId: string;
+  /** 结合本图的一句话解读 */
+  fengShuiBrief: string;
+  /** normalize 后解析出的风水卡 */
+  fengShui: FengShuiNote | null;
+  /** 升职加薪摆放建议，2–3 条 */
+  careerTips: string[];
   shareCard: {
     title: string;
-    /** 分享金句，≤28 字，有梗可截图 */
+    /** 分享金句 */
     shareHook: string;
-    /** 工位给你的称号，≤16 字 */
+    /** 工位称号 */
     summary: string;
     keywords: string[];
   };
 }
 
-export type ReportCardType =
-  | "intro"
-  | "mbti"
-  | "zodiac"
-  | "letter"
-  | "share";
+export type ReportCardType = "salary" | "fengshui" | "career" | "share";
 
 export interface ReportCardData {
   type: ReportCardType;
   title?: string;
   subtitle?: string;
   content?: string;
-  guessedAge?: string;
-  ageHint?: string;
-  declaration?: string;
+  guessedSalary?: string;
+  salaryHint?: string;
   deskEvidence?: string[];
-  keywords?: string[];
-  mbtiType?: string;
-  zodiacSign?: string;
-  letter?: string;
-  yijingFengshui?: string;
+  fengShui?: FengShuiNote | null;
+  careerTips?: string[];
   shareHook?: string;
   summary?: string;
+  keywords?: string[];
 }
 
-// 保留统计类型，供后续扩展
 export interface DeskStats {
   totalUsers: number;
   traitStats: { trait: string; percentage: number }[];

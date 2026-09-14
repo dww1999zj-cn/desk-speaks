@@ -1,109 +1,148 @@
 import type { AppLocale } from "@/lib/i18n/locale";
 import type { DeskReport, ReportCardData } from "./types";
 import { getMockReport } from "./prompts/index";
+import {
+  isFengShuiSnippetId,
+  pickFengShuiRefId,
+  resolveFengShuiNote,
+} from "./renovation/feng-shui-snippets";
 
 export interface ReportCardLabels {
-  introLayer: string;
-  introTitle: string;
-  mbtiLayer: string;
-  mbtiTitle: string;
-  mbtiSubtitle: string;
-  zodiacLayer: string;
-  zodiacTitle: string;
-  zodiacSubtitle: string;
-  letterLayer: string;
-  letterTitle: string;
+  salaryLayer: string;
+  salaryTitle: string;
+  fengshuiLayer: string;
+  fengshuiTitle: string;
+  careerLayer: string;
+  careerTitle: string;
 }
 
-/** 展示用：去掉 MBTI 类型末尾的「工位 / Desk」后缀 */
-export function formatMbtiType(type: string): string {
-  return type.replace(/\s*(工位|Desk)\s*$/iu, "").trim();
-}
-
-/** 兼容旧版 sessionStorage 报告结构 */
 function ensureStringArray(value: unknown, fallback: string[]): string[] {
+  if (typeof value === "string" && value.trim()) {
+    const parts = value
+      .split(/[、,，;；|]/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (parts.length > 0) return parts;
+  }
   if (!Array.isArray(value)) return fallback;
-  return value.filter((item): item is string => typeof item === "string");
+  const list = value.filter((item): item is string => typeof item === "string");
+  return list.length > 0 ? list : fallback;
 }
 
-function normalizeGuessedAge(
-  rawIntro: Partial<DeskReport["intro"]> | undefined,
+function formatWan(n: number): string {
+  const rounded = Math.round(n * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+/** Model may return "约1.2万", "~$4k", or a raw number (yuan or 万). */
+function normalizeGuessedSalary(
+  raw: unknown,
   locale: AppLocale,
   fallback: string
 ): string {
-  const raw = rawIntro?.guessedAge;
-  if (typeof raw === "number" && Number.isFinite(raw)) {
-    return locale === "zh" ? `${raw}岁` : String(raw);
+  if (typeof raw === "number" && Number.isFinite(raw) && raw > 0) {
+    // ≥1000 → treat as 元 / USD monthly; smaller → 万 or $k units
+    if (raw >= 1000) {
+      return locale === "zh"
+        ? `约${formatWan(raw / 10000)}万`
+        : `~$${Math.round(raw / 1000)}k`;
+    }
+    return locale === "zh" ? `约${formatWan(raw)}万` : `~$${formatWan(raw)}k`;
   }
   if (typeof raw === "string") {
     const trimmed = raw.trim();
-    if (trimmed) return trimmed;
+    if (!trimmed) return fallback;
+    // Bare digits in a string (e.g. "8000") → same rules as number
+    if (/^\d+(\.\d+)?$/.test(trimmed)) {
+      return normalizeGuessedSalary(Number(trimmed), locale, fallback);
+    }
+    return trimmed;
   }
-
-  const description = rawIntro?.description?.trim() ?? "";
-  if (description) {
-    const zhMatch = description.match(/(\d{1,2})\s*岁/);
-    if (zhMatch) return `${zhMatch[1]}岁`;
-    const enMatch = description.match(/\b(\d{1,2})\s*(?:years?\s*old)?\b/i);
-    if (enMatch) return enMatch[1];
-  }
-
   return fallback;
 }
 
-/** 兼容旧版 sessionStorage 报告结构 */
+/** 兼容旧版 sessionStorage；清洗为猜月薪 schema */
 export function normalizeReport(
-  raw: Partial<DeskReport>,
+  raw: Partial<DeskReport> | Record<string, unknown>,
   locale: AppLocale = "zh"
 ): DeskReport {
-  const MOCK_REPORT = getMockReport(locale);
-  const shareCard = (raw.shareCard ?? {}) as Partial<DeskReport["shareCard"]>;
+  const MOCK = getMockReport(locale);
+  const rawObj = raw as Record<string, unknown>;
+  const shareCard = (rawObj.shareCard ?? {}) as Partial<DeskReport["shareCard"]>;
+
+  // Legacy persona: intro.guessedAge → salary
+  const legacyIntro = rawObj.intro as
+    | { description?: string; guessedAge?: string }
+    | undefined;
+  const salaryRaw = (rawObj.salary ?? {}) as Partial<DeskReport["salary"]>;
+
+  const deskEvidence = ensureStringArray(rawObj.deskEvidence, MOCK.deskEvidence);
+
+  const guessedSalary = normalizeGuessedSalary(
+    salaryRaw.guessedSalary ?? legacyIntro?.guessedAge,
+    locale,
+    MOCK.salary.guessedSalary
+  );
+
+  const description =
+    salaryRaw.description?.trim() ||
+    legacyIntro?.description?.trim() ||
+    MOCK.salary.description;
+
+  const salaryHint =
+    typeof salaryRaw.salaryHint === "string"
+      ? salaryRaw.salaryHint.trim()
+      : MOCK.salary.salaryHint;
+
+  const careerTips = ensureStringArray(
+    rawObj.careerTips ??
+      (rawObj.career as { tips?: unknown } | undefined)?.tips,
+    MOCK.careerTips
+  ).slice(0, 4);
+
+  const refId = isFengShuiSnippetId(rawObj.fengShuiRefId)
+    ? rawObj.fengShuiRefId
+    : pickFengShuiRefId(
+        {
+          clutterItems: deskEvidence,
+          organizePlan: careerTips.join(" "),
+          bareDesk: description,
+        },
+        rawObj.fengShuiRefId
+      );
+  const brief =
+    (typeof rawObj.fengShuiBrief === "string" && rawObj.fengShuiBrief.trim()) ||
+    MOCK.fengShuiBrief;
+  const fengShui = resolveFengShuiNote(refId, brief, locale);
+
   const summary =
     shareCard.summary ??
     (typeof shareCard.shareHook === "string"
       ? shareCard.shareHook
-      : MOCK_REPORT.shareCard.summary);
+      : MOCK.shareCard.summary);
 
   return {
-    deskEvidence: Array.isArray(raw.deskEvidence)
-      ? raw.deskEvidence.filter((item): item is string => typeof item === "string")
-      : MOCK_REPORT.deskEvidence,
-    intro: {
-      ...MOCK_REPORT.intro,
-      ...(raw.intro ?? {}),
-      guessedAge: normalizeGuessedAge(raw.intro, locale, MOCK_REPORT.intro.guessedAge),
-      ageHint: "",
-      declaration: "",
+    deskEvidence,
+    salary: {
+      description,
+      guessedSalary,
+      salaryHint,
     },
-    mbtiDesk: {
-      ...MOCK_REPORT.mbtiDesk,
-      ...(raw.mbtiDesk ?? {}),
-      keywords: ensureStringArray(
-        raw.mbtiDesk?.keywords,
-        MOCK_REPORT.mbtiDesk.keywords
-      ),
-    },
-    zodiacDesk: {
-      ...MOCK_REPORT.zodiacDesk,
-      ...(raw.zodiacDesk ?? {}),
-      keywords: ensureStringArray(
-        raw.zodiacDesk?.keywords,
-        MOCK_REPORT.zodiacDesk.keywords
-      ),
-    },
-    letter: { ...MOCK_REPORT.letter, ...(raw.letter ?? {}) },
+    fengShuiRefId: refId,
+    fengShuiBrief: brief,
+    fengShui,
+    careerTips,
     shareCard: {
-      ...MOCK_REPORT.shareCard,
+      ...MOCK.shareCard,
       ...shareCard,
+      title: shareCard.title ?? MOCK.shareCard.title,
       shareHook:
         shareCard.shareHook ??
-        shareCard.summary ??
-        MOCK_REPORT.shareCard.shareHook,
+        (locale === "zh"
+          ? `工位猜你${guessedSalary}`
+          : `Desk says ${guessedSalary}`),
       summary,
-      keywords: ensureStringArray(
-        shareCard.keywords,
-        MOCK_REPORT.shareCard.keywords
-      ),
+      keywords: ensureStringArray(shareCard.keywords, MOCK.shareCard.keywords),
     },
   };
 }
@@ -112,39 +151,24 @@ export function reportToCards(
   report: DeskReport,
   labels: ReportCardLabels
 ): ReportCardData[] {
-  const mbtiType = formatMbtiType(report.mbtiDesk.type);
   return [
     {
-      type: "intro",
-      title: labels.introTitle,
-      content: report.intro.description,
-      guessedAge: report.intro.guessedAge,
-      ageHint: report.intro.ageHint,
-      declaration: report.intro.declaration,
+      type: "salary",
+      title: labels.salaryTitle,
+      content: report.salary.description,
+      guessedSalary: report.salary.guessedSalary,
+      salaryHint: report.salary.salaryHint,
       deskEvidence: report.deskEvidence,
     },
     {
-      type: "mbti",
-      title: labels.mbtiTitle,
-      subtitle: labels.mbtiSubtitle,
-      mbtiType,
-      keywords: report.mbtiDesk.keywords,
-      declaration: report.mbtiDesk.declaration,
+      type: "fengshui",
+      title: labels.fengshuiTitle,
+      fengShui: report.fengShui,
     },
     {
-      type: "zodiac",
-      title: labels.zodiacTitle,
-      subtitle: labels.zodiacSubtitle,
-      zodiacSign: report.zodiacDesk.sign,
-      keywords: report.zodiacDesk.keywords,
-      declaration: report.zodiacDesk.declaration,
-    },
-    {
-      type: "letter",
-      title: labels.letterTitle,
-      letter: report.letter.content,
-      yijingFengshui: report.letter.yijingFengshui,
-      keywords: report.shareCard.keywords,
+      type: "career",
+      title: labels.careerTitle,
+      careerTips: report.careerTips,
     },
     {
       type: "share",
@@ -152,17 +176,18 @@ export function reportToCards(
       shareHook: report.shareCard.shareHook,
       summary: report.shareCard.summary,
       keywords: report.shareCard.keywords,
-      mbtiType,
-      zodiacSign: report.zodiacDesk.sign,
+      guessedSalary: report.salary.guessedSalary,
     },
   ];
 }
 
 export function reportToTraits(report: DeskReport): string[] {
-  return [
-    ...report.mbtiDesk.keywords,
-    ...report.zodiacDesk.keywords,
-  ].slice(0, 8);
+  return [...report.shareCard.keywords, ...report.careerTips].slice(0, 8);
+}
+
+/** @deprecated kept for any leftover imports */
+export function formatMbtiType(type: string): string {
+  return type.replace(/\s*(工位|Desk)\s*$/iu, "").trim();
 }
 
 export const STORAGE_KEYS = {

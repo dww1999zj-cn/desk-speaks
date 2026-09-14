@@ -31,7 +31,7 @@ export function ShareImageButton({
     () => ({
       certBadge: t("certBadge"),
       title: t("title"),
-      ageGuessLabel: t("ageGuessLabel"),
+      salaryGuessLabel: t("salaryGuessLabel"),
       qrTitle: t("qrTitle"),
       imageFooter: t("imageFooter", { footer: tCommon("footer") }),
       stampLine1: t("stampLine1"),

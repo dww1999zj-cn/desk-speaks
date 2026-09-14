@@ -68,7 +68,7 @@ export function ReportSwiper({
     <div className="w-full">
       <p className="mb-3 text-center text-xs text-muted">
         {current + 1}/{cards.length} · {slideLabels[current]}
-        {cards[current]?.type === "letter" && t("oneMoreCard")}
+        {cards[current]?.type === "career" && t("oneMoreCard")}
       </p>
 
       <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
@@ -84,7 +84,7 @@ export function ReportSwiper({
           <Card
             variant="gradient"
             className={`transition-all duration-300 ${
-              cards[current].type === "letter"
+              cards[current].type === "career"
                 ? "max-h-[70vh] min-h-[480px] overflow-y-auto"
                 : "min-h-[420px]"
             }`}

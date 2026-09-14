@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { PageTopRow } from "@/components/ui/PageTopRow";
-import { DeskShowcaseCompare } from "@/components/marketing/DeskShowcaseCompare";
 import { useEffect, useMemo, useState } from "react";
 
 interface GenerationStats {
@@ -56,14 +55,16 @@ export function HeroHome() {
         </div>
       </div>
 
-      <main className="relative z-10 mx-auto flex min-h-dvh max-w-lg flex-col px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-16 safe-bottom sm:px-6">
-        <DeskShowcaseCompare variant="hero" />
-
-        <header className="mt-8">
-          <h1 className="text-[2.35rem] font-semibold leading-[1.12] tracking-tight text-text">
+      <main className="relative z-10 mx-auto flex min-h-dvh max-w-lg flex-col justify-center px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-16 safe-bottom sm:px-6">
+        <header className="mt-4">
+          <p className="text-sm font-medium tracking-wide text-secondary">
+            {t("eyebrow")}
+          </p>
+          <h1 className="mt-3 text-[2.35rem] font-semibold leading-[1.12] tracking-tight text-text">
             {t("title")}
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-muted">{t("subtitle")}</p>
+          <p className="mt-3 text-[12px] leading-relaxed text-muted/80">{t("disclaimer")}</p>
         </header>
 
         <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2">
@@ -80,25 +81,16 @@ export function HeroHome() {
 
         <section className="mt-8">
           <Link
-            href="/upload"
+            href="/persona/upload"
             prefetch
             className="group relative flex w-full items-center justify-center overflow-hidden rounded-2xl bg-text px-6 py-4 text-base font-semibold text-white shadow-lg shadow-text/15 transition active:scale-[0.99]"
           >
             <span className="absolute inset-0 bg-ai-glow opacity-0 transition-opacity duration-300 group-hover:opacity-20" />
             <span className="relative">{t("cta")}</span>
           </Link>
-          <p className="mt-4 text-center">
-            <Link
-              href="/persona/upload"
-              prefetch
-              className="text-xs text-muted underline-offset-2 transition hover:text-text hover:underline"
-            >
-              {t("personaLink")}
-            </Link>
-          </p>
         </section>
 
-        <footer className="mt-8">
+        <footer className="mt-10">
           <SiteFooter />
         </footer>
       </main>

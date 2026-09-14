@@ -1,12 +1,11 @@
 import QRCode from "qrcode";
 import type { DeskReport } from "./types";
 import { formatShareSiteLabel } from "./share-copy";
-import { formatMbtiType } from "./report";
 
 export interface ShareImageCopy {
   certBadge: string;
   title: string;
-  ageGuessLabel: string;
+  salaryGuessLabel: string;
   qrTitle: string;
   imageFooter: string;
   stampLine1: string;
@@ -305,9 +304,14 @@ function computeShareLayout(
   const declarationY = keywordsY + KEYWORD_PILL_HEIGHT + 24;
 
   ctx.font = `500 34px ${font}`;
+  const evidenceLine =
+    report.fengShui?.brief ||
+    report.salary.salaryHint ||
+    report.deskEvidence[0] ||
+    "";
   const declarationEnd = measureWrapText(
     ctx,
-    `「${report.deskEvidence[0] ?? report.intro.declaration}」`,
+    evidenceLine ? `「${evidenceLine}」` : "",
     CONTENT_W,
     48,
     declarationY
@@ -439,15 +443,18 @@ export async function generateShareImage(
   ctx.fillStyle = COLORS.primary;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(report.intro.guessedAge, W / 2, y + AGE_BOX_HEIGHT / 2);
+  ctx.fillText(report.salary.guessedSalary, W / 2, y + AGE_BOX_HEIGHT / 2);
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
 
-  const mbtiLabel = formatMbtiType(report.mbtiDesk.type);
-  const pills = [
-    { label: mbtiLabel, bg: COLORS.primary, fg: COLORS.white },
-    { label: report.zodiacDesk.sign, bg: COLORS.secondary, fg: COLORS.text },
-  ];
+  const pills: { label: string; bg: string; fg: string }[] = [];
+  if (report.fengShui?.topic) {
+    pills.push({
+      label: report.fengShui.topic,
+      bg: COLORS.primary,
+      fg: COLORS.white,
+    });
+  }
   if (report.shareCard.summary) {
     pills.push({
       label: report.shareCard.summary,
@@ -491,11 +498,16 @@ export async function generateShareImage(
     kwX += kwW + 16;
   }
 
+  const evidenceLine =
+    report.fengShui?.brief ||
+    report.salary.salaryHint ||
+    report.deskEvidence[0] ||
+    "";
   ctx.font = `500 34px ${font}`;
   ctx.fillStyle = COLORS.muted;
   wrapText(
     ctx,
-    `「${report.deskEvidence[0] ?? report.intro.declaration}」`,
+    evidenceLine ? `「${evidenceLine}」` : "",
     CONTENT_X,
     layout.declarationY,
     CONTENT_W,

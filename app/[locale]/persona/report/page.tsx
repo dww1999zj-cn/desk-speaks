@@ -10,7 +10,6 @@ import { SiteFooter } from "@/components/ui/SiteFooter";
 import { PageTopRow } from "@/components/ui/PageTopRow";
 import {
   reportToCards,
-  formatMbtiType,
   normalizeReport,
   STORAGE_KEYS,
   type ReportCardLabels,
@@ -31,16 +30,12 @@ export default function PersonaReportPage() {
 
   const cardLabels: ReportCardLabels = useMemo(
     () => ({
-      introLayer: tReport("cards.introLayer"),
-      introTitle: tReport("cards.introTitle"),
-      mbtiLayer: tReport("cards.mbtiLayer"),
-      mbtiTitle: tReport("cards.mbtiTitle"),
-      mbtiSubtitle: tReport("cards.mbtiSubtitle"),
-      zodiacLayer: tReport("cards.zodiacLayer"),
-      zodiacTitle: tReport("cards.zodiacTitle"),
-      zodiacSubtitle: tReport("cards.zodiacSubtitle"),
-      letterLayer: tReport("cards.letterLayer"),
-      letterTitle: tReport("cards.letterTitle"),
+      salaryLayer: tReport("cards.salaryLayer"),
+      salaryTitle: tReport("cards.salaryTitle"),
+      fengshuiLayer: tReport("cards.fengshuiLayer"),
+      fengshuiTitle: tReport("cards.fengshuiTitle"),
+      careerLayer: tReport("cards.careerLayer"),
+      careerTitle: tReport("cards.careerTitle"),
     }),
     [tReport]
   );
@@ -65,10 +60,7 @@ export default function PersonaReportPage() {
       setCards(reportToCards(parsed, cardLabels));
       setMatchQuestion(
         parsed.shareCard.shareHook ||
-          t("matchFallback", {
-            mbti: formatMbtiType(parsed.mbtiDesk.type),
-            zodiac: parsed.zodiacDesk.sign,
-          })
+          t("matchFallback", { salary: parsed.salary.guessedSalary })
       );
       if (imageRaw) setImage(imageRaw);
     } catch {

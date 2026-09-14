@@ -1,70 +1,65 @@
 import type { DeskReport } from "@/lib/types";
+import { getFengShuiPromptBlock } from "@/lib/renovation/feng-shui-snippets";
 import { REPORT_LIMITS } from "./limits";
 
 const L = REPORT_LIMITS.en;
 
-export const SYSTEM_PROMPT = `You ARE the desk in this photo. First person, witty coworker tone. Not therapy or fortune-telling. Pure JSON only, no markdown.
+export const SYSTEM_PROMPT = `You ARE the desk in this photo. First person, witty coworker tone. Fun salary guess — NOT a real income appraisal or fortune-telling. Pure JSON only, no markdown.
 
-Pick ${L.deskEvidenceCount} visible objects. Shorter is better.
+Pick ${L.deskEvidenceCount} visible objects.
 
 Fields (strict):
-- deskEvidence: ${L.deskEvidenceCount} lines, ≤${L.deskEvidenceItem} chars each, "object→insight"
-- intro.description: only intro copy, **2 sentences** ≤${L.introDescription} chars, witty coworker humor (irony, self-roast, punchline OK), cite 1–2 visible objects — this is the user's first impression
-- intro.guessedAge: **required** separate field, e.g. "29", never omit or leave empty
-- intro.ageHint, intro.declaration: must be empty string ""
-- mbtiDesk / zodiacDesk: type/sign + ${L.keywordCount} keywords + declaration ≤${L.declaration} chars
-- letter.content ≤${L.letterContent} chars; yijingFengshui ≤${L.letterFengshui} chars
-- shareCard.shareHook ≤${L.shareHook} chars; summary ≤${L.shareSummary} chars
+- deskEvidence: ${L.deskEvidenceCount} lines, ≤${L.deskEvidenceItem} chars, "object→clue"
+- salary.description: 2 sentences ≤${L.salaryDescription} chars, witty, cite objects
+- salary.guessedSalary: required string, e.g. "~$4k" or "$3–4k"; never a bare number; never exact to the dollar
+- salary.salaryHint: ≤${L.salaryHint} chars, one visual reason; can be ""
+- fengShuiRefId: must pick 1 id from the list below
+- fengShuiBrief: ≤${L.fengShuiBrief} chars, scene-specific; do NOT promise luck
+- careerTips: ${L.careerTipCount} tips, ≤${L.careerTipItem} chars each, actionable placement for career vibe (clear desk front, solid back, tidy left side)
+- shareCard.shareHook ≤${L.shareHook}; summary ≤${L.shareSummary}; ${L.keywordCount} keywords; title like "Desk Salary Guess"
 
-No vague filler, lecturing, or personal attacks.
+No vague filler, lecturing, or personal attacks. Keep it playful.
 
-{"deskEvidence":["object→insight","object→insight"],"intro":{"description":"First sentence hooks an object. Second lands the joke.","guessedAge":"29","ageHint":"","declaration":""},"mbtiDesk":{"type":"INFP","keywords":["…","…"],"declaration":"…"},"zodiacDesk":{"sign":"Scorpio","keywords":["…","…"],"declaration":"…"},"letter":{"content":"…","yijingFengshui":"…"},"shareCard":{"title":"Your Desk Persona","shareHook":"…","summary":"…","keywords":["…","…"]}}`;
+{"deskEvidence":["object→clue","object→clue"],"salary":{"description":"Hook. Punchline.","guessedSalary":"~$4k","salaryHint":"Dual monitors hint mid-level grind"},"fengShuiRefId":"mingtang","fengShuiBrief":"Front of desk is a bit blocked — leave a clear pocket.","careerTips":["Clear clutter in front of the screen","Sit with a solid wall/cabinet behind","Tidy the left side so it looks capable"],"shareCard":{"title":"Desk Salary Guess","shareHook":"Desk says ~$4k 🐮","summary":"Mid grind","keywords":["dual screen","clear front"]}}
+${getFengShuiPromptBlock("en")}`;
 
 export const ANALYZE_USER_PROMPT =
-  'Output JSON after studying objects. intro.description: 2 witty sentences; intro.guessedAge required; ageHint/declaration ""';
+  "Output JSON: fun salary guess + fengShuiRefId + career placement tips. guessedSalary required. Entertainment only — not a real income appraisal.";
 
 export const THINKING_STATUS_TEXTS = [
-  "Qwen is on it…",
-  "Peeking at your keyboard",
-  "Brain warming up",
-  "Still guessing your age",
-  "Actually reasoning",
-  "Scanning your desk",
-  "Letter almost done",
+  "Guessing your salary from the desk…",
+  "Dual screens or snack life?",
+  "Salary first, then placement",
+  "Checking the 'front openness'",
+  "Drafting career desk tips",
+  "Not HR — just joking",
   "That mug says a lot…",
-  "Reading every item",
+  "Stamp almost ready",
 ];
 
 export const MOCK_REPORT: DeskReport = {
   deskEvidence: [
-    "Printer → action-oriented",
-    "Snack bag → desk needs sweetness",
+    "Dual monitors → mid-level grind",
+    "Snack bag → sugar-fueled focus",
   ],
-  intro: {
+  salary: {
     description:
-      "Snacks out, files stacked — you talk sprint mode but you're unwrapping something. This desk signed a peace treaty with chaos.",
-    guessedAge: "29",
-    ageHint: "",
-    declaration: "",
+      "Screens on, snacks open — you talk sprint mode but you're unwrapping something. This desk signed a peace treaty with chaos.",
+    guessedSalary: "~$4k",
+    salaryHint: "Dual monitors + cable tidy hint a working mid range",
   },
-  mbtiDesk: {
-    type: "INFP",
-    keywords: ["organized chaos", "flow-state"],
-    declaration: "Notes everywhere but you find things.",
-  },
-  zodiacDesk: {
-    sign: "Scorpio",
-    keywords: ["cool outside", "secret stash"],
-    declaration: "Locked drawer, loud figurines.",
-  },
-  letter: {
-    content: "Your mugs and notes prove you care. I know you're waiting for the right moment.",
-    yijingFengshui: "Plant left, mug right — keep clear.",
-  },
+  fengShuiRefId: "mingtang",
+  fengShuiBrief: "Front of the desk feels blocked — leave a clear pocket.",
+  fengShui: null,
+  careerTips: [
+    "Clear clutter in front of the monitors",
+    "Sit with a wall or cabinet behind you",
+    "Tidy the left side so it looks capable",
+  ],
   shareCard: {
-    title: "Your Desk Persona",
-    shareHook: "Desk says 29, runs on snacks 🐮",
-    summary: "Casual striver",
-    keywords: ["organized chaos", "snack life"],
+    title: "Desk Salary Guess",
+    shareHook: "Desk says ~$4k 🐮",
+    summary: "Mid grind",
+    keywords: ["dual screen", "clear front"],
   },
 };

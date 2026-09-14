@@ -32,7 +32,8 @@ export async function POST(req: NextRequest) {
 
     if (useMock) {
       await new Promise((r) => setTimeout(r, 1500));
-      const mockReport = getPrompts(locale).mockReport;
+      const { normalizeReport } = await import("@/lib/report");
+      const mockReport = normalizeReport(getPrompts(locale).mockReport, locale);
       scheduleSave(mockReport);
       return NextResponse.json({ report: mockReport, reportId: null, locale });
     }

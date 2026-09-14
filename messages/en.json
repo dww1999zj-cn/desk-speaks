@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "My Desk",
-    "description": "Upload a desk photo — get a custom renovation plan and visual result"
+    "title": "Desk Salary",
+    "description": "Snap your desk — fun salary guess, placement notes, and career desk tips"
   },
   "common": {
     "back": "← Back",
@@ -11,33 +11,23 @@
     "languageSwitchToZh": "中文"
   },
   "hub": {
-    "badge": "Desk Designer",
-    "title": "Desk Designer",
-    "subtitle": "Upload one photo — discover your desk style and get a custom renovation plan.",
-    "heroAlt": "Renovated desk result",
-    "cta": "Start my desk makeover",
-    "personaLink": "Desk persona only? Tap here",
-    "trustGeneration": "{count}+ desks generated",
-    "showcase": {
-      "caption": "Same desk · slide to compare",
-      "before": "Before",
-      "after": "After",
-      "beforeAlt": "Messy desk before makeover",
-      "afterAlt": "Renovated desk illustration",
-      "dragHint": "Drag left or right",
-      "handleLabel": "Drag",
-      "compareAria": "Desk before and after comparison"
-    },
+    "badge": "Desk Salary",
+    "eyebrow": "For fun · not a real income appraisal",
+    "title": "Snap your desk. Guess your salary.",
+    "subtitle": "Upload an everyday desk photo. We guess a playful salary range, check placement vibe, and share a few career-minded desk tips.",
+    "disclaimer": "Entertainment only — not salary advice, fortune-telling, or career promises.",
+    "cta": "Snap a desk to start",
+    "trustGeneration": "{count}+ desks tried",
     "trustItems": [
-      "2,000+ desks generated",
-      "~30s analysis",
+      "2,000+ desks tried",
+      "~30s result",
       "Shareable poster ready"
     ]
   },
   "personaUpload": {
-    "badge": "🐮 Desk Persona",
+    "badge": "🐮 Desk Salary",
     "title": "Snap your desk",
-    "subtitle": "No staging — real desks read best. See if your desk gets you.",
+    "subtitle": "No staging. Real desks work best — salary guess, placement, career tips.",
     "submit": "This one — go 🐮",
     "submitting": "Starting…",
     "preparing": "Preparing…",
@@ -134,27 +124,27 @@
     "changePhoto": "Change photo",
     "persona": {
       "reasoning": "Thinking",
-      "engine": "Qwen · Desk Persona",
+      "engine": "Qwen · Desk Salary",
       "thinkingTexts": [
         "Studying your desk…",
         "Collecting clues on the surface",
-        "Guessing your vibe age",
-        "Running desk MBTI",
-        "Matching a desk sign",
-        "Your desk is writing a letter…",
+        "Guessing a fun salary range",
+        "Checking placement vibe",
+        "Drafting career desk tips",
+        "Stamp almost ready…",
         "Almost done — stay on screen"
       ]
     }
   },
   "report": {
-    "loading": "Preparing your plan…",
+    "loading": "Preparing your result…",
     "retryUpload": "Try another desk",
     "backHome": "Home",
     "persona": {
-      "loading": "Desk is finishing the letter…",
-      "badge": "🐮 Desk Buddy report",
+      "loading": "Desk is stamping the card…",
+      "badge": "🐮 Desk Salary report",
       "title": "You, through your desk",
-      "matchFallback": "{mbti} × {zodiac} — does your desk get you?",
+      "matchFallback": "Desk says {salary} — close?",
       "deskAlt": "Your desk",
       "shareHint": "Swipe to the cert card to preview & save"
     },
@@ -188,24 +178,20 @@
       }
     },
     "cards": {
-      "introLayer": "First look",
-      "introTitle": "First look",
-      "guessLabel": "Age guess",
+      "salaryLayer": "Salary guess",
+      "salaryTitle": "Desk salary guess",
+      "salaryGuessLabel": "Desk says you earn",
+      "salaryDisclaimer": "For fun only — not a real income appraisal.",
       "evidenceTitle": "Desk noticed",
-      "mbtiLayer": "Desk MBTI",
-      "mbtiTitle": "Desk MBTI",
-      "mbtiSubtitle": "Desk edition · not clinical",
-      "zodiacLayer": "Desk sign",
-      "zodiacTitle": "Desk sign",
-      "zodiacSubtitle": "Vibe match · not birthday",
-      "letterLayer": "Letter",
-      "letterTitle": "From your desk",
-      "fengshuiPrefix": "Feng shui · ",
-      "recommendLink": "Desk picks →",
+      "fengshuiLayer": "Placement",
+      "fengshuiTitle": "Desk placement",
+      "fengshuiEmpty": "Not many placement clues — jump to career tips.",
+      "careerLayer": "Career tips",
+      "careerTitle": "Career-minded desk tips",
       "claimShareCard": "Get your cert →"
     },
     "swiper": {
-      "labels": ["Look", "MBTI", "Sign", "Letter", "Cert"],
+      "labels": ["Salary", "Placement", "Career", "Cert"],
       "oneMoreCard": " · cert next",
       "prev": "Back",
       "next": "Next",
@@ -214,11 +200,11 @@
     }
   },
   "share": {
-    "previewHint": "Cert · save to share",
-    "certBadge": "🐮 Certified",
-    "title": "Desk Persona",
-    "ageGuessLabel": "Reads you as",
-    "qrTitle": "Scan to try",
+    "previewHint": "Salary cert · save to share",
+    "certBadge": "🐮 Desk Salary",
+    "title": "Desk Salary Guess",
+    "salaryGuessLabel": "Desk says you earn",
+    "qrTitle": "Scan to guess your desk salary",
     "qrAlt": "QR",
     "saveButton": "Save cert 📸",
     "savingButton": "Generating…",
@@ -227,11 +213,11 @@
     "shareHint": "Save cert to share",
     "imageFooter": "{footer} · long-press to save",
     "saveDialogAria": "Save cert",
-    "cardAlt": "Desk cert",
+    "cardAlt": "Desk salary cert",
     "close": "Close",
     "generateError": "Couldn't generate — retry",
-    "filename": "desk-persona.png",
-    "stampLine1": "Desk buddy",
+    "filename": "desk-salary.png",
+    "stampLine1": "Desk salary",
     "stampLine2": "Certified",
     "renovation": {
       "previewHint": "Share poster · save to post",

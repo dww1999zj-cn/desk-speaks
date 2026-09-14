@@ -28,13 +28,13 @@ function parseReport(content: string, locale: AppLocale): DeskReport {
 
   for (const candidate of candidates) {
     try {
-      return normalizeReport(JSON.parse(candidate) as DeskReport, locale);
+      return normalizeReport(JSON.parse(candidate) as Partial<DeskReport>, locale);
     } catch {
       const match = candidate.match(/\{[\s\S]*\}/);
       if (match) {
         try {
           return normalizeReport(
-            JSON.parse(stripTrailingCommas(match[0])) as DeskReport,
+            JSON.parse(stripTrailingCommas(match[0])) as Partial<DeskReport>,
             locale
           );
         } catch {
@@ -76,8 +76,9 @@ async function callQwen(
           ],
         },
       ],
-      max_tokens: 800,
-      temperature: 0.75,
+      max_tokens: 1200,
+      temperature: 0.7,
+      response_format: { type: "json_object" },
     }),
   });
 
