@@ -53,8 +53,7 @@ export function HeroHome() {
       <div
         className="pointer-events-none absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage:
-            "url(/marketing/desk-showcase-before-display.webp)",
+          backgroundImage: "url(/marketing/hero-desk-a-display.webp)",
         }}
         aria-hidden
       />
