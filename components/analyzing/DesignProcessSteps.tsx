@@ -22,7 +22,7 @@ export function DesignProcessSteps() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="mb-8 h-0.5 overflow-hidden rounded-full bg-surface">
+      <div className="mb-8 h-0.5 overflow-hidden rounded-full bg-white/15">
         <div
           className="h-full rounded-full bg-gradient-to-r from-wood to-plant transition-all duration-700 ease-out"
           style={{ width: `${progress}%` }}
@@ -45,8 +45,8 @@ export function DesignProcessSteps() {
                   done
                     ? "bg-plant text-white"
                     : active
-                      ? "bg-text text-white ring-2 ring-plant/30 ring-offset-2 ring-offset-background"
-                      : "bg-surface text-muted"
+                      ? "bg-white text-[#1a1c18] ring-2 ring-plant/40"
+                      : "bg-white/10 text-white/45"
                 }`}
                 aria-hidden
               >
@@ -55,7 +55,7 @@ export function DesignProcessSteps() {
               <div className="min-w-0 pt-0.5">
                 <p
                   className={`text-sm leading-snug ${
-                    active ? "font-medium text-text" : "text-muted"
+                    active ? "font-medium text-white" : "text-white/50"
                   }`}
                 >
                   {label}
@@ -69,7 +69,7 @@ export function DesignProcessSteps() {
         })}
       </ol>
 
-      <p className="mt-10 flex items-center justify-center gap-1.5 text-xs text-muted">
+      <p className="mt-10 flex items-center justify-center gap-1.5 text-xs text-white/45">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-plant animate-pulse-soft" />
         {t("engine")}
       </p>

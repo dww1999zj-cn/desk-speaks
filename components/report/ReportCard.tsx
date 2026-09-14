@@ -34,13 +34,13 @@ function DeskEvidenceList({ items }: { items?: string[] }) {
 
   if (!items?.length) return null;
   return (
-    <div className="mt-6 rounded-2xl border border-primary/10 bg-white/60 px-4 py-4">
-      <p className="mb-3 text-xs font-semibold text-primary">{t("evidenceTitle")}</p>
+    <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4">
+      <p className="mb-3 text-xs font-semibold text-plant">{t("evidenceTitle")}</p>
       <ul className="space-y-2.5">
         {items.map((item) => (
           <li
             key={item}
-            className="text-sm leading-relaxed text-text before:mr-1.5 before:content-['🐮']"
+            className="text-sm leading-relaxed text-white/85 before:mr-1.5 before:content-['🐮']"
           >
             {item}
           </li>
@@ -64,22 +64,24 @@ export function ReportCard({
   if (data.type === "salary") {
     return (
       <CardWrapper delay={delay}>
-        <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
+        <p className="mb-2 text-sm font-medium tracking-widest text-wood">
           {t("salaryLayer")}
         </p>
-        <p className="whitespace-pre-line text-base leading-relaxed text-muted md:text-lg">
+        <p className="whitespace-pre-line text-base leading-relaxed text-white/70 md:text-lg">
           {data.content}
         </p>
-        <div className="mt-6 rounded-2xl bg-primary/5 px-5 py-5 text-center">
-          <p className="text-sm text-muted">{t("salaryGuessLabel")}</p>
-          <p className="mt-1 text-5xl font-semibold tracking-tight text-primary">
+        <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.07] px-5 py-5 text-center">
+          <p className="text-sm text-white/55">{t("salaryGuessLabel")}</p>
+          <p className="mt-1 font-display text-5xl font-semibold tracking-tight text-plant">
             {data.guessedSalary}
           </p>
           {data.salaryHint ? (
-            <p className="mt-2 text-xs leading-relaxed text-muted">{data.salaryHint}</p>
+            <p className="mt-2 text-xs leading-relaxed text-white/55">
+              {data.salaryHint}
+            </p>
           ) : null}
         </div>
-        <p className="mt-3 text-center text-[11px] leading-relaxed text-muted/80">
+        <p className="mt-3 text-center text-[11px] leading-relaxed text-white/40">
           {t("salaryDisclaimer")}
         </p>
         <DeskEvidenceList items={data.deskEvidence} />
@@ -91,30 +93,32 @@ export function ReportCard({
     const note = data.fengShui;
     return (
       <CardWrapper delay={delay}>
-        <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
+        <p className="mb-2 text-sm font-medium tracking-widest text-wood">
           {t("fengshuiLayer")}
         </p>
         {note ? (
           <div className="space-y-4">
-            <p className="text-2xl font-semibold text-text">{note.topic}</p>
-            <blockquote className="rounded-2xl bg-secondary/10 px-4 py-3 text-sm leading-relaxed text-text">
+            <p className="text-2xl font-semibold text-white">{note.topic}</p>
+            <blockquote className="rounded-2xl border border-white/10 bg-white/[0.07] px-4 py-3 text-sm leading-relaxed text-white/90">
               <p className="font-medium">{note.quote}</p>
-              <footer className="mt-2 text-xs text-muted">—— {note.source}</footer>
+              <footer className="mt-2 text-xs text-white/45">—— {note.source}</footer>
             </blockquote>
             {note.brief ? (
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45">
                   {tFs("briefLabel")}
                 </p>
-                <p className="mt-2 text-base leading-relaxed text-muted md:text-lg">
+                <p className="mt-2 text-base leading-relaxed text-white/70 md:text-lg">
                   {note.brief}
                 </p>
               </div>
             ) : null}
-            <p className="text-[11px] leading-relaxed text-muted/80">{tFs("disclaimer")}</p>
+            <p className="text-[11px] leading-relaxed text-white/40">
+              {tFs("disclaimer")}
+            </p>
           </div>
         ) : (
-          <p className="text-base leading-relaxed text-muted">{t("fengshuiEmpty")}</p>
+          <p className="text-base leading-relaxed text-white/55">{t("fengshuiEmpty")}</p>
         )}
       </CardWrapper>
     );
@@ -123,17 +127,17 @@ export function ReportCard({
   if (data.type === "career") {
     return (
       <CardWrapper delay={delay}>
-        <p className="mb-2 text-sm font-medium tracking-widest text-secondary">
+        <p className="mb-2 text-sm font-medium tracking-widest text-wood">
           {t("careerLayer")}
         </p>
-        <h3 className="mb-4 text-xl font-semibold text-text">{data.title}</h3>
+        <h3 className="mb-4 text-xl font-semibold text-white">{data.title}</h3>
         <ul className="space-y-3">
           {(data.careerTips ?? []).map((tip, i) => (
             <li
               key={`${i}-${tip}`}
-              className="rounded-2xl border border-primary/10 bg-white/70 px-4 py-3 text-sm leading-relaxed text-text"
+              className="rounded-2xl border border-white/10 bg-white/[0.07] px-4 py-3 text-sm leading-relaxed text-white/90"
             >
-              <span className="mr-2 font-semibold text-primary">{i + 1}.</span>
+              <span className="mr-2 font-semibold text-plant">{i + 1}.</span>
               {tip}
             </li>
           ))}
@@ -141,7 +145,7 @@ export function ReportCard({
         <button
           type="button"
           onClick={onGoNext}
-          className="mt-8 w-full rounded-2xl bg-primary/10 px-4 py-3.5 text-sm font-medium text-primary transition-colors active:bg-primary/20"
+          className="mt-8 w-full rounded-2xl bg-plant/20 px-4 py-3.5 text-sm font-medium text-plant transition-colors active:bg-plant/30"
         >
           {t("claimShareCard")}
         </button>

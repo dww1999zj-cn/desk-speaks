@@ -10,11 +10,13 @@ export function Card({
   variant = "default",
 }: CardProps) {
   const bg =
-    variant === "gradient" ? "bg-card-gradient" : "bg-white";
+    variant === "gradient"
+      ? "bg-white/[0.08] backdrop-blur-md"
+      : "bg-white/[0.06] backdrop-blur-md";
 
   return (
     <div
-      className={`${bg} rounded-2xl border border-black/5 p-5 md:p-6 ${className}`}
+      className={`${bg} rounded-2xl border border-white/10 p-5 md:p-6 ${className}`}
     >
       {children}
     </div>

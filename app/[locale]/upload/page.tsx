@@ -86,7 +86,7 @@ export default function UploadPage() {
       : t("submit");
 
   return (
-    <GradientBackground variant="minimal">
+    <GradientBackground>
       <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-5 py-10 safe-bottom sm:px-6 sm:py-12">
         <header>
           <PageTopRow
@@ -94,7 +94,7 @@ export default function UploadPage() {
             left={
               <Link
                 href="/"
-                className="text-sm text-muted transition hover:text-text"
+                className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-sm text-white/80 backdrop-blur-sm hover:text-white"
               >
                 {tCommon("back")}
               </Link>
@@ -103,8 +103,10 @@ export default function UploadPage() {
           <p className="text-[11px] font-semibold uppercase tracking-wider text-plant">
             {t("badge")}
           </p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-text">{t("title")}</h1>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{t("subtitle")}</p>
+          <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-white">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-white/60">{t("subtitle")}</p>
         </header>
 
         <section className="mt-6 flex-1">
@@ -121,7 +123,7 @@ export default function UploadPage() {
           >
             {buttonLabel}
           </Button>
-          <SiteFooter className="mt-6" />
+          <SiteFooter className="mt-6 text-white/40" />
         </footer>
       </main>
     </GradientBackground>

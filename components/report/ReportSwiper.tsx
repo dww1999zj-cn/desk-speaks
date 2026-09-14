@@ -66,7 +66,7 @@ export function ReportSwiper({
 
   return (
     <div className="w-full">
-      <p className="mb-3 text-center text-xs text-muted">
+      <p className="mb-3 text-center text-xs text-white/45">
         {current + 1}/{cards.length} · {slideLabels[current]}
         {cards[current]?.type === "career" && t("oneMoreCard")}
       </p>
@@ -104,7 +104,7 @@ export function ReportSwiper({
         <button
           onClick={goPrev}
           disabled={current === 0}
-          className="rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-text disabled:opacity-30"
+          className="rounded-full px-4 py-2 text-sm text-white/45 transition-colors hover:text-white disabled:opacity-30"
         >
           {t("prev")}
         </button>
@@ -120,8 +120,8 @@ export function ReportSwiper({
               })}
               className={`h-2 rounded-full transition-all duration-300 ${
                 i === current
-                  ? "w-6 bg-primary"
-                  : "w-2 bg-primary/20 hover:bg-primary/40"
+                  ? "w-6 bg-plant"
+                  : "w-2 bg-white/20 hover:bg-white/40"
               }`}
             />
           ))}
@@ -130,7 +130,7 @@ export function ReportSwiper({
         <button
           onClick={goNext}
           disabled={current === cards.length - 1}
-          className="rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-text disabled:opacity-30"
+          className="rounded-full px-4 py-2 text-sm text-white/45 transition-colors hover:text-white disabled:opacity-30"
         >
           {isShareSlide ? t("last") : t("next")}
         </button>

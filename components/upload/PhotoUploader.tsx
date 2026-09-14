@@ -9,7 +9,10 @@ interface PhotoUploaderProps {
   i18nNamespace?: "upload" | "personaUpload";
 }
 
-export function PhotoUploader({ onImageReady, i18nNamespace = "upload" }: PhotoUploaderProps) {
+export function PhotoUploader({
+  onImageReady,
+  i18nNamespace = "upload",
+}: PhotoUploaderProps) {
   const t = useTranslations(i18nNamespace);
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -65,8 +68,8 @@ export function PhotoUploader({ onImageReady, i18nNamespace = "upload" }: PhotoU
         onDrop={onDrop}
         className={`relative flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed transition-all duration-200 ${
           dragOver
-            ? "border-primary bg-primary/5"
-            : "border-muted/30 bg-surface/80"
+            ? "border-plant bg-plant/10"
+            : "border-white/20 bg-white/[0.06] backdrop-blur-md"
         }`}
       >
         {preview ? (
@@ -77,21 +80,21 @@ export function PhotoUploader({ onImageReady, i18nNamespace = "upload" }: PhotoU
               alt={t("previewAlt")}
               className="mx-auto max-h-[200px] rounded-2xl object-contain"
             />
-            <p className="mt-4 text-center text-sm text-muted">{t("reselect")}</p>
+            <p className="mt-4 text-center text-sm text-white/55">{t("reselect")}</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 p-6 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-lg font-light text-muted ring-1 ring-black/5">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-lg font-light text-white/70 ring-1 ring-white/15">
               +
             </div>
-            <p className="text-base font-medium text-text">{t("dropTitle")}</p>
-            <p className="text-sm text-muted">{t("dropHint")}</p>
+            <p className="text-base font-medium text-white">{t("dropTitle")}</p>
+            <p className="text-sm text-white/55">{t("dropHint")}</p>
           </div>
         )}
 
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-white/80">
-            <p className="text-sm text-muted animate-pulse-soft">{t("processing")}</p>
+          <div className="absolute inset-0 flex items-center justify-center rounded-3xl bg-[#1a1c18]/70 backdrop-blur-sm">
+            <p className="text-sm text-white/70 animate-pulse-soft">{t("processing")}</p>
           </div>
         )}
       </div>
@@ -101,7 +104,7 @@ export function PhotoUploader({ onImageReady, i18nNamespace = "upload" }: PhotoU
           type="button"
           onClick={() => galleryInputRef.current?.click()}
           disabled={loading}
-          className="rounded-xl border border-black/5 bg-white px-4 py-3.5 text-sm font-medium text-text transition-colors active:bg-surface disabled:opacity-50"
+          className="rounded-xl border border-white/15 bg-white/10 px-4 py-3.5 text-sm font-medium text-white transition-colors active:bg-white/15 disabled:opacity-50"
         >
           {t("gallery")}
         </button>
@@ -109,7 +112,7 @@ export function PhotoUploader({ onImageReady, i18nNamespace = "upload" }: PhotoU
           type="button"
           onClick={() => cameraInputRef.current?.click()}
           disabled={loading}
-          className="rounded-xl bg-text px-4 py-3.5 text-sm font-medium text-white transition-colors active:bg-text/90 disabled:opacity-50"
+          className="rounded-xl bg-plant px-4 py-3.5 text-sm font-medium text-white shadow-lg shadow-plant/25 transition-colors active:bg-plant/90 disabled:opacity-50"
         >
           {t("camera")}
         </button>

@@ -79,17 +79,17 @@ export default function PersonaUploadPage() {
             left={
               <Link
                 href="/"
-                className="rounded-full bg-white/70 px-3 py-1.5 text-sm text-muted shadow-sm hover:text-text"
+                className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-sm text-white/80 backdrop-blur-sm hover:text-white"
               >
                 {tCommon("back")}
               </Link>
             }
           />
-          <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-secondary/30 px-3 py-1 text-xs font-medium text-text">
+          <p className="mb-2 inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/90">
             {t("badge")}
           </p>
-          <h1 className="text-2xl font-bold text-text">{t("title")}</h1>
-          <p className="mt-2 leading-relaxed text-muted">{t("subtitle")}</p>
+          <h1 className="font-display text-2xl font-semibold text-white">{t("title")}</h1>
+          <p className="mt-2 leading-relaxed text-white/60">{t("subtitle")}</p>
         </header>
 
         <section className="mt-8 flex-1">
@@ -105,7 +105,7 @@ export default function PersonaUploadPage() {
           >
             {buttonLabel}
           </Button>
-          <SiteFooter className="mt-4" />
+          <SiteFooter className="mt-4 text-white/40" />
         </footer>
       </main>
     </GradientBackground>

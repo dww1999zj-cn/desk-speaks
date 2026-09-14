@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#FFF8F5",
+  themeColor: "#1a1c18",
 };
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -61,7 +61,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale === "zh" ? "zh-CN" : "en"}
       className={`${displayFont.variable} ${bodyFont.variable}`}
     >
-      <body className="font-sans min-h-dvh">
+      <body className="font-sans min-h-dvh bg-[#1a1c18] text-white">
         <ChunkLoadRecovery />
         <NextIntlClientProvider messages={messages}>
           {children}

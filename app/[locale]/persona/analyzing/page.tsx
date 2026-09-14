@@ -130,7 +130,7 @@ function PersonaAnalyzingContent() {
             />
           )}
         </div>
-        <SiteFooter className="mt-8 shrink-0" />
+        <SiteFooter className="mt-8 shrink-0 text-white/40" />
       </main>
     </GradientBackground>
   );
@@ -144,7 +144,7 @@ function PersonaAnalyzingFallback() {
         <div className="flex flex-1 flex-col items-center justify-center">
           <ThinkingStatus mode="persona" />
         </div>
-        <SiteFooter className="mt-8 shrink-0" />
+        <SiteFooter className="mt-8 shrink-0 text-white/40" />
       </main>
     </GradientBackground>
   );

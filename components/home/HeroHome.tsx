@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { PageTopRow } from "@/components/ui/PageTopRow";
+import { GradientBackground } from "@/components/ui/GradientBackground";
 import { useEffect, useMemo, useState } from "react";
 
 interface GenerationStats {
@@ -48,26 +49,7 @@ export function HeroHome() {
   }, [trustItems, displayCount, t]);
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-[#1a1c18]">
-      {/* Full-bleed desk atmosphere */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url(/marketing/hero-desk-a-display.webp)",
-        }}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(26,28,24,0.55) 0%, rgba(26,28,24,0.78) 42%, rgba(26,28,24,0.94) 100%)",
-        }}
-        aria-hidden
-      />
-      <div className="pointer-events-none absolute -right-16 top-28 h-64 w-64 rounded-full bg-plant/25 blur-3xl animate-pulse-soft" />
-      <div className="pointer-events-none absolute -left-20 bottom-24 h-56 w-56 rounded-full bg-wood/20 blur-3xl" />
-
+    <GradientBackground variant="immersive">
       <div className="pointer-events-none absolute inset-x-5 top-[max(1rem,env(safe-area-inset-top))] z-20 sm:inset-x-6">
         <div className="pointer-events-auto">
           <PageTopRow
@@ -93,7 +75,6 @@ export function HeroHome() {
           </p>
         </header>
 
-        {/* Playful salary tease — product visual, not a stats dashboard */}
         <div
           className="mt-8 animate-fade-in-up rounded-[1.75rem] border border-white/10 bg-white/[0.07] px-5 py-5 backdrop-blur-md"
           style={{ animationDelay: "120ms", animationFillMode: "both" }}
@@ -146,6 +127,6 @@ export function HeroHome() {
           <SiteFooter className="text-white/40" />
         </footer>
       </main>
-    </div>
+    </GradientBackground>
   );
 }

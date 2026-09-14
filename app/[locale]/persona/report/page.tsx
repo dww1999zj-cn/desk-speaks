@@ -75,8 +75,8 @@ export default function PersonaReportPage() {
     return (
       <GradientBackground>
         <main className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center px-6 py-12 safe-bottom">
-          <p className="text-muted animate-pulse-soft">{t("loading")}</p>
-          <SiteFooter className="mt-8" />
+          <p className="text-white/55 animate-pulse-soft">{t("loading")}</p>
+          <SiteFooter className="mt-8 text-white/40" />
         </main>
       </GradientBackground>
     );
@@ -89,25 +89,27 @@ export default function PersonaReportPage() {
           <header className="mb-6">
             <PageTopRow
               left={
-                <p className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-primary shadow-sm">
+                <p className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-sm">
                   {t("badge")}
                 </p>
               }
             />
-            <h1 className="mt-4 text-2xl font-bold text-text">{t("title")}</h1>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{matchQuestion}</p>
+            <h1 className="mt-4 font-display text-2xl font-semibold text-white">
+              {t("title")}
+            </h1>
+            <p className="mt-2 text-sm leading-relaxed text-white/60">{matchQuestion}</p>
           </header>
         ) : (
           <PageTopRow className="mb-4" />
         )}
 
         {!isShareSlide && image && (
-          <div className="mb-6 overflow-hidden rounded-2xl">
+          <div className="mb-6 overflow-hidden rounded-2xl border border-white/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image}
               alt={t("deskAlt")}
-              className="h-28 w-full object-cover opacity-80"
+              className="h-28 w-full object-cover opacity-90"
             />
           </div>
         )}
@@ -121,7 +123,7 @@ export default function PersonaReportPage() {
 
         <footer className="mt-8 flex flex-col gap-3">
           {!isShareSlide && (
-            <p className="text-center text-xs text-muted">{t("shareHint")}</p>
+            <p className="text-center text-xs text-white/45">{t("shareHint")}</p>
           )}
           <Button href="/persona/upload" variant="secondary" size="md" className="w-full">
             {tReport("retryUpload")}
@@ -129,7 +131,7 @@ export default function PersonaReportPage() {
           <Button href="/" variant="ghost" size="sm" className="w-full">
             {tReport("backHome")}
           </Button>
-          <SiteFooter className="mt-2" />
+          <SiteFooter className="mt-2 text-white/40" />
         </footer>
       </main>
     </GradientBackground>

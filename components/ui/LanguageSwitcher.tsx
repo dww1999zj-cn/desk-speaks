@@ -20,7 +20,7 @@ export function LanguageSwitcher() {
     <button
       type="button"
       onClick={switchLocale}
-      className="relative z-30 inline-flex shrink-0 items-center rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium text-text shadow-sm transition-colors hover:bg-surface"
+      className="relative z-30 inline-flex shrink-0 items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white/15"
       aria-label={label}
     >
       {label}

@@ -11,7 +11,7 @@ export function SiteFooter({ hint, className = "" }: SiteFooterProps) {
   const t = useTranslations("common");
 
   return (
-    <p className={`text-center text-xs leading-relaxed text-muted/80 ${className}`}>
+    <p className={`text-center text-xs leading-relaxed ${className || "text-white/40"}`}>
       {hint && (
         <>
           {hint}

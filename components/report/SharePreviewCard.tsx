@@ -33,7 +33,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
 
   return (
     <div className="relative mx-auto w-full max-w-[340px]">
-      <p className="mb-3 text-center text-xs font-medium text-primary">
+      <p className="mb-3 text-center text-xs font-medium text-plant">
         {t("previewHint")}
       </p>
 

@@ -47,14 +47,14 @@ function PersonaThinkingStatus() {
         <div className="relative min-h-[4.5rem] overflow-hidden">
           <p
             key={index}
-            className="animate-fade-in text-center text-lg font-medium leading-relaxed text-text"
+            className="animate-fade-in text-center text-lg font-medium leading-relaxed text-white"
             aria-live="polite"
           >
             {texts[index]}
           </p>
         </div>
       </div>
-      <p className="mt-8 flex items-center gap-1.5 text-xs text-muted">
+      <p className="mt-8 flex items-center gap-1.5 text-xs text-white/45">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-plant animate-pulse-soft" />
         {t("engine")}
       </p>
@@ -67,7 +67,7 @@ function RenovationThinkingStatus() {
 
   return (
     <div className="flex w-full flex-col items-center px-2">
-      <p className="mb-8 text-center text-lg font-medium text-text">{t("headline")}</p>
+      <p className="mb-8 text-center text-lg font-medium text-white">{t("headline")}</p>
       <DesignProcessSteps />
     </div>
   );
