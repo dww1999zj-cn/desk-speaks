@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { GradientBackground } from "@/components/ui/GradientBackground";
@@ -17,7 +17,9 @@ import type { AppLocale } from "@/lib/i18n/locale";
 import { isAppLocale } from "@/lib/i18n/locale";
 
 const MIN_DISPLAY_MS = 800;
-const ANALYZE_TIMEOUT_MS = 90000;
+/** Hard client ceiling — do not spin forever on flaky mobile WebViews */
+const ANALYZE_TIMEOUT_MS = 75_000;
+const SLOW_HINT_MS = 20_000;
 
 type Phase = "loading" | "error";
 
@@ -31,6 +33,7 @@ function parsePreviewError(value: string | null): AnalyzeErrorType | null {
 function PersonaAnalyzingContent() {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations("analyzing.persona");
   const searchParams = useSearchParams();
   const previewError = parsePreviewError(searchParams.get("preview"));
 
@@ -39,6 +42,7 @@ function PersonaAnalyzingContent() {
     previewError ?? "failed"
   );
   const [attempt, setAttempt] = useState(0);
+  const [slowHint, setSlowHint] = useState(false);
 
   useEffect(() => {
     if (previewError) return;
@@ -51,22 +55,38 @@ function PersonaAnalyzingContent() {
 
     let cancelled = false;
     setPhase("loading");
+    setSlowHint(false);
     const startAt = Date.now();
     const requestLocale: AppLocale = isAppLocale(locale) ? locale : "zh";
 
-    const analyze = async () => {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), ANALYZE_TIMEOUT_MS);
+    const slowTimer = window.setTimeout(() => {
+      if (!cancelled) setSlowHint(true);
+    }, SLOW_HINT_MS);
 
-        const res = await fetch("/api/persona/analyze", {
+    const analyze = async () => {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), ANALYZE_TIMEOUT_MS);
+
+      try {
+        const fetchPromise = fetch("/api/persona/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ image, locale: requestLocale }),
           signal: controller.signal,
         });
 
-        clearTimeout(timeout);
+        // Backup race: some WebViews ignore AbortSignal on large POSTs
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          window.setTimeout(() => {
+            const err = new Error("analyze timeout");
+            err.name = "AbortError";
+            reject(err);
+          }, ANALYZE_TIMEOUT_MS + 500);
+        });
+
+        const res = await Promise.race([fetchPromise, timeoutPromise]);
+
+        window.clearTimeout(timeout);
         if (cancelled) return;
 
         if (res.status === 422) {
@@ -95,8 +115,11 @@ function PersonaAnalyzingContent() {
 
         router.replace("/persona/report");
       } catch (err) {
+        window.clearTimeout(timeout);
         if (cancelled) return;
-        const isTimeout = err instanceof Error && err.name === "AbortError";
+        const isTimeout =
+          err instanceof Error &&
+          (err.name === "AbortError" || err.message.includes("timeout"));
         setErrorType(isTimeout ? "timeout" : "failed");
         setPhase("error");
       }
@@ -106,6 +129,7 @@ function PersonaAnalyzingContent() {
 
     return () => {
       cancelled = true;
+      window.clearTimeout(slowTimer);
     };
   }, [router, attempt, previewError, locale]);
 
@@ -131,7 +155,14 @@ function PersonaAnalyzingContent() {
         <PageTopRow className="mb-2" />
         <div className="flex flex-1 flex-col items-center justify-center">
           {phase === "loading" ? (
-            <ThinkingStatus mode="persona" />
+            <>
+              <ThinkingStatus mode="persona" />
+              {slowHint ? (
+                <p className="mt-6 max-w-xs text-center text-xs leading-relaxed text-white/45">
+                  {t("slowHint")}
+                </p>
+              ) : null}
+            </>
           ) : (
             <AnalyzeErrorPanel
               type={errorType}

@@ -103,32 +103,37 @@ async function callQwen(
 ): Promise<DeskReport> {
   const { systemPrompt, userPrompt } = getPrompts(locale);
 
-  const res = await fetchWithRetry(QWEN_API_BASE, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
+  const res = await fetchWithRetry(
+    QWEN_API_BASE,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content: [
+              {
+                type: "image_url",
+                image_url: { url: `data:image/jpeg;base64,${base64}` },
+              },
+              { type: "text", text: userPrompt },
+            ],
+          },
+        ],
+        max_tokens: 1200,
+        temperature: 0.9,
+        response_format: { type: "json_object" },
+      }),
     },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        {
-          role: "user",
-          content: [
-            {
-              type: "image_url",
-              image_url: { url: `data:image/jpeg;base64,${base64}` },
-            },
-            { type: "text", text: userPrompt },
-          ],
-        },
-      ],
-      max_tokens: 1200,
-      temperature: 0.9,
-      response_format: { type: "json_object" },
-    }),
-  });
+    // Persona must finish inside Zeabur maxDuration; avoid 5×90s hangs
+    { retries: 2, timeoutMs: 45_000 }
+  );
 
   if (!res.ok) {
     throw new Error(`Model ${model} error: ${await res.text()}`);

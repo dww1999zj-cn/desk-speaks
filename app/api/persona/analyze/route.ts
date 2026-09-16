@@ -5,7 +5,7 @@ import type { DeskReport } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 90;
 
 function scheduleSave(report: DeskReport) {
   after(async () => {

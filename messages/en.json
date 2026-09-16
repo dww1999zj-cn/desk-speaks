@@ -136,7 +136,8 @@
         "Drafting three career desk moves",
         "Not HR — just roasting",
         "Stamp almost ready"
-      ]
+      ],
+      "slowHint": "Still reading the desk — hang on a bit. You'll get a retry prompt after about a minute."
     }
   },
   "report": {
