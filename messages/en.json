@@ -184,7 +184,7 @@
     "cards": {
       "salaryLayer": "Layer 1 · The price",
       "salaryTitle": "Desk prices you",
-      "salaryGuessLabel": "Desk's offer",
+      "salaryGuessLabel": "Guessed salary",
       "salaryDisclaimer": "A joke, not payroll.",
       "evidenceTitle": "Exhibit A",
       "fengshuiLayer": "Layer 2 · Placement tips",
@@ -207,7 +207,7 @@
     "previewHint": "Salary cert · save to share",
     "certBadge": "🐮 Desk Salary",
     "title": "Desk Salary",
-    "salaryGuessLabel": "Desk's offer",
+    "salaryGuessLabel": "Guessed salary",
     "qrTitle": "Scan to guess your desk salary",
     "qrAlt": "QR",
     "saveButton": "Save cert 📸",

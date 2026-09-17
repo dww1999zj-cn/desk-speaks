@@ -23,7 +23,9 @@ const HEADER_BADGE_SIZE = 36;
 const HEADER_BADGE_TITLE_GAP = 16;
 const HEADER_TITLE_SIZE = 72;
 const HEADER_TITLE_SALARY_GAP = 48;
-const SALARY_BOX_HEIGHT = 160;
+const SALARY_BOX_HEIGHT = 200;
+const PHOTO_HEIGHT = 480;
+const SALARY_BAND_HEIGHT = 220;
 const SALARY_BOX_BOTTOM_GAP = 32;
 const PILL_HEIGHT = 72;
 const PILL_SUMMARY_GAP = 32;
@@ -120,21 +122,13 @@ function getHeaderStartY(): number {
 }
 
 const HEADER_TITLE_LINE_HEIGHT = 80;
-const THUMB_SIZE = 200;
-const THUMB_GAP = 24;
-
-function getTitleMaxWidth(hasThumb: boolean): number {
-  if (!hasThumb) return CONTENT_W;
-  return W - CARD_MARGIN - CARD_PAD - THUMB_SIZE - THUMB_GAP - CONTENT_X;
-}
 
 function measureHeaderBottom(
   ctx: CanvasRenderingContext2D,
   copy: ShareImageCopy,
-  font: string,
-  hasThumb: boolean
+  font: string
 ): number {
-  const maxW = getTitleMaxWidth(hasThumb);
+  const maxW = CONTENT_W;
   let y = getHeaderStartY();
 
   ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
@@ -162,10 +156,37 @@ function measureHeaderBottom(
 function getSalaryBoxY(
   ctx: CanvasRenderingContext2D,
   copy: ShareImageCopy,
-  font: string,
-  hasThumb: boolean
+  font: string
 ): number {
-  return measureHeaderBottom(ctx, copy, font, hasThumb);
+  return measureHeaderBottom(ctx, copy, font);
+}
+
+function getHeroBlockHeight(hasThumb: boolean): number {
+  return hasThumb ? PHOTO_HEIGHT + SALARY_BAND_HEIGHT : SALARY_BOX_HEIGHT;
+}
+
+function drawImageCover(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  w: number,
+  h: number
+) {
+  const ir = img.width / img.height;
+  const tr = w / h;
+  let sx = 0;
+  let sy = 0;
+  let sw = img.width;
+  let sh = img.height;
+  if (ir > tr) {
+    sw = img.height * tr;
+    sx = (img.width - sw) / 2;
+  } else {
+    sh = img.width / tr;
+    sy = (img.height - sh) / 2;
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
 }
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -274,8 +295,8 @@ interface ShareLayout {
   footerTextY: number;
 }
 
-function getPillsY(salaryBoxY: number): number {
-  return salaryBoxY + SALARY_BOX_HEIGHT + SALARY_BOX_BOTTOM_GAP;
+function getPillsY(salaryBoxY: number, hasThumb: boolean): number {
+  return salaryBoxY + getHeroBlockHeight(hasThumb) + SALARY_BOX_BOTTOM_GAP;
 }
 
 function computeShareLayout(
@@ -289,8 +310,8 @@ function computeShareLayout(
   const qrPad = 12;
   const qrBoxSize = qrSize + qrPad * 2;
 
-  const salaryBoxY = getSalaryBoxY(ctx, copy, font, hasThumb);
-  const pillsY = getPillsY(salaryBoxY);
+  const salaryBoxY = getSalaryBoxY(ctx, copy, font);
+  const pillsY = getPillsY(salaryBoxY, hasThumb);
   const summaryY = pillsY + PILL_HEIGHT + PILL_SUMMARY_GAP;
 
   ctx.font = `600 40px ${font}`;
@@ -389,11 +410,10 @@ export async function generateShareImage(
   ctx.stroke();
 
   let y = getHeaderStartY();
-  const titleMaxW = getTitleMaxWidth(hasThumb);
 
   ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
   ctx.fillStyle = COLORS.plant;
-  y = wrapText(ctx, copy.certBadge, CONTENT_X, y, titleMaxW, HEADER_BADGE_SIZE + 8);
+  y = wrapText(ctx, copy.certBadge, CONTENT_X, y, CONTENT_W, HEADER_BADGE_SIZE + 8);
   y += HEADER_BADGE_TITLE_GAP;
 
   ctx.font = `bold ${HEADER_TITLE_SIZE}px ${font}`;
@@ -403,55 +423,98 @@ export async function generateShareImage(
     copy.title,
     CONTENT_X,
     y,
-    titleMaxW,
+    CONTENT_W,
     HEADER_TITLE_LINE_HEIGHT
   );
 
+  y = layout.salaryBoxY;
+
   if (deskThumb) {
+    const heroH = PHOTO_HEIGHT + SALARY_BAND_HEIGHT;
+    const salaryY = y + PHOTO_HEIGHT;
+
+    roundRect(ctx, CONTENT_X, y, CONTENT_W, heroH, 36);
+    ctx.save();
+    ctx.clip();
+
     try {
       const img = await loadImage(deskThumb);
-      const tx = W - CARD_MARGIN - CARD_PAD - THUMB_SIZE;
-      const ty = getHeaderStartY();
-      roundRect(ctx, tx, ty, THUMB_SIZE, THUMB_SIZE, 24);
-      ctx.save();
-      ctx.clip();
-      ctx.drawImage(img, tx, ty, THUMB_SIZE, THUMB_SIZE);
-      ctx.restore();
-      ctx.strokeStyle = COLORS.white;
-      ctx.lineWidth = 6;
-      roundRect(ctx, tx, ty, THUMB_SIZE, THUMB_SIZE, 24);
-      ctx.stroke();
+      drawImageCover(ctx, img, CONTENT_X, y, CONTENT_W, PHOTO_HEIGHT);
     } catch {
-      /* skip thumb */
+      ctx.fillStyle = "rgba(91,140,90,0.08)";
+      ctx.fillRect(CONTENT_X, y, CONTENT_W, PHOTO_HEIGHT);
     }
+
+    ctx.fillStyle = "rgba(232,237,230,0.96)";
+    ctx.fillRect(CONTENT_X, salaryY, CONTENT_W, SALARY_BAND_HEIGHT);
+    ctx.restore();
+
+    ctx.strokeStyle = "rgba(91,140,90,0.16)";
+    ctx.lineWidth = 3;
+    roundRect(ctx, CONTENT_X, y, CONTENT_W, heroH, 36);
+    ctx.stroke();
+
+    // Soft seam between photo and salary
+    ctx.strokeStyle = "rgba(91,140,90,0.12)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(CONTENT_X + 28, salaryY);
+    ctx.lineTo(CONTENT_X + CONTENT_W - 28, salaryY);
+    ctx.stroke();
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = COLORS.muted;
+    ctx.font = `500 28px ${font}`;
+    ctx.fillText(copy.salaryGuessLabel, W / 2, salaryY + 36);
+    ctx.font = `bold 84px ${font}`;
+    ctx.fillStyle = COLORS.plant;
+    ctx.fillText(report.salary.guessedSalary, W / 2, salaryY + 76);
+
+    if (report.shareCard.summary) {
+      ctx.font = `600 32px ${font}`;
+      ctx.fillStyle = COLORS.text;
+      ctx.fillText(report.shareCard.summary, W / 2, salaryY + 172);
+    }
+    ctx.textAlign = "left";
+
+    // 骑缝章最后画：章心正好压在接缝上，半图半价
+    drawCertificationStamp(
+      ctx,
+      CONTENT_X + CONTENT_W * 0.78,
+      salaryY,
+      96,
+      font,
+      copy.stampLine1,
+      copy.stampLine2,
+      locale
+    );
+  } else {
+    roundRect(ctx, CONTENT_X, y, CONTENT_W, SALARY_BOX_HEIGHT, 32);
+    ctx.fillStyle = "rgba(91,140,90,0.08)";
+    ctx.fill();
+
+    drawCertificationStamp(
+      ctx,
+      CONTENT_X + CONTENT_W - 48,
+      layout.salaryBoxY + 32,
+      100,
+      font,
+      copy.stampLine1,
+      copy.stampLine2,
+      locale
+    );
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = COLORS.muted;
+    ctx.font = `500 28px ${font}`;
+    ctx.fillText(copy.salaryGuessLabel, W / 2, y + 36);
+    ctx.font = `bold 88px ${font}`;
+    ctx.fillStyle = COLORS.plant;
+    ctx.fillText(report.salary.guessedSalary, W / 2, y + 84);
+    ctx.textAlign = "left";
   }
-
-  y = layout.salaryBoxY;
-  roundRect(ctx, CONTENT_X, y, CONTENT_W, SALARY_BOX_HEIGHT, 32);
-  ctx.fillStyle = "rgba(91,140,90,0.08)";
-  ctx.fill();
-
-  drawCertificationStamp(
-    ctx,
-    CONTENT_X + CONTENT_W - 48,
-    layout.salaryBoxY + 32,
-    100,
-    font,
-    copy.stampLine1,
-    copy.stampLine2,
-    locale
-  );
-
-  ctx.textAlign = "center";
-  ctx.fillStyle = COLORS.muted;
-  ctx.font = `500 28px ${font}`;
-  ctx.fillText(copy.salaryGuessLabel, W / 2, y + 28);
-  ctx.font = `bold 88px ${font}`;
-  ctx.fillStyle = COLORS.plant;
-  ctx.textBaseline = "middle";
-  ctx.fillText(report.salary.guessedSalary, W / 2, y + SALARY_BOX_HEIGHT / 2 + 12);
-  ctx.textAlign = "left";
-  ctx.textBaseline = "top";
 
   const pills: { label: string; bg: string; fg: string }[] = [];
   if (report.fengShui?.topic) {
@@ -461,7 +524,7 @@ export async function generateShareImage(
       fg: COLORS.white,
     });
   }
-  if (report.shareCard.summary) {
+  if (report.shareCard.summary && !hasThumb) {
     pills.push({
       label: report.shareCard.summary,
       bg: "rgba(196,168,130,0.45)",

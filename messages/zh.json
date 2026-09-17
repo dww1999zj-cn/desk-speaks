@@ -184,7 +184,7 @@
     "cards": {
       "salaryLayer": "第一层 · 开价",
       "salaryTitle": "工位开价",
-      "salaryGuessLabel": "工位开价",
+      "salaryGuessLabel": "猜你月薪",
       "salaryDisclaimer": "纯属损你一嘴，不是查社保。",
       "evidenceTitle": "目击证物",
       "fengshuiLayer": "第二层 · 摆放吐槽",
@@ -207,7 +207,7 @@
     "previewHint": "月薪鉴定卡 · 保存即可分享",
     "certBadge": "🐮 工位月薪认证",
     "title": "工位月薪鉴定",
-    "salaryGuessLabel": "工位开价",
+    "salaryGuessLabel": "猜你月薪",
     "qrTitle": "扫码来猜你的工位月薪",
     "qrAlt": "二维码",
     "saveButton": "保存鉴定卡 📸",
