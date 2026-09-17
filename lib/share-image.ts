@@ -22,19 +22,21 @@ const CONTENT_W = W - CARD_MARGIN * 2 - CARD_PAD * 2;
 const HEADER_BADGE_SIZE = 36;
 const HEADER_BADGE_TITLE_GAP = 16;
 const HEADER_TITLE_SIZE = 72;
-const HEADER_TITLE_AGE_GAP = 48;
-const AGE_BOX_HEIGHT = 160;
-const AGE_BOX_BOTTOM_GAP = 32;
+const HEADER_TITLE_SALARY_GAP = 48;
+const SALARY_BOX_HEIGHT = 160;
+const SALARY_BOX_BOTTOM_GAP = 32;
 const PILL_HEIGHT = 72;
 const PILL_SUMMARY_GAP = 32;
 const KEYWORD_PILL_HEIGHT = 60;
 
+/** Match app theme: cream / plant / wood (not purple cert) */
 const COLORS = {
-  text: "#4A4458",
-  muted: "#9B93A8",
-  primary: "#8B7CF6",
-  secondary: "#FFB5C2",
-  accent: "#FFD166",
+  text: "#2C2C2A",
+  muted: "#8A8780",
+  plant: "#5B8C5A",
+  wood: "#C4A882",
+  cream: "#F7F6F3",
+  surface: "#EEEDE8",
   white: "#FFFFFF",
 };
 
@@ -154,10 +156,10 @@ function measureHeaderBottom(
     y
   );
 
-  return y + HEADER_TITLE_AGE_GAP;
+  return y + HEADER_TITLE_SALARY_GAP;
 }
 
-function getAgeBoxY(
+function getSalaryBoxY(
   ctx: CanvasRenderingContext2D,
   copy: ShareImageCopy,
   font: string,
@@ -201,21 +203,21 @@ function drawCertificationStamp(
   ctx.arc(0, 0, radius, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(255,255,255,0.92)";
   ctx.fill();
-  ctx.strokeStyle = "rgba(139,124,246,0.75)";
+  ctx.strokeStyle = "rgba(91,140,90,0.75)";
   ctx.lineWidth = 6;
   ctx.stroke();
 
   ctx.beginPath();
   ctx.arc(0, 0, radius - 10, 0, Math.PI * 2);
   ctx.setLineDash([6, 4]);
-  ctx.strokeStyle = "rgba(139,124,246,0.45)";
+  ctx.strokeStyle = "rgba(91,140,90,0.45)";
   ctx.lineWidth = 3;
   ctx.stroke();
   ctx.setLineDash([]);
 
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = COLORS.primary;
+  ctx.fillStyle = COLORS.plant;
 
   const lineGap = 26;
   ctx.font = `bold 24px ${font}`;
@@ -264,7 +266,7 @@ interface ShareLayout {
   qrBoxSize: number;
   qrX: number;
   footerDividerY: number;
-  ageBoxY: number;
+  salaryBoxY: number;
   pillsY: number;
   summaryY: number;
   keywordsY: number;
@@ -272,8 +274,8 @@ interface ShareLayout {
   footerTextY: number;
 }
 
-function getPillsY(ageBoxY: number): number {
-  return ageBoxY + AGE_BOX_HEIGHT + AGE_BOX_BOTTOM_GAP;
+function getPillsY(salaryBoxY: number): number {
+  return salaryBoxY + SALARY_BOX_HEIGHT + SALARY_BOX_BOTTOM_GAP;
 }
 
 function computeShareLayout(
@@ -287,8 +289,8 @@ function computeShareLayout(
   const qrPad = 12;
   const qrBoxSize = qrSize + qrPad * 2;
 
-  const ageBoxY = getAgeBoxY(ctx, copy, font, hasThumb);
-  const pillsY = getPillsY(ageBoxY);
+  const salaryBoxY = getSalaryBoxY(ctx, copy, font, hasThumb);
+  const pillsY = getPillsY(salaryBoxY);
   const summaryY = pillsY + PILL_HEIGHT + PILL_SUMMARY_GAP;
 
   ctx.font = `600 40px ${font}`;
@@ -322,7 +324,8 @@ function computeShareLayout(
   const footerTextY = qrY + qrBoxSize + 28;
   const canvasHeight = footerTextY + 48 + CARD_MARGIN;
 
-  const qrX = W - CARD_MARGIN - CARD_PAD - qrBoxSize;
+  // QR on the left — matches SharePreviewCard
+  const qrX = CONTENT_X;
 
   return {
     canvasHeight,
@@ -331,7 +334,7 @@ function computeShareLayout(
     qrBoxSize,
     qrX,
     footerDividerY,
-    ageBoxY,
+    salaryBoxY,
     pillsY,
     summaryY,
     keywordsY,
@@ -371,17 +374,17 @@ export async function generateShareImage(
   ctx.textBaseline = "top";
 
   const bg = ctx.createLinearGradient(0, 0, W, layout.canvasHeight);
-  bg.addColorStop(0, "#FFF8F5");
-  bg.addColorStop(0.45, "#FFE8F0");
-  bg.addColorStop(1, "#F3EEFF");
+  bg.addColorStop(0, "#F7F6F3");
+  bg.addColorStop(0.5, "#EEEDE8");
+  bg.addColorStop(1, "#E8EDE6");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, layout.canvasHeight);
 
   const cardH = layout.canvasHeight - CARD_MARGIN * 2;
   roundRect(ctx, CARD_MARGIN, CARD_MARGIN, W - CARD_MARGIN * 2, cardH, 48);
-  ctx.fillStyle = "rgba(255,255,255,0.88)";
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
   ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.95)";
+  ctx.strokeStyle = "rgba(91,140,90,0.18)";
   ctx.lineWidth = 4;
   ctx.stroke();
 
@@ -389,7 +392,7 @@ export async function generateShareImage(
   const titleMaxW = getTitleMaxWidth(hasThumb);
 
   ctx.font = `600 ${HEADER_BADGE_SIZE}px ${font}`;
-  ctx.fillStyle = COLORS.primary;
+  ctx.fillStyle = COLORS.plant;
   y = wrapText(ctx, copy.certBadge, CONTENT_X, y, titleMaxW, HEADER_BADGE_SIZE + 8);
   y += HEADER_BADGE_TITLE_GAP;
 
@@ -423,15 +426,15 @@ export async function generateShareImage(
     }
   }
 
-  y = layout.ageBoxY;
-  roundRect(ctx, CONTENT_X, y, CONTENT_W, AGE_BOX_HEIGHT, 32);
-  ctx.fillStyle = "rgba(139,124,246,0.08)";
+  y = layout.salaryBoxY;
+  roundRect(ctx, CONTENT_X, y, CONTENT_W, SALARY_BOX_HEIGHT, 32);
+  ctx.fillStyle = "rgba(91,140,90,0.08)";
   ctx.fill();
 
   drawCertificationStamp(
     ctx,
     CONTENT_X + CONTENT_W - 48,
-    layout.ageBoxY + 32,
+    layout.salaryBoxY + 32,
     100,
     font,
     copy.stampLine1,
@@ -439,11 +442,14 @@ export async function generateShareImage(
     locale
   );
 
-  ctx.font = `bold 96px ${font}`;
-  ctx.fillStyle = COLORS.primary;
   ctx.textAlign = "center";
+  ctx.fillStyle = COLORS.muted;
+  ctx.font = `500 28px ${font}`;
+  ctx.fillText(copy.salaryGuessLabel, W / 2, y + 28);
+  ctx.font = `bold 88px ${font}`;
+  ctx.fillStyle = COLORS.plant;
   ctx.textBaseline = "middle";
-  ctx.fillText(report.salary.guessedSalary, W / 2, y + AGE_BOX_HEIGHT / 2);
+  ctx.fillText(report.salary.guessedSalary, W / 2, y + SALARY_BOX_HEIGHT / 2 + 12);
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
 
@@ -451,14 +457,14 @@ export async function generateShareImage(
   if (report.fengShui?.topic) {
     pills.push({
       label: report.fengShui.topic,
-      bg: COLORS.primary,
+      bg: COLORS.plant,
       fg: COLORS.white,
     });
   }
   if (report.shareCard.summary) {
     pills.push({
       label: report.shareCard.summary,
-      bg: COLORS.accent,
+      bg: "rgba(196,168,130,0.45)",
       fg: COLORS.text,
     });
   }
@@ -491,9 +497,9 @@ export async function generateShareImage(
   for (const kw of keywords) {
     const kwW = ctx.measureText(kw).width + 56;
     roundRect(ctx, kwX, layout.keywordsY, kwW, KEYWORD_PILL_HEIGHT, 30);
-    ctx.fillStyle = "rgba(255,181,194,0.45)";
+    ctx.fillStyle = "rgba(196,168,130,0.35)";
     ctx.fill();
-    ctx.fillStyle = COLORS.primary;
+    ctx.fillStyle = COLORS.plant;
     ctx.fillText(kw, kwX + 28, layout.keywordsY + 14);
     kwX += kwW + 16;
   }
@@ -514,7 +520,7 @@ export async function generateShareImage(
     48
   );
 
-  ctx.strokeStyle = "rgba(255,255,255,0.6)";
+  ctx.strokeStyle = "rgba(44,44,42,0.08)";
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(CONTENT_X, layout.footerDividerY);
@@ -548,7 +554,7 @@ export async function generateShareImage(
 
   const qrCenterY = layout.qrY + layout.qrBoxSize / 2;
   const siteLabel = formatShareSiteLabel(siteUrl);
-  const textX = CONTENT_X;
+  const textX = layout.qrX + layout.qrBoxSize + 28;
 
   if (siteLabel) {
     const titleSize = 32;
@@ -613,7 +619,7 @@ function downloadBlob(blob: Blob, filename: string) {
 
 export async function saveShareImage(
   blob: Blob,
-  filename = "工位人格.png",
+  filename = "工位月薪.png",
   onPreview?: (imageUrl: string) => void
 ) {
   if (shouldUseSavePreview() && onPreview) {

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "工位月薪",
-    "description": "拍工位，让工位本人损你一嘴：猜月薪、吐槽摆放、给升职小动作"
+    "description": "拍工位，让工位本人开价：猜月薪、吐槽摆放、给三条升职小动作"
   },
   "common": {
     "back": "← 返回",
@@ -19,9 +19,9 @@
     "teaseHint": "每张桌子价不一样——别急着对号入座",
     "disclaimer": "纯属玩笑，不是查社保，也不是风水改命。",
     "cta": "拍工位，开价！",
-    "trustGeneration": "已有 {count}+ 人被工位骂过",
+    "trustGeneration": "已有 {count}+ 人被工位开过价",
     "trustItems": [
-      "已有 2,000+ 人被工位骂过",
+      "已有 2,000+ 人被工位开过价",
       "约 30 秒出结果",
       "海报可发朋友圈"
     ]
@@ -184,7 +184,7 @@
     "cards": {
       "salaryLayer": "第一层 · 开价",
       "salaryTitle": "工位开价",
-      "salaryGuessLabel": "工位喊价",
+      "salaryGuessLabel": "工位开价",
       "salaryDisclaimer": "纯属损你一嘴，不是查社保。",
       "evidenceTitle": "目击证物",
       "fengshuiLayer": "第二层 · 摆放吐槽",
@@ -207,7 +207,7 @@
     "previewHint": "月薪鉴定卡 · 保存即可分享",
     "certBadge": "🐮 工位月薪认证",
     "title": "工位月薪鉴定",
-    "salaryGuessLabel": "工位猜你月薪",
+    "salaryGuessLabel": "工位开价",
     "qrTitle": "扫码来猜你的工位月薪",
     "qrAlt": "二维码",
     "saveButton": "保存鉴定卡 📸",
@@ -239,7 +239,7 @@
   "recommend": {
     "badge": "🛒 工位牛马严选",
     "title": "办公好物推荐",
-    "subtitle": "工位来信里聊到的那些东西，这里帮你挑好了。",
+    "subtitle": "开完价之后，这些办公好物帮你补一刀。",
     "disclosure": "以下链接为京东推广链接，价格与你直接购买相同；通过链接下单是对「闲里偷忙」的小支持 🐮",
     "goJd": "去京东看看 →",
     "categories": {

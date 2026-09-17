@@ -6,7 +6,7 @@ export const OFFICE_PICK_DISCLOSURE =
 export const OFFICE_PICK_INTRO = {
   badge: "🛒 工位牛马严选",
   title: "办公好物推荐",
-  subtitle: "工位来信里聊到的那些东西，这里帮你挑好了。",
+  subtitle: "开完价之后，这些办公好物帮你补一刀。",
 };
 
 export const OFFICE_PICK_CATEGORIES = [
@@ -45,7 +45,7 @@ export const OFFICE_PICKS = [
     id: "lumbar-cushion",
     category: "久坐救星",
     name: "腰靠 / 人体工学坐垫",
-    hook: "工位来信说你坐得久——腰先谢谢你不 abandon。",
+    hook: "工位开完价还说你坐得久——腰先谢谢你。",
     emoji: "💺",
     affiliateUrl: "https://u.jd.com/X1wyucp",
   },

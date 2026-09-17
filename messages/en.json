@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Desk Salary",
-    "description": "Snap your desk — get roasted on pay band, placement, and three career desk moves"
+    "description": "Snap your desk — get priced on pay band, placement, and three career desk moves"
   },
   "common": {
     "back": "← Back",
@@ -19,9 +19,9 @@
     "teaseHint": "Different desks, different numbers — don't take it personally",
     "disclaimer": "For fun only — not payroll, not fortune-telling.",
     "cta": "Snap desk. Get priced.",
-    "trustGeneration": "{count}+ desks roasted",
+    "trustGeneration": "{count}+ desks priced",
     "trustItems": [
-      "2,000+ desks roasted",
+      "2,000+ desks priced",
       "~30s result",
       "Poster ready to share"
     ]
@@ -29,7 +29,7 @@
   "personaUpload": {
     "badge": "🐮 Desk Salary",
     "title": "Show the whole desk",
-    "subtitle": "Messy is fine. Snacks, dual screens, cable chaos — all fair game for a salary roast.",
+    "subtitle": "Messy is fine. Snacks, dual screens, cable chaos — all fair game for a salary guess.",
     "submit": "This one — price me 🐮",
     "submitting": "Starting…",
     "preparing": "Preparing…",
@@ -130,11 +130,11 @@
       "thinkingTexts": [
         "Desk is pricing you…",
         "Snack pile or ergonomic chair?",
-        "Salary roast first",
+        "Salary band first",
         "Why this band, not the next?",
         "Placement glance (joking)",
         "Drafting three career desk moves",
-        "Not HR — just roasting",
+        "Not HR — just guessing",
         "Stamp almost ready"
       ],
       "slowHint": "Still reading the desk — hang on a bit. You'll get a retry prompt after about a minute."
@@ -185,9 +185,9 @@
       "salaryLayer": "Layer 1 · The price",
       "salaryTitle": "Desk prices you",
       "salaryGuessLabel": "Desk's offer",
-      "salaryDisclaimer": "A roast, not payroll.",
+      "salaryDisclaimer": "A joke, not payroll.",
       "evidenceTitle": "Exhibit A",
-      "fengshuiLayer": "Layer 2 · Placement roast",
+      "fengshuiLayer": "Layer 2 · Placement tips",
       "fengshuiTitle": "Desk placement",
       "fengshuiEmpty": "Thin clues here — jump to career moves.",
       "careerLayer": "Layer 3 · Career moves",
@@ -206,8 +206,8 @@
   "share": {
     "previewHint": "Salary cert · save to share",
     "certBadge": "🐮 Desk Salary",
-    "title": "Desk Salary Guess",
-    "salaryGuessLabel": "Desk says you earn",
+    "title": "Desk Salary",
+    "salaryGuessLabel": "Desk's offer",
     "qrTitle": "Scan to guess your desk salary",
     "qrAlt": "QR",
     "saveButton": "Save cert 📸",
@@ -239,7 +239,7 @@
   "recommend": {
     "badge": "🛒 Desk picks",
     "title": "Desk essentials",
-    "subtitle": "Picked from your desk letter.",
+    "subtitle": "After the price tag — desk upgrades that actually help.",
     "disclosure": "Affiliate links — same price; supports the project 🐮",
     "goJd": "View on JD →",
     "categories": {

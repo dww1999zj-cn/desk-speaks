@@ -73,7 +73,7 @@ export function ShareImageButton({
         type="button"
         onClick={handleSave}
         disabled={loading}
-        className={`inline-flex min-h-[52px] w-full touch-manipulation select-none items-center justify-center rounded-full border-2 border-white/30 bg-primary px-8 py-4 text-base font-medium text-white shadow-lg shadow-primary/25 transition-colors duration-200 active:bg-primary/90 disabled:opacity-60 ${className}`}
+        className={`inline-flex min-h-[52px] w-full touch-manipulation select-none items-center justify-center rounded-2xl bg-plant px-8 py-4 text-base font-medium text-white shadow-lg shadow-plant/25 transition-colors duration-200 active:bg-plant/90 disabled:opacity-60 ${className}`}
         style={{ WebkitTapHighlightColor: "transparent" }}
       >
         {loading ? t("savingButton") : t("saveButton")}

@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { DesignProcessSteps } from "@/components/analyzing/DesignProcessSteps";
 
-function ThinkingMascot() {
+function ThinkingMascot({ reasoningKey = "reasoning" }: { reasoningKey?: "reasoning" | "persona.reasoning" }) {
   const t = useTranslations("analyzing");
   const tCommon = useTranslations("common");
+  const reasoning =
+    reasoningKey === "persona.reasoning" ? t("persona.reasoning") : t("reasoning");
 
   return (
     <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
@@ -21,7 +23,7 @@ function ThinkingMascot() {
         className="absolute -right-1 bottom-2 rounded-full bg-wood/90 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm animate-pulse-soft"
         aria-hidden
       >
-        {t("reasoning")}
+        {reasoning}
       </span>
     </div>
   );
@@ -42,7 +44,7 @@ function PersonaThinkingStatus() {
 
   return (
     <div className="flex w-full max-w-sm flex-col items-center">
-      <ThinkingMascot />
+      <ThinkingMascot reasoningKey="persona.reasoning" />
       <div className="mt-10 w-full px-2">
         <div className="relative min-h-[4.5rem] overflow-hidden">
           <p

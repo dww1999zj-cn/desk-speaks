@@ -55,7 +55,7 @@ export default function RecommendPage() {
 
             return (
               <section key={category}>
-                <h2 className="mb-3 text-sm font-semibold tracking-wide text-primary">
+                <h2 className="mb-3 text-sm font-semibold tracking-wide text-plant">
                   {category}
                 </h2>
                 <div className="space-y-3">

@@ -25,7 +25,7 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
     QRCode.toDataURL(siteUrl, {
       width: 120,
       margin: 1,
-      color: { dark: "#4A4458", light: "#FFFFFF" },
+      color: { dark: "#2C2C2A", light: "#FFFFFF" },
     })
       .then(setQrSrc)
       .catch(() => setQrSrc(null));
@@ -37,13 +37,13 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
         {t("previewHint")}
       </p>
 
-      <div className="relative overflow-visible rounded-[1.75rem] border-2 border-white/90 bg-gradient-to-br from-[#FFF8F5] via-[#FFE8F0] to-[#F3EEFF] p-5 shadow-lg shadow-secondary/25">
+      <div className="relative overflow-visible rounded-[1.75rem] border border-plant/20 bg-gradient-to-br from-[#F7F6F3] via-[#EEEDE8] to-[#E8EDE6] p-5 shadow-lg shadow-plant/15">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold leading-snug text-primary">
+            <p className="text-xs font-semibold leading-snug text-plant">
               {t("certBadge")}
             </p>
-            <h3 className="mt-1 text-xl font-bold leading-tight text-text">
+            <h3 className="mt-1 font-display text-xl font-semibold leading-tight text-text">
               {t("title")}
             </h3>
           </div>
@@ -59,11 +59,11 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
           )}
         </div>
 
-        <div className="relative mt-4 overflow-visible rounded-2xl bg-primary/5 px-4 py-4 text-center">
+        <div className="relative mt-4 overflow-visible rounded-2xl bg-plant/10 px-4 py-4 text-center">
           <CertificationStamp className="pointer-events-none absolute right-0 top-0 z-0 translate-x-[38%] -translate-y-[48%]" />
           <div className="relative z-10">
             <p className="text-xs text-muted">{t("salaryGuessLabel")}</p>
-            <p className="mt-1 text-4xl font-bold text-primary">
+            <p className="mt-1 font-display text-4xl font-semibold text-plant">
               {report.salary.guessedSalary}
             </p>
           </div>
@@ -71,12 +71,12 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
 
         <div className="mt-3 flex flex-wrap gap-2">
           {report.fengShui?.topic ? (
-            <span className="rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-white">
+            <span className="rounded-full bg-plant px-3 py-1.5 text-sm font-medium text-white">
               {report.fengShui.topic}
             </span>
           ) : null}
           {report.shareCard.summary && (
-            <span className="rounded-full bg-accent/40 px-3 py-1.5 text-sm font-medium text-text">
+            <span className="rounded-full bg-wood/40 px-3 py-1.5 text-sm font-medium text-text">
               {report.shareCard.summary}
             </span>
           )}
@@ -96,14 +96,14 @@ export function SharePreviewCard({ report, deskThumb }: SharePreviewCardProps) {
           {(report.shareCard.keywords ?? []).slice(0, 2).map((kw) => (
             <span
               key={kw}
-              className="rounded-full bg-secondary/35 px-3 py-1 text-xs font-medium text-primary"
+              className="rounded-full bg-wood/30 px-3 py-1 text-xs font-medium text-plant"
             >
               {kw}
             </span>
           ))}
         </div>
 
-        <div className="mt-5 flex items-center gap-3 rounded-2xl bg-white/70 px-3 py-2.5">
+        <div className="mt-5 flex items-center gap-3 rounded-2xl bg-white/80 px-3 py-2.5">
           {qrSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={qrSrc} alt={t("qrAlt")} className="h-14 w-14 rounded-lg" />

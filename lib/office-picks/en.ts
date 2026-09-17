@@ -36,7 +36,7 @@ export const EN_CATALOG: OfficePickCatalog = {
       id: "lumbar-cushion",
       category: "Sit-all-day saviors",
       name: "Lumbar cushion / ergonomic seat pad",
-      hook: "Your letter says you sit forever — your back says thanks.",
+      hook: "After the price tag, the desk still says you sit forever — your back says thanks.",
       emoji: "💺",
       affiliateUrl: "https://u.jd.com/X1wyucp",
     },

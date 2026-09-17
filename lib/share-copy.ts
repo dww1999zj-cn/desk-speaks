@@ -1,11 +1,11 @@
-/** 鉴定卡 / 分享图统一文案 */
+/** 鉴定卡 / 分享图统一文案（备用；线上 UI 优先用 messages/share） */
 import { SITE_FOOTER } from "./site-copy";
 
 export const SHARE_CARD_COPY = {
-  previewHint: "工位鉴定卡 · 保存即可分享",
-  certBadge: "🐮 工位牛马认证",
-  title: "你的工位人格",
-  qrTitle: "扫码来测，更懂你的工位",
+  previewHint: "工位月薪鉴定卡 · 保存即可分享",
+  certBadge: "🐮 工位月薪认证",
+  title: "工位月薪鉴定",
+  qrTitle: "扫码来猜你的工位月薪",
   saveButton: "保存鉴定卡 📸",
   savingButton: "正在生成鉴定卡…",
   savePreviewHint: "长按图片 · 保存到相册",
